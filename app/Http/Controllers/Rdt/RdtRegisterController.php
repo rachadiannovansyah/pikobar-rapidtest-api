@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\Rdt;
 
+use App\Entities\RdtApplicant;
 use App\Enums\RdtApplicantStatus;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Rdt\RdtRegisterRequest;
-use App\Http\Resources\RdtApplicantResource;
-use App\Entities\RdtApplicant;
+use Illuminate\Support\Facades\URL;
 
 class RdtRegisterController extends Controller
 {
@@ -14,7 +14,7 @@ class RdtRegisterController extends Controller
      * Handle the incoming request.
      *
      * @param  \App\Http\Requests\Rdt\RdtRegisterRequest  $request
-     * @return \App\Http\Resources\RdtApplicantResource
+     * @return \Illuminate\Http\JsonResponse
      */
     public function __invoke(RdtRegisterRequest $request)
     {
@@ -23,6 +23,13 @@ class RdtRegisterController extends Controller
         $applicant->fill($request->all());
         $applicant->save();
 
-        return new RdtApplicantResource($applicant);
+        return response()->json([
+            'registration_code' => $applicant->registration_code,
+            'download_url'      => URL::temporarySignedRoute(
+                'registration.download',
+                now()->addMinutes(30),
+                ['registration_code' => $applicant->registration_code]
+            ),
+        ]);
     }
 }
