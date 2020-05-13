@@ -19,12 +19,6 @@ Route::get('/', 'HomeController');
 Route::post('rdt/register', 'Rdt\RdtRegisterController');
 Route::post('rdt/check', 'Rdt\RdtCheckStatusController');
 
-// Medical Cases
-Route::apiResource('medical-cases', 'MedicalCaseController', ['except' => ['create', 'edit']]);
-
-// Medical Histories
-Route::apiResource('medical-cases.histories', 'MedicalCaseHistoryController', ['only' => ['index', 'show', 'store']]);
-
 Route::group(['middleware' => 'auth:api'], function () {
     Route::post('logout', 'Auth\LoginController@logout');
 
@@ -49,16 +43,7 @@ Route::group(['middleware' => 'guest:api'], function () {
 
     // API for Master data
     Route::prefix('master')->namespace('Master')->group(function() {
-        Route::get('occupations', 'OccupationController@index');
-        Route::get('occupations/{occupation}', 'OccupationController@show');
-
-        Route::get('hospitals', 'HospitalController@index');
-        Route::get('hospitals/{hospital}', 'HospitalController@show');
-
         Route::get('areas', 'AreaController@index');
         Route::get('areas/{area}', 'AreaController@show');
-
-        Route::get('countries', 'CountryController@index');
     });
-
 });

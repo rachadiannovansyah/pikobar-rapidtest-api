@@ -5,8 +5,8 @@ namespace App\Providers;
 use App\Oauth\CustomKeycloakProvider;
 use App\Observers\RdtApplicantObserver;
 use App\Observers\RdtEventObserver;
-use App\RdtApplicant;
-use App\RdtEvent;
+use App\Entities\RdtApplicant;
+use App\Entities\RdtEvent;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
 

@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Rdt;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Rdt\RdtCheckStatusRequest;
 use App\Http\Resources\RdtApplicantResource;
-use App\RdtApplicant;
+use App\Entities\RdtApplicant;
 
 class RdtCheckStatusController extends Controller
 {

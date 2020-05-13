@@ -1,6 +1,6 @@
 <?php
 
-use App\RdtEvent;
+use App\Entities\RdtEvent;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Carbon;
 

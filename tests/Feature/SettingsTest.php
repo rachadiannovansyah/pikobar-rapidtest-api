@@ -2,13 +2,13 @@
 
 namespace Tests\Feature;
 
-use App\User;
+use App\Entities\User;
 use Illuminate\Support\Facades\Hash;
 use Tests\TestCase;
 
 class SettingsTest extends TestCase
 {
-    /** @var \App\User */
+    /** @var \App\Entities\User */
     protected $user;
 
     public function setUp(): void

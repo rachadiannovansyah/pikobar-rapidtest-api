@@ -2,7 +2,7 @@
 
 namespace App\Entities\Concerns;
 
-use App\Area;
+use App\Entities\Area;
 
 trait HasArea
 {

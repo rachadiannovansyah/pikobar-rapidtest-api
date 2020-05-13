@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Rdt;
 
-use App\RdtEvent;
+use App\Entities\RdtEvent;
 use Illuminate\Http\Request;
 
 class RdtEventController extends Controller

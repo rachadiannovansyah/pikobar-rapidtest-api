@@ -6,7 +6,7 @@ use App\Enums\RdtApplicantStatus;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Rdt\RdtRegisterRequest;
 use App\Http\Resources\RdtApplicantResource;
-use App\RdtApplicant;
+use App\Entities\RdtApplicant;
 
 class RdtRegisterController extends Controller
 {

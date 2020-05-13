@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Settings;
 
 use App\Http\Controllers\Controller;
-use App\User;
+use App\Entities\User;
 use Illuminate\Http\Request;
 
 class ProfileController extends Controller

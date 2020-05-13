@@ -1,7 +1,7 @@
 <?php
 
-use App\RdtApplicant;
-use App\RdtEvent;
+use App\Entities\RdtApplicant;
+use App\Entities\RdtEvent;
 use Illuminate\Database\Seeder;
 
 class RdtApplicantSeeder extends Seeder

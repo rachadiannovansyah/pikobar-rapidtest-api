@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\User;
-use App\OAuthProvider;
+use App\Entities\User;
+use App\Entities\OAuthProvider;
 use App\Http\Controllers\Controller;
 use App\Exceptions\EmailTakenException;
 use Laravel\Socialite\Facades\Socialite;
@@ -55,7 +55,7 @@ class OAuthController extends Controller
     public function handleProviderCallback($provider)
     {
         $user = Socialite::driver($provider)->stateless()->user();
-        
+
         if (!method_exists($user, 'getEmail'))
         {
             throw new EmailInvalidException;
@@ -77,7 +77,7 @@ class OAuthController extends Controller
     /**
      * @param  string $provider
      * @param  \Laravel\Socialite\Contracts\User $sUser
-     * @return \App\User|false
+     * @return \App\Entities\User|false
      */
     protected function findOrCreateUser($provider, $user)
     {
@@ -106,7 +106,7 @@ class OAuthController extends Controller
     /**
      * @param  string $provider
      * @param  \Laravel\Socialite\Contracts\User $sUser
-     * @return \App\User
+     * @return \App\Entities\User
      */
     protected function createUser($provider, $sUser)
     {

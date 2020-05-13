@@ -3,7 +3,7 @@
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 
 use App\Enums\RdtApplicantStatus;
-use App\RdtApplicant;
+use App\Entities\RdtApplicant;
 use Faker\Generator as Faker;
 
 $factory->define(RdtApplicant::class, function (Faker $faker) {

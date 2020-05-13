@@ -2,7 +2,7 @@
 
 namespace App\Observers;
 
-use App\RdtEvent;
+use App\Entities\RdtEvent;
 use Illuminate\Support\Facades\DB;
 use PragmaRX\Random\Random;
 
@@ -11,7 +11,7 @@ class RdtEventObserver
     /**
      * Handle the rdt event "creating" event.
      *
-     * @param  \App\RdtEvent  $rdtEvent
+     * @param  \App\Entities\RdtEvent  $rdtEvent
      * @return void
      */
     public function creating(RdtEvent $rdtEvent)

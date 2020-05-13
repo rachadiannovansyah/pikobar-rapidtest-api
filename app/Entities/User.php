@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Entities;
 
 use App\Entities\Concerns\HasArea;
 use App\Enums\UserStatus;

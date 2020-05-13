@@ -3,7 +3,7 @@
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 
 use App\Enums\RdtEventStatus;
-use App\RdtEvent;
+use App\Entities\RdtEvent;
 use Faker\Generator as Faker;
 
 $factory->define(RdtEvent::class, function (Faker $faker) {

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\User;
+use App\Entities\User;
 use Illuminate\Auth\Events\Verified;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\URL;
@@ -25,7 +25,7 @@ class VerificationController extends Controller
      * Mark the user's email address as verified.
      *
      * @param  \Illuminate\Http\Request $request
-     * @param  \App\User $user
+     * @param  \App\Entities\User $user
      * @return \Illuminate\Http\JsonResponse
      */
     public function verify(Request $request, User $user)

@@ -1,6 +1,6 @@
 <?php
 
-use App\Area;
+use App\Entities\Area;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Seeder;
 

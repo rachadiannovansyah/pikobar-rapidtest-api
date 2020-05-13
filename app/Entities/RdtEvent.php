@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Entities;
 
 use App\Enums\RdtEventStatus;
 use Illuminate\Database\Eloquent\Model;

@@ -3,7 +3,7 @@
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 
 use App\Enums\UserStatus;
-use App\User;
+use App\Entities\User;
 use Faker\Generator as Faker;
 use Illuminate\Support\Str;
 
