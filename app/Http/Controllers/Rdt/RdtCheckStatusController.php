@@ -1,0 +1,26 @@
+<?php
+
+namespace App\Http\Controllers\Rdt;
+
+use App\Http\Controllers\Controller;
+use App\Http\Requests\Rdt\RdtCheckStatusRequest;
+use App\Http\Resources\RdtApplicantResource;
+use App\RdtApplicant;
+
+class RdtCheckStatusController extends Controller
+{
+    /**
+     * Handle the incoming request.
+     *
+     * @param  \App\Http\Requests\Rdt\RdtCheckStatusRequest  $request
+     * @return \App\Http\Resources\RdtApplicantResource
+     */
+    public function __invoke(RdtCheckStatusRequest $request)
+    {
+        $registrationCode = $request->input('registration_code');
+
+        $applicant = RdtApplicant::where('registration_code', $registrationCode)->firstOrFail();
+
+        return new RdtApplicantResource($applicant);
+    }
+}
