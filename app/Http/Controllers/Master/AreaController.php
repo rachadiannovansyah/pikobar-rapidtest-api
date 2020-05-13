@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Master;
 
-use App\Area;
+use App\Entities\Area;
 use App\Http\Controllers\ApiController;
 use App\Http\Resources\AreaResource as AreaResource;
 use Illuminate\Http\Request;
