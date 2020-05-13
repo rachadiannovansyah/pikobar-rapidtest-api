@@ -27,7 +27,7 @@
   <tbody>
   <tr>
     <td align="center" style="padding: 30px">
-      <p><img src="data:image/png;base64, {{ base64_encode(QrCode::errorCorrection('H')->format('png')->merge('/storage/app/pikobar.png')->margin(0)->size(320)->generate($applicant->registration_code)) }}"></p>
+      <p><img src="data:image/png;base64, {{ base64_encode(QrCode::errorCorrection('H')->format('png')->merge('/storage/pikobar.png')->margin(0)->size(320)->generate($applicant->registration_code)) }}"></p>
       <h1 style="font-size: 48pt; margin: 0">{{ $applicant->registration_code }}</h1>
     </td>
   </tr>
