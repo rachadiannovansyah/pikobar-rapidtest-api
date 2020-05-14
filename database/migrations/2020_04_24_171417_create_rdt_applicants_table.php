@@ -17,6 +17,8 @@ class CreateRdtApplicantsTable extends Migration
             $table->id();
             $table->string('registration_code', 10)->unique();
             $table->unsignedBigInteger('rdt_event_id')->nullable();
+            $table->string('pikobar_user_id')->nullable()->index();
+            $table->string('pikobar_session_id')->nullable()->index();
             $table->string('nik', 20)->nullable()->index();
             $table->string('name')->index();
             $table->string('email')->nullable();

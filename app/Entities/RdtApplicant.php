@@ -20,7 +20,7 @@ class RdtApplicant extends Model
         'nik', 'name', 'address', 'province_code', 'city_code', 'district_code', 'village_code',
         'email', 'phone_number', 'gender', 'birth_date', 'occupation_type', 'occupation_name', 'workplace_name',
         'symptoms', 'symptoms_notes', 'symptoms_interaction', 'symptoms_activity',
-        'latitude', 'longitude',
+        'latitude', 'longitude', 'pikobar_session_id', 'pikobar_user_id',
     ];
 
     /**
