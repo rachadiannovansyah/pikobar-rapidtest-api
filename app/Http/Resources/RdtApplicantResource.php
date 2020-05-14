@@ -3,6 +3,7 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\URL;
 
 class RdtApplicantResource extends JsonResource
 {
@@ -21,17 +22,36 @@ class RdtApplicantResource extends JsonResource
         return [
             'registration_code' => $this->registration_code,
             'name'              => $this->stringToSecret($this->name),
+            'qrcode'            => URL::signedRoute(
+                'registration.qrcode',
+                ['registration_code' => $this->registration_code]
+            ),
+            'approved_at'       => $this->approved_at,
+            'invited_at'        => $this->invited_at,
+            'attended_at'       => $this->attended_at,
             'status'            => $this->status,
+            'created_at'        => $this->created_at,
+            'updated_at'        => $this->updated_at,
         ];
     }
 
     protected function stringToSecret(string $string)
     {
-        $length       = strlen($string);
-        $visibleCount = (int) round($length / 3);
-        $hiddenCount  = $length - ($visibleCount * 2);
+        if (strlen($string) <= 1) {
+            return $string;
+        }
 
-        return substr($string, 0, $visibleCount).str_repeat('*', $hiddenCount).substr($string, ($visibleCount * -1),
-                $visibleCount);
+        $explodeWords = explode(' ', $string);
+
+        $nameMasking = '';
+        foreach ($explodeWords as $key => $word) {
+            if (strlen($word) <= 2) {
+                $nameMasking .= $word.' ';
+            } else {
+                $nameMasking .= substr($word, 0, 3).str_repeat('*', strlen($word) - 3).' ';
+            }
+        }
+
+        return rtrim($nameMasking);
     }
 }
