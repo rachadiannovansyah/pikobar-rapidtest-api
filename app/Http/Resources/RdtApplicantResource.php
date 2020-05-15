@@ -26,6 +26,7 @@ class RdtApplicantResource extends JsonResource
                 'registration.qrcode',
                 ['registration_code' => $this->registration_code]
             ),
+            'event'             => $this->event,
             'approved_at'       => $this->approved_at,
             'invited_at'        => $this->invited_at,
             'attended_at'       => $this->attended_at,
