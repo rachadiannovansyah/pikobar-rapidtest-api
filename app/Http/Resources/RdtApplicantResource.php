@@ -21,7 +21,7 @@ class RdtApplicantResource extends JsonResource
 
         return [
             'registration_code' => $this->registration_code,
-            'name'              => $this->stringToSecret($this->name),
+            'name'              => $this->name,
             'qrcode'            => URL::signedRoute(
                 'registration.qrcode',
                 ['registration_code' => $this->registration_code]
