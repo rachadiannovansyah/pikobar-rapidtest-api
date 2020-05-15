@@ -25,7 +25,7 @@ class RdtCheckStatusRequest extends FormRequest
     public function rules()
     {
         return [
-            'g-recaptcha-response' => ['required', new RecaptchaRule()],
+//            'g-recaptcha-response' => ['required', new RecaptchaRule()],
             'registration_code'    => ['required'],
         ];
     }
