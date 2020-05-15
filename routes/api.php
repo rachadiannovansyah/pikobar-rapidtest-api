@@ -34,6 +34,8 @@ Route::get('rdt/register/download', 'Rdt\RdtRegisterDownloadController')->name('
 Route::get('rdt/qrcode', 'Rdt\RdtQrCodeController')->name('registration.qrcode');
 Route::post('rdt/checkin', 'Rdt\RdtCheckinController');
 
+Route::post('rdt/event-check', 'Rdt\RdtEventCheckController');
+
 Route::group(['middleware' => 'auth:api'], function () {
     Route::post('logout', 'Auth\LoginController@logout');
 

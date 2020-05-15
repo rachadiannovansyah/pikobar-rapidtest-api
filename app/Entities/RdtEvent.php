@@ -20,6 +20,16 @@ class RdtEvent extends Model
         'status' => RdtEventStatus::class,
     ];
 
+    /**
+     * The attributes that should be mutated to dates.
+     *
+     * @var array
+     */
+    protected $dates = [
+        'start_at',
+        'end_at',
+    ];
+
     public function applicants()
     {
         return $this->hasMany(RdtApplicant::class, 'rdt_event_id');
