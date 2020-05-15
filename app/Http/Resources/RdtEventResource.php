@@ -15,6 +15,10 @@ class RdtEventResource extends JsonResource
      */
     public function toArray($request)
     {
-        return parent::toArray($request);
+        $data = parent::toArray($request);
+
+        $data['applicants'] = RdtApplicantResource::collection($this->whenLoaded('applicants'));
+
+        return $data;
     }
 }

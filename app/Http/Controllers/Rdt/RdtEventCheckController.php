@@ -22,6 +22,6 @@ class RdtEventCheckController extends Controller
 
         $event = RdtEvent::where('event_code', $eventCode)->firstOrFail();
 
-        return new RdtEventResource($event);
+        return new RdtEventResource($event->load('applicants'));
     }
 }
