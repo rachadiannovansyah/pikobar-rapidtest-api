@@ -24,7 +24,7 @@ class RdtCheckinController extends Controller
         $event     = RdtEvent::where('event_code', $eventCode)->firstOrFail();
 
         $applicant = RdtApplicant::where('registration_code', $registrationCode)
-            ->where('rdt_event_id', $event->id)
+//            ->where('rdt_event_id', $event->id)
             ->firstOrFail();
 
         $applicant->attended_at = now();
