@@ -19,13 +19,15 @@ class RdtApplicantResource extends JsonResource
             return parent::toArray($request);
         }
 
+        $qrcodeUrl = URL::signedRoute(
+            'registration.qrcode',
+            ['registration_code' => $this->registration_code],
+        );
+
         return [
             'registration_code' => $this->registration_code,
             'name'              => $this->name,
-            'qrcode'            => URL::signedRoute(
-                'registration.qrcode',
-                ['registration_code' => $this->registration_code]
-            ),
+            'qrcode'            => $qrcodeUrl,
             'event'             => $this->event,
             'approved_at'       => $this->approved_at,
             'invited_at'        => $this->invited_at,
