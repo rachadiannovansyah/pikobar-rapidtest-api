@@ -19,7 +19,7 @@
   <thead>
   <tr>
     <th style="padding: 30px">
-      <h1 style="font-size: 14pt; margin: 0;">Bukti Pendaftaran COVID-19 Test</h1>
+      <h1 style="font-size: 14pt; margin: 0;">Bukti Pendaftaran Tes Masif COVID-19</h1>
       <h2 style="font-size: 12pt; margin: 0; font-weight: normal">Pusat Informasi dan Koordinasi Jawa Barat (PIKOBAR)</h2>
     </th>
   </tr>
@@ -39,7 +39,7 @@
     <td style="padding: 30px">
       <h3 style="margin: 5px 0; font-size: 14px">Bukti Pendaftaran Ini Bukan Undangan</h3>
       <p style="margin: 0; font-size: 14px">Cek status pendaftaran Anda pada website <strong>https://rapidtest.pikobar.jabarprov.go.id</strong> <br /><br />
-        Hanya yang sudah diverifikasi oleh Dinas Kesehatan Provinsi atau Dinas Kesehatan Kabupaten/Kota akan mendapatkan undangan untuk mengikuti COVID-19 Test. Undangan akan dikirimkan melalui SMS, Whatsapp, dan Email yang digunakan untuk mendaftar.</p>
+        Hanya yang sudah diverifikasi oleh Dinas Kesehatan Provinsi atau Dinas Kesehatan Kabupaten/Kota akan mendapatkan undangan untuk mengikuti masif test COVID-19. Undangan akan dikirimkan melalui SMS, Whatsapp, dan Email yang digunakan untuk mendaftar.</p>
     </td>
   </tr>
   </tbody>
