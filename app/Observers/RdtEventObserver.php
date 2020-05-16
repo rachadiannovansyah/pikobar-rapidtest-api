@@ -38,6 +38,6 @@ class RdtEventObserver
     {
         $random = new Random();
 
-        return $random->uppercase()->size(5)->get();
+        return $random->uppercase()->size(6)->get();
     }
 }

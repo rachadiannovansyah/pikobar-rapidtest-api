@@ -39,6 +39,6 @@ class RdtApplicantObserver
     {
         $random = new Random();
 
-        return $random->uppercase()->size(4)->get();
+        return $random->uppercase()->size(6)->get();
     }
 }
