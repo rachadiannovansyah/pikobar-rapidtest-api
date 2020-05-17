@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Rdt;
 use App\Entities\RdtApplicant;
 use App\Entities\RdtEvent;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Rdt\RdtCheckStatusRequest;
+use App\Http\Requests\Rdt\RdtCheckinRequest;
 use App\Http\Resources\RdtApplicantResource;
 
 class RdtCheckinController extends Controller
@@ -16,7 +16,7 @@ class RdtCheckinController extends Controller
      * @param  \App\Http\Requests\Rdt\RdtCheckStatusRequest  $request
      * @return \App\Http\Resources\RdtApplicantResource
      */
-    public function __invoke(RdtCheckStatusRequest $request)
+    public function __invoke(RdtCheckinRequest $request)
     {
         $registrationCode = $request->input('registration_code');
 
