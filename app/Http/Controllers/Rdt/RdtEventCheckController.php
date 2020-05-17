@@ -20,8 +20,12 @@ class RdtEventCheckController extends Controller
     {
         $eventCode = $request->input('event_code');
 
-        $event = RdtEvent::where('event_code', $eventCode)->firstOrFail();
+        $event = RdtEvent::where('event_code', $eventCode)
+            ->with(['applicants' => function ($query) {
+                $query->orderBy('name');
+            }])
+            ->firstOrFail();
 
-        return new RdtEventResource($event->load('applicants'));
+        return new RdtEventResource($event);
     }
 }
