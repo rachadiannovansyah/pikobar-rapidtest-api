@@ -7,7 +7,7 @@ use Spatie\Enum\Enum;
 /**
  * @method static self REACTIVE()
  * @method static self NONREACTIVE()
- * @method static self INKONKLUSIF()
+ * @method static self INCONCLUSIVE()
  * @method static self POSITIVE()
  * @method static self NEGATIVE()
  */
