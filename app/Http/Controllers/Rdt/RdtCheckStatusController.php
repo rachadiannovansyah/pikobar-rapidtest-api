@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\Rdt;
 
+use App\Entities\RdtApplicant;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Rdt\RdtCheckStatusRequest;
 use App\Http\Resources\RdtApplicantResource;
-use App\Entities\RdtApplicant;
 
 class RdtCheckStatusController extends Controller
 {
@@ -19,7 +19,9 @@ class RdtCheckStatusController extends Controller
     {
         $registrationCode = $request->input('registration_code');
 
-        $applicant = RdtApplicant::where('registration_code', $registrationCode)->firstOrFail();
+        $applicant = RdtApplicant::where('registration_code', $registrationCode)
+            ->with('event', 'labResult')
+            ->firstOrFail();
 
         return new RdtApplicantResource($applicant);
     }

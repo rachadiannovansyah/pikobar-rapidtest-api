@@ -3,7 +3,6 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
-use Illuminate\Support\Facades\URL;
 
 class RdtApplicantResource extends JsonResource
 {
@@ -15,26 +14,23 @@ class RdtApplicantResource extends JsonResource
      */
     public function toArray($request)
     {
-        if ($request->user()) {
-            return parent::toArray($request);
-        }
-
-        $qrcodeUrl = URL::signedRoute(
-            'registration.qrcode',
-            ['registration_code' => $this->registration_code],
-        );
-
         return [
+            $this->mergeWhen($request->user(), [
+                'id' => $this->id,
+            ]),
             'registration_code' => $this->registration_code,
             'name'              => $this->name,
-            'qrcode'            => $qrcodeUrl,
-            'event'             => $this->event,
+            'qrcode'            => $this->qrCodeUrl,
+            'event'             => new RdtEventResource($this->whenLoaded('event')),
             'approved_at'       => $this->approved_at,
             'invited_at'        => $this->invited_at,
             'attended_at'       => $this->attended_at,
+            'lab_result'        => optional($this->labResult)->lab_result_type,
             'status'            => $this->status,
-            'created_at'        => $this->created_at,
-            'updated_at'        => $this->updated_at,
+            $this->mergeWhen($request->user(), [
+                'created_at' => $this->created_at,
+                'updated_at' => $this->updated_at,
+            ]),
         ];
     }
 
