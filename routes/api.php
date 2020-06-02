@@ -22,7 +22,7 @@ if(!empty($proxyUrl)) {
 }
 
 if(!empty($proxyScheme)) {
-    URL::forceSchema($proxyScheme);
+    URL::forceScheme($proxyScheme);
 }
 
 Route::get('/', 'HomeController');
