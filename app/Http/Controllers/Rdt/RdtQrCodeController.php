@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Rdt;
 
+use UrlSigner;
 use QrCode;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -16,7 +17,7 @@ class RdtQrCodeController extends Controller
      */
     public function __invoke(Request $request)
     {
-        if (! $request->hasValidSignature(false)) {
+        if (! UrlSigner::validate($request->fullUrl())) {
             abort(401);
         }
 

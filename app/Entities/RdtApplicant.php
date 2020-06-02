@@ -2,6 +2,7 @@
 
 namespace App\Entities;
 
+use UrlSigner;
 use App\Enums\RdtApplicantStatus;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -61,11 +62,11 @@ class RdtApplicant extends Model
 
     public function getQrCodeUrlAttribute()
     {
-        return URL::signedRoute(
+        $url = URL::route(
             'registration.qrcode',
-            ['registration_code' => $this->attributes['registration_code']],
-            null,
-            false
+            ['registration_code' => $this->attributes['registration_code']]
         );
+
+        return UrlSigner::sign($url, now()->addMinutes(5));
     }
 }
