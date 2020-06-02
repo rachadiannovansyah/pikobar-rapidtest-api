@@ -63,7 +63,9 @@ class RdtApplicant extends Model
     {
         return URL::signedRoute(
             'registration.qrcode',
-            ['registration_code' => $this->attributes['registration_code']]
+            ['registration_code' => $this->attributes['registration_code']],
+            null,
+            false
         );
     }
 }

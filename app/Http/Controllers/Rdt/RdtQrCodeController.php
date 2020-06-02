@@ -16,7 +16,7 @@ class RdtQrCodeController extends Controller
      */
     public function __invoke(Request $request)
     {
-        if (! $request->hasValidSignature()) {
+        if (! $request->hasValidSignature(false)) {
             abort(401);
         }
 
