@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Rdt;
 
+use UrlSigner;
 use App\Entities\RdtApplicant;
 use App\Enums\RdtApplicantStatus;
 use App\Http\Controllers\Controller;
@@ -23,13 +24,14 @@ class RdtRegisterController extends Controller
         $applicant->fill($request->all());
         $applicant->save();
 
+        $url = URL::route(
+            'registration.download',
+            ['registration_code' => $applicant->registration_code]
+        );
+
         return response()->json([
             'registration_code' => $applicant->registration_code,
-            'download_url'      => URL::temporarySignedRoute(
-                'registration.download',
-                now()->addMinutes(30),
-                ['registration_code' => $applicant->registration_code]
-            ),
+            'download_url'      => UrlSigner::sign($url)
         ]);
     }
 }

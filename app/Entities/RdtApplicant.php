@@ -67,6 +67,6 @@ class RdtApplicant extends Model
             ['registration_code' => $this->attributes['registration_code']]
         );
 
-        return UrlSigner::sign($url, now()->addMinutes(5));
+        return UrlSigner::sign($url);
     }
 }
