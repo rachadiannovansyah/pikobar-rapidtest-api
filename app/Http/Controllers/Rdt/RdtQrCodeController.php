@@ -20,7 +20,7 @@ class RdtQrCodeController extends Controller
     {
         $url = URL::route(
             'registration.qrcode',
-            $request->query->all()
+            $request->only(['registration_code', 'expires', 'signature'])
         );
 
         if (! UrlSigner::validate($url)) {
