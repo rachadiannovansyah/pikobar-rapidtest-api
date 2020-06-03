@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Rdt;
 
+use Illuminate\Support\Facades\URL;
 use UrlSigner;
 use QrCode;
 use App\Http\Controllers\Controller;
@@ -17,9 +18,14 @@ class RdtQrCodeController extends Controller
      */
     public function __invoke(Request $request)
     {
-//        if (! UrlSigner::validate($request->fullUrl())) {
-//            abort(401);
-//        }
+        $url = URL::route(
+            'registration.qrcode',
+            $request->query->all()
+        );
+
+        if (! UrlSigner::validate($url)) {
+            abort(401);
+        }
 
         $code = $request->input('registration_code');
 
