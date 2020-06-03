@@ -17,9 +17,9 @@ class RdtQrCodeController extends Controller
      */
     public function __invoke(Request $request)
     {
-        if (! UrlSigner::validate($request->fullUrl())) {
-            abort(401);
-        }
+//        if (! UrlSigner::validate($request->fullUrl())) {
+//            abort(401);
+//        }
 
         $code = $request->input('registration_code');
 
