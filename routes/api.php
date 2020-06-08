@@ -32,8 +32,10 @@ Route::post('rdt/register', 'Rdt\RdtRegisterController');
 Route::post('rdt/check', 'Rdt\RdtCheckStatusController');
 Route::get('rdt/register/download', 'Rdt\RdtRegisterDownloadController')->name('registration.download');
 Route::get('rdt/qrcode', 'Rdt\RdtQrCodeController')->name('registration.qrcode');
-Route::post('rdt/checkin', 'Rdt\RdtCheckinController');
 
+Route::post('rdt/survey', 'Rdt\RdtSurveyStoreController');
+
+Route::post('rdt/checkin', 'Rdt\RdtCheckinController');
 Route::post('rdt/event-check', 'Rdt\RdtEventCheckController');
 
 Route::group(['middleware' => 'auth:api'], function () {
