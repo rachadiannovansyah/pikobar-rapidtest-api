@@ -40,7 +40,7 @@ class RdtRegisterRequest extends FormRequest
             'phone_number'         => 'required',
             'gender'               => ['required', new EnumValueRule(Gender::class)],
             'birth_date'           => ['required', 'date'],
-            'occupation_type'      => ['required', Rule::in([1, 2, 3, 4, 5, 6, 7, 8, 9])], // @TODO change to constants
+            'occupation_type'      => ['required', 'integer'],
             'workplace_name'       => 'required',
             'symptoms'             => 'required',
             'symptoms_notes'       => 'required',
