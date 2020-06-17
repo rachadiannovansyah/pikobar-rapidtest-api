@@ -50,9 +50,19 @@ class RdtApplicant extends Model
         'status' => RdtApplicantStatus::class,
     ];
 
+    /**
+     * @deprecated karena 1 orang bisa ikut test lebih dari 1x
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function event()
     {
         return $this->belongsTo(RdtEvent::class, 'rdt_event_id');
+    }
+
+    public function invitations()
+    {
+        return $this->hasMany(RdtInvitation::class, 'rdt_applicant_id');
     }
 
     public function labResult()

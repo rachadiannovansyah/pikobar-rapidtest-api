@@ -2,6 +2,8 @@
 
 namespace App\Entities;
 
+use App\Enums\LabResultType;
+use App\Enums\TestType;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Enum\Laravel\HasEnums;
@@ -9,6 +11,11 @@ use Spatie\Enum\Laravel\HasEnums;
 class RdtInvitation extends Model
 {
     use HasEnums, SoftDeletes;
+
+    protected $enums = [
+        'lab_result_type' => LabResultType::class,
+        'test_type' => TestType::class,
+    ];
 
     /**
      * The attributes that should be mutated to dates.
