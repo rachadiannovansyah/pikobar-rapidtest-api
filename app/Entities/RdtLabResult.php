@@ -17,6 +17,6 @@ class RdtLabResult extends Model
 
     public function applicant()
     {
-        return $this->belongsTo(RdtEvent::class, 'rdt_applicant_id');
+        return $this->belongsTo(RdtApplicant::class, 'rdt_applicant_id');
     }
 }
