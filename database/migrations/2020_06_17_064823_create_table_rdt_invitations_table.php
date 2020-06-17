@@ -16,7 +16,7 @@ class CreateTableRdtInvitationsTable extends Migration
         Schema::create('rdt_invitations', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('rdt_applicant_id')->nullable();
-            $table->string('registration_code', 10)->unique();
+            $table->string('registration_code', 10)->nullable()->index();
             $table->unsignedBigInteger('rdt_event_id')->nullable();
             $table->string('test_type')->nullable()->index();
             $table->string('lab_result_type')->nullable()->index();
