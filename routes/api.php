@@ -45,6 +45,9 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::patch('settings/profile', 'Settings\ProfileController@update');
     Route::patch('settings/password', 'Settings\PasswordController@update');
 
+    // Api for Rdt Events
+    Route::post('rdt/events',"Rdt\RdtEventController@store");
+
 });
 
 Route::group(['middleware' => 'guest:api'], function () {

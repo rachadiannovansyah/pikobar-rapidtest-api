@@ -3,6 +3,9 @@
 namespace App\Http\Controllers\Rdt;
 
 use App\Entities\RdtEvent;
+use App\Enums\RdtEventStatus;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\Rdt\RdtEventRequest;
 use Illuminate\Http\Request;
 
 class RdtEventController extends Controller
@@ -23,9 +26,14 @@ class RdtEventController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(RdtEventRequest $request)
     {
-        //
+        $rdt = new RdtEvent();
+        $rdt->status = RdtEventStatus::PUBLISHED();
+        $rdt->fill($request->all());
+        $rdt->save();
+
+        return response()->json(['success' => 'event success created']);
     }
 
     /**
