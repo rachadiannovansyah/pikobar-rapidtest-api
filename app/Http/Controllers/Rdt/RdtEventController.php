@@ -8,18 +8,19 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Rdt\RdtEventRequest;
 use App\Http\Resources\RdtEventResource;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Response;
 
 class RdtEventController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return Response
+     * @return JsonResponse
      */
     public function index()
     {
-        //
+        return new JsonResponse(
+            ['data' => RdtEvent::all()]
+        );
     }
 
     /**
