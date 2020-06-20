@@ -46,6 +46,7 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::patch('settings/password', 'Settings\PasswordController@update');
 
     // Api for Rdt Events
+    Route::get('rdt/events/{rdtEventId}',"Rdt\RdtEventController@show");
     Route::post('rdt/events',"Rdt\RdtEventController@store");
     Route::put('rdt/events/{rdtEventId}',"Rdt\RdtEventController@update");
     Route::delete('rdt/events/{rdtEventId}',"Rdt\RdtEventController@destroy");

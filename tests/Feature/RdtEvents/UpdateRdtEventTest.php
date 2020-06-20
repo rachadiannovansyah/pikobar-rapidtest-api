@@ -9,7 +9,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
-class UpdateRdtEvent extends TestCase
+class UpdateRdtEventTest extends TestCase
 {
     use RefreshDatabase;
 

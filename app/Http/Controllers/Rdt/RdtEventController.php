@@ -6,14 +6,16 @@ use App\Entities\RdtEvent;
 use App\Enums\RdtEventStatus;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Rdt\RdtEventRequest;
-use Illuminate\Http\Request;
+use App\Http\Resources\RdtEventResource;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Response;
 
 class RdtEventController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function index()
     {
@@ -23,8 +25,8 @@ class RdtEventController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param RdtEventRequest $request
+     * @return JsonResponse
      */
     public function store(RdtEventRequest $request)
     {
@@ -39,20 +41,22 @@ class RdtEventController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\RdtEvent  $rdtTestEvent
-     * @return \Illuminate\Http\Response
+     * @param  int $rdtEventId
+     * @return RdtEventResource
      */
-    public function show(RdtEvent $rdtTestEvent)
+    public function show(int $rdtEventId)
     {
-        //
+        return new RdtEventResource(
+            RdtEvent::find($rdtEventId)
+        );
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\Rdt\RdtEventRequestt  $request
-     * @param  \App\RdtEvent  $rdtTestEvent
-     * @return \Illuminate\Http\Response
+     * @param RdtEventRequest $request
+     * @param RdtEvent $rdtTestEvent
+     * @return JsonResponse
      */
     public function update(RdtEventRequest $request, RdtEvent $rdtTestEvent)
     {
@@ -66,7 +70,7 @@ class RdtEventController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  int $rdtEventId
-     * @return \Illuminate\Http\Response
+     * @return JsonResponse
      */
     public function destroy($rdtEventId)
     {
