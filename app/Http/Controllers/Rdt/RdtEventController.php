@@ -65,11 +65,14 @@ class RdtEventController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\RdtEvent  $rdtTestEvent
+     * @param  int $rdtEventId
      * @return \Illuminate\Http\Response
      */
-    public function destroy(RdtEvent $rdtTestEvent)
+    public function destroy($rdtEventId)
     {
-        //
+        RdtEvent::find($rdtEventId)
+            ->delete();
+
+        return response()->json(['success' => 'success deleted event']);
     }
 }
