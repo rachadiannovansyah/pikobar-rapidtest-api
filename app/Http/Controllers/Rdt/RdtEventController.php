@@ -50,13 +50,16 @@ class RdtEventController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Http\Requests\Rdt\RdtEventRequestt  $request
      * @param  \App\RdtEvent  $rdtTestEvent
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, RdtEvent $rdtTestEvent)
+    public function update(RdtEventRequest $request, RdtEvent $rdtTestEvent)
     {
-        //
+        $rdtTestEvent->fill($request->all());
+        $rdtTestEvent->save();
+
+        return response()->json(['success' => 'event success updated']);
     }
 
     /**

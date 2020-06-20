@@ -47,6 +47,7 @@ Route::group(['middleware' => 'auth:api'], function () {
 
     // Api for Rdt Events
     Route::post('rdt/events',"Rdt\RdtEventController@store");
+    Route::put('rdt/events/{rdtEventId}',"Rdt\RdtEventController@update");
 
 });
 

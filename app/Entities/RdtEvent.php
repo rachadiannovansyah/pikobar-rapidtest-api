@@ -20,7 +20,6 @@ class RdtEvent extends Model
         'status' => RdtEventStatus::class,
     ];
 
-
     protected $fillable = [
         'event_name',
         'event_location',
