@@ -3,6 +3,7 @@
 use App\Entities\RdtApplicant;
 use App\Entities\RdtEvent;
 use App\Entities\RdtInvitation;
+use App\Enums\RdtApplicantStatus;
 use Illuminate\Database\Seeder;
 
 class RdtApplicantSeeder extends Seeder
@@ -24,6 +25,7 @@ class RdtApplicantSeeder extends Seeder
             $invitation = new RdtInvitation();
             $invitation->event()->associate($event);
 
+            $applicant->status = RdtApplicantStatus::APPROVED();
             $applicant->invitations()->save($invitation);
             $applicant->save();
         });
