@@ -22,6 +22,7 @@ class CreateRdtEventTest extends TestCase
             ->postJson('/api/rdt/events',[
             'event_name'        => 'Event Name',
             'event_location'    => 'Jl. Angrek No. 45',
+            'status'            => 'draft',
             'start_at'          => '2020-06-21 08:00',
             'end_at'            => '2020-06-22 18:00'
         ])

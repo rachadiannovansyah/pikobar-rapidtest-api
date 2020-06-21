@@ -31,12 +31,19 @@ class RdtEventController extends Controller
      */
     public function store(RdtEventRequest $request)
     {
+
+        $rdtEventStatus = [
+            'published' => RdtEventStatus::PUBLISHED(),
+            'draft'     => RdtEventStatus::DRAFT()
+        ];
+
         $rdt = new RdtEvent();
-        $rdt->status = RdtEventStatus::PUBLISHED();
-        $rdt->fill($request->all());
+        $rdt->status = $rdtEventStatus[$request->status];
+        $rdt->fill($request->except('status'));
         $rdt->save();
 
-        return response()->json(['success' => 'event success created']);
+        return response()
+            ->json(['success' => 'event success created']);
     }
 
     /**
