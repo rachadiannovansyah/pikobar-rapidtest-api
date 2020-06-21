@@ -26,8 +26,8 @@ class RdtEventRequest extends FormRequest
         return [
             'event_name'        => 'required',
             'event_location'    => 'required',
-            'start_at'          => 'required|date_format:Y-m-d H:i',
-            'end_at'            => 'required|date_format:Y-m-d H:i'
+            'start_at'          => 'required|date',
+            'end_at'            => 'required|date'
         ];
     }
 }

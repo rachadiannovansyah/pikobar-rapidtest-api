@@ -23,8 +23,8 @@ class CreateRdtEventTest extends TestCase
             'event_name'        => 'Event Name',
             'event_location'    => 'Jl. Angrek No. 45',
             'status'            => 'draft',
-            'start_at'          => '2020-06-21 08:00',
-            'end_at'            => '2020-06-22 18:00'
+            'start_at'          => '2020-01-01T00:00:00.000000Z',
+            'end_at'            => '2020-01-01T00:00:00.000000Z'
         ])
         ->assertSuccessful()
         ->assertJsonStructure(['success']);
