@@ -2,6 +2,7 @@
 
 use App\Entities\RdtApplicant;
 use App\Entities\RdtEvent;
+use App\Entities\RdtInvitation;
 use Illuminate\Database\Seeder;
 
 class RdtApplicantSeeder extends Seeder
@@ -20,7 +21,10 @@ class RdtApplicantSeeder extends Seeder
         $randomApplicants->each(function (RdtApplicant $applicant) {
             $event = RdtEvent::inRandomOrder()->first();
 
-            $applicant->event()->associate($event);
+            $invitation = new RdtInvitation();
+            $invitation->event()->associate($event);
+
+            $applicant->invitations()->save($invitation);
             $applicant->save();
         });
     }

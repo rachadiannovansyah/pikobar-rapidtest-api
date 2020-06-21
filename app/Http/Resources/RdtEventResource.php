@@ -16,9 +16,9 @@ class RdtEventResource extends JsonResource
     {
         return [
             $this->mergeWhen($request->user(), [
-                'id' => $this->id,
+                'id'         => $this->id,
+                'event_code' => $this->event_code,
             ]),
-            'event_code'     => $this->event_code,
             'event_name'     => $this->event_name,
             'event_location' => $this->event_location,
             'start_at'       => $this->start_at,

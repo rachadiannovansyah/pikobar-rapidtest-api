@@ -5,16 +5,15 @@ namespace App\Entities;
 use App\Enums\LabResultType;
 use App\Enums\TestType;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Enum\Laravel\HasEnums;
 
 class RdtInvitation extends Model
 {
-    use HasEnums, SoftDeletes;
+    use HasEnums;
 
     protected $enums = [
-        'lab_result_type' => LabResultType::class,
-        'test_type' => TestType::class,
+        'lab_result_type' => LabResultType::class.':nullable',
+        'test_type' => TestType::class.':nullable',
     ];
 
     /**

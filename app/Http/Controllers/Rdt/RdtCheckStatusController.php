@@ -20,7 +20,7 @@ class RdtCheckStatusController extends Controller
         $registrationCode = $request->input('registration_code');
 
         $applicant = RdtApplicant::where('registration_code', $registrationCode)
-            ->with('event', 'labResult')
+            ->with('invitations', 'invitations.event')
             ->firstOrFail();
 
         return new RdtApplicantResource($applicant);

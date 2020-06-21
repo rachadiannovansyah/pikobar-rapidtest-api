@@ -21,11 +21,8 @@ class RdtApplicantResource extends JsonResource
             'registration_code' => $this->registration_code,
             'name'              => $this->name,
             'qrcode'            => $this->qrCodeUrl,
-            'event'             => new RdtEventResource($this->whenLoaded('event')),
             'approved_at'       => $this->approved_at,
-            'invited_at'        => $this->invited_at,
-            'attended_at'       => $this->attended_at,
-            'lab_result'        => optional($this->labResult)->lab_result_type,
+            'invitations'       => RdtInvitationResource::collection($this->whenLoaded('invitations')),
             'status'            => $this->status,
             $this->mergeWhen($request->user(), [
                 'created_at' => $this->created_at,
