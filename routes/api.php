@@ -45,13 +45,15 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::patch('settings/profile', 'Settings\ProfileController@update');
     Route::patch('settings/password', 'Settings\PasswordController@update');
 
-    // Api for Rdt Events
-    Route::get('rdt/events',"Rdt\RdtEventController@index");
-    Route::get('rdt/events/{rdtEventId}',"Rdt\RdtEventController@show");
-    Route::post('rdt/events',"Rdt\RdtEventController@store");
-    Route::put('rdt/events/{rdtEventId}',"Rdt\RdtEventController@update");
-    Route::delete('rdt/events/{rdtEventId}',"Rdt\RdtEventController@destroy");
+});
 
+// RDT Events
+Route::group(['middleware' => 'auth:api'], function() {
+    Route::get('rdt/events',"Rdt\RdtEventController@index");
+    Route::get('rdt/events/{rdtEvent}',"Rdt\RdtEventController@show");
+    Route::post('rdt/events',"Rdt\RdtEventController@store");
+    Route::put('rdt/events/{rdtEvent}',"Rdt\RdtEventController@update");
+    Route::delete('rdt/events/{rdtEvent}',"Rdt\RdtEventController@destroy");
 });
 
 Route::group(['middleware' => 'guest:api'], function () {

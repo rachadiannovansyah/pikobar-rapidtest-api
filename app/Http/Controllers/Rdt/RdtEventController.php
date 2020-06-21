@@ -42,14 +42,12 @@ class RdtEventController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int $rdtEventId
+     * @param RdtEvent $rdtEvent
      * @return RdtEventResource
      */
-    public function show(int $rdtEventId)
+    public function show(RdtEvent $rdtEvent)
     {
-        return new RdtEventResource(
-            RdtEvent::find($rdtEventId)
-        );
+        return new RdtEventResource($rdtEvent);
     }
 
     /**
@@ -70,14 +68,15 @@ class RdtEventController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int $rdtEventId
+     * @param RdtEvent $rdtEvent
      * @return JsonResponse
+     * @throws \Exception
      */
-    public function destroy($rdtEventId)
+    public function destroy(RdtEvent $rdtEvent)
     {
-        RdtEvent::find($rdtEventId)
-            ->delete();
+        $rdtEvent->delete();
 
-        return response()->json(['success' => 'success deleted event']);
+        return response()
+            ->json(['success' => 'success deleted event']);
     }
 }
