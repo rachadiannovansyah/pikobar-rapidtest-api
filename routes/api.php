@@ -47,6 +47,15 @@ Route::group(['middleware' => 'auth:api'], function () {
 
 });
 
+// RDT Events
+Route::group(['middleware' => 'auth:api'], function() {
+    Route::get('rdt/events',"Rdt\RdtEventController@index");
+    Route::get('rdt/events/{rdtEvent}',"Rdt\RdtEventController@show");
+    Route::post('rdt/events',"Rdt\RdtEventController@store");
+    Route::put('rdt/events/{rdtEvent}',"Rdt\RdtEventController@update");
+    Route::delete('rdt/events/{rdtEvent}',"Rdt\RdtEventController@destroy");
+});
+
 Route::group(['middleware' => 'guest:api'], function () {
     Route::post('login', 'Auth\LoginController@login');
 

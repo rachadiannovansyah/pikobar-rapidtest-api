@@ -20,6 +20,14 @@ class RdtEvent extends Model
         'status' => RdtEventStatus::class,
     ];
 
+    protected $fillable = [
+        'event_name',
+        'event_location',
+        'start_at',
+        'end_at',
+        'status'
+    ];
+
     /**
      * The attributes that should be mutated to dates.
      *
