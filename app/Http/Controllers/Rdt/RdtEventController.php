@@ -8,19 +8,23 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Rdt\RdtEventRequest;
 use App\Http\Resources\RdtEventResource;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 class RdtEventController extends Controller
 {
+    const DEFAULT_PAGE = 15;
+
     /**
      * Display a listing of the resource.
      *
+     * @param Request $request
      * @return JsonResponse
      */
-    public function index()
+    public function index(Request $request)
     {
-        return new JsonResponse(
-            ['data' => RdtEvent::all()]
-        );
+        $perPage = ( empty($request->perPage) ) ? self::DEFAULT_PAGE : $request->perPage;
+
+        return RdtEvent::paginate($perPage)->toArray();
     }
 
     /**
