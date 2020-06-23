@@ -42,7 +42,7 @@ return [
         ],
 
         'api' => [
-            'driver' => 'jwt',
+            'driver' => 'keycloak',
             'provider' => 'users',
             'hash' => false,
         ],

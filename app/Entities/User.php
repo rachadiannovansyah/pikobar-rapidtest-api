@@ -36,6 +36,8 @@ class User extends Authenticatable implements JWTSubject //, MustVerifyEmail
 {
     use HasEnums, SoftDeletes, HasRoles, HasArea, Notifiable;
 
+    public $incrementing = false;
+
     /**
      * The attributes that are mass assignable.
      *
@@ -69,7 +71,7 @@ class User extends Authenticatable implements JWTSubject //, MustVerifyEmail
      * @var array
      */
     protected $appends = [
-        'photo_url',
+        //
     ];
 
     protected $guard_name = 'api';

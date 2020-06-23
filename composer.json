@@ -44,7 +44,8 @@
     },
     "autoload": {
         "psr-4": {
-            "App\\": "app/"
+            "App\\": "app/",
+            "KeycloakGuard\\": "packages/robsontenorio/laravel-keycloak-guard/src"
         },
         "classmap": [
             "database/seeds",
