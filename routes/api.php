@@ -56,6 +56,11 @@ Route::group(['middleware' => 'auth:api'], function() {
     Route::delete('rdt/events/{rdtEvent}',"Rdt\RdtEventController@destroy");
 });
 
+// RDT Applicants
+Route::group(['middleware' => 'auth:api'], function() {
+    Route::post('rdt/applicants',"Rdt\RdtApplicantController@store");
+});
+
 Route::group(['middleware' => 'guest:api'], function () {
     Route::post('login', 'Auth\LoginController@login');
 
