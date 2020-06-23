@@ -10,6 +10,8 @@ use Tests\TestCase;
 
 class UpdateRdtApplicantTest extends TestCase
 {
+    use RefreshDatabase;
+
     /** @test */
     public function can_update_applicant()
     {

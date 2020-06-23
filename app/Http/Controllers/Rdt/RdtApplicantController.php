@@ -6,8 +6,7 @@ use App\Entities\RdtApplicant;
 use App\Enums\RdtApplicantStatus;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Rdt\RdtApplicantRequest;
-use http\Env\Response;
-use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class RdtApplicantController extends Controller
 {
@@ -42,12 +41,14 @@ class RdtApplicantController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param RdtApplicant $rdtApplicant
+     * @return Response
      */
-    public function show($id)
+    public function show(RdtApplicant $rdtApplicant)
     {
-        //
+        return response()->json([
+            'data' => $rdtApplicant
+        ]);
     }
 
     /**
@@ -55,7 +56,7 @@ class RdtApplicantController extends Controller
      *
      * @param RdtApplicantRequest $request
      * @param RdtApplicant $rdtApplicant
-     * @return void
+     * @return Response
      */
     public function update(RdtApplicantRequest $request, RdtApplicant $rdtApplicant)
     {
