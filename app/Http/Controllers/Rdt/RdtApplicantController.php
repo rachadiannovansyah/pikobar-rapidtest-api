@@ -18,7 +18,7 @@ class RdtApplicantController extends Controller
      */
     public function index()
     {
-        //
+        dd('hello');
     }
 
     /**
@@ -53,13 +53,18 @@ class RdtApplicantController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param RdtApplicantRequest $request
+     * @param RdtApplicant $rdtApplicant
+     * @return void
      */
-    public function update(Request $request, $id)
+    public function update(RdtApplicantRequest $request, RdtApplicant $rdtApplicant)
     {
-        //
+        $rdtApplicant->fill($request->all());
+        $rdtApplicant->save();
+
+        return response()->json([
+            'success' => 'successful updated RDT applicant'
+        ]);
     }
 
     /**
