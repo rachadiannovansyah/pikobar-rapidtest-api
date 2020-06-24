@@ -6,6 +6,9 @@ use App\Entities\RdtApplicant;
 use App\Enums\RdtApplicantStatus;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Rdt\RdtApplicantRequest;
+use App\Http\Resources\RdtApplicants\ShowRdtApplicantCollection;
+use App\Http\Resources\RdtApplicants\ShowRdtApplicantResource;
+use App\Http\Resources\ShowRdtEventCollection;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
@@ -21,9 +24,12 @@ class RdtApplicantController extends Controller
      */
     public function index(Request $request)
     {
-        $perPage = ( empty($request->perPage) ) ? self::DEFAULT_PAGE : $request->perPage;
+        $perPage = ( empty($request->perPage) ) ?
+            self::DEFAULT_PAGE : $request->perPage;
 
-        return RdtApplicant::paginate($perPage)->toArray();
+        return new ShowRdtApplicantCollection(
+            RdtApplicant::paginate($perPage)
+        );
     }
 
     /**
@@ -52,9 +58,7 @@ class RdtApplicantController extends Controller
      */
     public function show(RdtApplicant $rdtApplicant)
     {
-        return response()->json([
-            'data' => $rdtApplicant
-        ]);
+        return new ShowRdtApplicantResource($rdtApplicant);
     }
 
     /**
