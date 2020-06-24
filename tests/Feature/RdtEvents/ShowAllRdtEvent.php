@@ -15,12 +15,14 @@ class ShowAllRdtEvent extends TestCase
     {
         $this->withoutExceptionHandling();
 
-        $rdtEvent = factory(RdtEvent::class, 30)->create();
+        factory(RdtEvent::class, 30)->create();
 
         $user = factory(User::class)->create();
 
         $this->actingAs($user)
-            ->getJson("/api/rdt/events")
+            ->getJson("/api/rdt/events",[
+                "perPage" => 5
+            ])
             ->assertSuccessful()
             ->assertJsonStructure(['data']);
     }

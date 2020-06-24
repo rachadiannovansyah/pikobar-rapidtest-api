@@ -8,18 +8,23 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Rdt\RdtEventRequest;
 use App\Http\Resources\RdtEventResource;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 class RdtEventController extends Controller
 {
+
     /**
      * Display a listing of the resource.
      *
-     * @return JsonResponse
+     * @param Request $request
+     * @return RdtEventResource
      */
-    public function index()
+    public function index(Request $request)
     {
-        return new JsonResponse(
-            ['data' => RdtEvent::all()]
+        $perPage = $request->input('perPage', 15);
+
+        return RdtEventResource::collection(
+            RdtEvent::paginate($perPage)
         );
     }
 
@@ -42,8 +47,7 @@ class RdtEventController extends Controller
         $rdt->fill($request->except('status'));
         $rdt->save();
 
-        return response()
-            ->json(['success' => 'event success created']);
+        return new RdtEventResource($rdt);
     }
 
     /**
@@ -84,6 +88,6 @@ class RdtEventController extends Controller
         $rdtEvent->delete();
 
         return response()
-            ->json(['success' => 'success deleted event']);
+            ->json(['message' => 'success deleted event']);
     }
 }
