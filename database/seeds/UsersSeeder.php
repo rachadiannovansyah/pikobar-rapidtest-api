@@ -23,7 +23,7 @@ class UsersSeeder extends Seeder
             ]
         );
 
-        $user->assignRole('administrator');
+        // $user->assignRole('administrator');
 
         $user = User::create(
             [
@@ -35,7 +35,7 @@ class UsersSeeder extends Seeder
             ]
         );
 
-        $user->assignRole('dinkes-provinsi-operator');
+        // $user->assignRole('dinkes-provinsi-operator');
 
         $user = User::create(
             [
@@ -48,7 +48,7 @@ class UsersSeeder extends Seeder
             ]
         );
 
-        $user->assignRole('dinkes-kabkota-operator');
+        // $user->assignRole('dinkes-kabkota-operator');
 
         $user = User::create(
             [
@@ -61,7 +61,7 @@ class UsersSeeder extends Seeder
             ]
         );
 
-        $user->assignRole('dinkes-kabkota-operator');
+        // $user->assignRole('dinkes-kabkota-operator');
 
         $user = User::create(
             [
@@ -74,7 +74,7 @@ class UsersSeeder extends Seeder
             ]
         );
 
-        $user->assignRole('dinkes-kabkota-operator');
+        // $user->assignRole('dinkes-kabkota-operator');
 
         $user = User::create(
             [
@@ -87,7 +87,7 @@ class UsersSeeder extends Seeder
             ]
         );
 
-        $user->assignRole('rumahsakit-operator');
+        // $user->assignRole('rumahsakit-operator');
 
         $user = User::create(
             [
@@ -100,7 +100,7 @@ class UsersSeeder extends Seeder
             ]
         );
 
-        $user->assignRole('rumahsakit-operator');
+        // $user->assignRole('rumahsakit-operator');
 
         $user = User::create(
             [
@@ -111,7 +111,7 @@ class UsersSeeder extends Seeder
             ]
         );
 
-        $user->assignRole('puskesmas-operator');
+        // $user->assignRole('puskesmas-operator');
 
         $user = User::create(
             [
@@ -122,7 +122,7 @@ class UsersSeeder extends Seeder
             ]
         );
 
-        $user->assignRole('puskesmas-operator');
+        // $user->assignRole('puskesmas-operator');
 
         $user = User::create(
             [
@@ -133,7 +133,7 @@ class UsersSeeder extends Seeder
             ]
         );
 
-        $user->assignRole('puskesmas-operator');
+        // $user->assignRole('puskesmas-operator');
 
         $user = User::create(
             [
@@ -144,6 +144,6 @@ class UsersSeeder extends Seeder
             ]
         );
 
-        $user->assignRole('puskesmas-operator');
+        // $user->assignRole('puskesmas-operator');
     }
 }

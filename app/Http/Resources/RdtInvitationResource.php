@@ -18,6 +18,7 @@ class RdtInvitationResource extends JsonResource
             'event'           => new RdtEventResource($this->whenLoaded('event')),
             'test_type'       => $this->test_type,
             'lab_result_type' => $this->lab_result_type,
+            'result_at'       => $this->result_at,
         ];
     }
 }

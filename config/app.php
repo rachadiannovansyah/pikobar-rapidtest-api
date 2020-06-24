@@ -174,6 +174,7 @@ return [
         /*
          * Package Service Providers...
          */
+        KeycloakGuard\KeycloakGuardServiceProvider::class,
 
         /*
          * Application Service Providers...

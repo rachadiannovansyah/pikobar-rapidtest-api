@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\Settings;
 
-use App\Http\Controllers\Controller;
 use App\Entities\User;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 class ProfileController extends Controller
@@ -13,10 +13,7 @@ class ProfileController extends Controller
         /**
          * @var User $user
          */
-        $user        = $request->user();
-        $role        = $user->roles()->first();
-        $permissions = $user->getAllPermissions();
-
+        $user     = $request->user();
         $province = $user->province ? $user->province()->select('code_kemendagri as code', 'name')->first() : null;
         $city     = $user->city ? $user->city()->select('code_kemendagri as code', 'name')->first() : null;
 
@@ -28,15 +25,14 @@ class ProfileController extends Controller
             'province'      => $province,
             'city_code'     => $user->city_code,
             'city'          => $city,
-            'role'          => $role ? [$role->name => $role->title] : null,
-            'permissions'   => $permissions->pluck('title', 'name'),
+            'role'          => $user->role,
         ];
     }
 
     /**
      * Update the user's profile information.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      * @throws \Illuminate\Validation\ValidationException
      */
@@ -46,7 +42,7 @@ class ProfileController extends Controller
 
         $this->validate($request, [
             'name'  => 'required',
-            'email' => 'required|email|unique:users,email,' . $user->id,
+            'email' => 'required|email|unique:users,email,'.$user->id,
         ]);
 
         return tap($user)->update($request->only('name', 'email'));

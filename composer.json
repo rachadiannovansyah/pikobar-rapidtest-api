@@ -19,7 +19,6 @@
         "pragmarx/random": "^0.2.2",
         "simplesoftwareio/simple-qrcode": "^2.0",
         "spatie/laravel-enum": "^1.6",
-        "spatie/laravel-permission": "^3.11",
         "spatie/laravel-url-signer": "^2.5",
         "tymon/jwt-auth": "^1.0.0-rc.5"
     },
@@ -44,7 +43,8 @@
     },
     "autoload": {
         "psr-4": {
-            "App\\": "app/"
+            "App\\": "app/",
+            "KeycloakGuard\\": "packages/robsontenorio/laravel-keycloak-guard/src"
         },
         "classmap": [
             "database/seeds",
