@@ -22,7 +22,7 @@ class RdtCheckStatusController extends Controller
         $applicant = RdtApplicant::where('registration_code', $registrationCode)
             ->with(['invitations' => function ($query) {
                 $query->orderBy('result_at');
-            }], 'invitations.event')
+            }, 'invitations.event'])
             ->firstOrFail();
 
         return new RdtApplicantResource($applicant);
