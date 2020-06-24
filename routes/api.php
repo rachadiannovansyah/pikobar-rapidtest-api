@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\URL;
 |
 | Here is where you can register API routes for your application. These
 | routes are loaded by the RouteServiceProvider within a group which
-| is assigned the "api" middleware group. Enjoy building your API!
+| is assigned the 'api' middleware group. Enjoy building your API!
 |
 */
 
@@ -49,20 +49,20 @@ Route::group(['middleware' => 'auth:api'], function () {
 
 // RDT Events
 Route::group(['middleware' => 'auth:api'], function() {
-    Route::get('rdt/events',"Rdt\RdtEventController@index");
-    Route::get('rdt/events/{rdtEvent}',"Rdt\RdtEventController@show");
-    Route::post('rdt/events',"Rdt\RdtEventController@store");
-    Route::put('rdt/events/{rdtEvent}',"Rdt\RdtEventController@update");
-    Route::delete('rdt/events/{rdtEvent}',"Rdt\RdtEventController@destroy");
+    Route::get('rdt/events','Rdt\RdtEventController@index');
+    Route::get('rdt/events/{rdtEvent}','Rdt\RdtEventController@show');
+    Route::post('rdt/events','Rdt\RdtEventController@store');
+    Route::put('rdt/events/{rdtEvent}','Rdt\RdtEventController@update');
+    Route::delete('rdt/events/{rdtEvent}','Rdt\RdtEventController@destroy');
 });
 
 // RDT Applicants
 Route::group(['middleware' => 'auth:api'], function() {
-    Route::get('rdt/applicants',"Rdt\RdtApplicantController@index");
-    Route::get('rdt/applicants/{rdtApplicant}',"Rdt\RdtApplicantController@show");
-    Route::post('rdt/applicants',"Rdt\RdtApplicantController@store");
-    Route::put('rdt/applicants/{rdtApplicant}', "Rdt\RdtApplicantController@update");
-    Route::delete('rdt/applicants/{rdtApplicant}',"Rdt\RdtApplicantController@destroy");
+    Route::get('rdt/applicants','Rdt\RdtApplicantController@index');
+    Route::get('rdt/applicants/{rdtApplicant}','Rdt\RdtApplicantController@show');
+    Route::post('rdt/applicants','Rdt\RdtApplicantController@store');
+    Route::put('rdt/applicants/{rdtApplicant}', 'Rdt\RdtApplicantController@update');
+    Route::delete('rdt/applicants/{rdtApplicant}','Rdt\RdtApplicantController@destroy');
 });
 
 // RDT Event Invitations Participants
