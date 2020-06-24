@@ -47,8 +47,7 @@ class RdtEventController extends Controller
         $rdt->fill($request->except('status'));
         $rdt->save();
 
-        return response()
-            ->json(['success' => 'event success created']);
+        return new RdtEventResource($rdt);
     }
 
     /**
@@ -89,6 +88,6 @@ class RdtEventController extends Controller
         $rdtEvent->delete();
 
         return response()
-            ->json(['success' => 'success deleted event']);
+            ->json(['message' => 'success deleted event']);
     }
 }
