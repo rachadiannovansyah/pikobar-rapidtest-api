@@ -70,9 +70,14 @@ class User extends Authenticatable implements JWTSubject //, MustVerifyEmail
         return 'https://www.gravatar.com/avatar/'.md5(strtolower($this->email)).'.jpg?s=200&d=mm';
     }
 
-    public function hasRole($roleName)
+    public function hasRole($roleName): bool
     {
         return $this->role === $roleName;
+    }
+
+    public function hasPermission($permissionName): bool
+    {
+        return in_array($permissionName, $this->permissions);
     }
 
     /**

@@ -26,6 +26,7 @@ class ProfileController extends Controller
             'city_code'     => $user->city_code,
             'city'          => $city,
             'role'          => $user->role,
+            'permissions'   => $user->permissions,
         ];
     }
 

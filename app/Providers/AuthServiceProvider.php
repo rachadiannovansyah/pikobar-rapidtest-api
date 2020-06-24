@@ -2,8 +2,8 @@
 
 namespace App\Providers;
 
-use App\MedicalCase;
-use App\Policies\MedicalCasePolicy;
+use App\Entities\RdtApplicant;
+use App\Policies\RdtApplicantPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
 class AuthServiceProvider extends ServiceProvider
@@ -14,7 +14,7 @@ class AuthServiceProvider extends ServiceProvider
      * @var array
      */
     protected $policies = [
-        MedicalCase::class => MedicalCasePolicy::class,
+        RdtApplicant::class => RdtApplicantPolicy::class,
     ];
 
     /**
