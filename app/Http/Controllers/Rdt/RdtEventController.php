@@ -18,13 +18,13 @@ class RdtEventController extends Controller
      * Display a listing of the resource.
      *
      * @param Request $request
-     * @return JsonResponse
+     * @return RdtEventResource
      */
     public function index(Request $request)
     {
         $perPage = ( empty($request->perPage) ) ? self::DEFAULT_PAGE : $request->perPage;
 
-        return RdtEvent::paginate($perPage)->toArray();
+        return RdtEventResource::collection(RdtEvent::paginate($perPage));
     }
 
     /**

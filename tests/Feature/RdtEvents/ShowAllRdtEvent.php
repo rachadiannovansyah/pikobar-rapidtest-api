@@ -15,7 +15,7 @@ class ShowAllRdtEvent extends TestCase
     {
         $this->withoutExceptionHandling();
 
-        $rdtEvent = factory(RdtEvent::class, 30)->create();
+        factory(RdtEvent::class, 30)->create();
 
         $user = factory(User::class)->create();
 
