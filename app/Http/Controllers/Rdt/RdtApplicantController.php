@@ -6,18 +6,24 @@ use App\Entities\RdtApplicant;
 use App\Enums\RdtApplicantStatus;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Rdt\RdtApplicantRequest;
+use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
 class RdtApplicantController extends Controller
 {
+    const DEFAULT_PAGE = 15;
+
     /**
      * Display a listing of the resource.
      *
+     * @param Request $request
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        dd('hello');
+        $perPage = ( empty($request->perPage) ) ? self::DEFAULT_PAGE : $request->perPage;
+
+        return RdtApplicant::paginate($perPage)->toArray();
     }
 
     /**

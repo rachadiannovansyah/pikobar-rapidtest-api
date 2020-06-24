@@ -58,6 +58,7 @@ Route::group(['middleware' => 'auth:api'], function() {
 
 // RDT Applicants
 Route::group(['middleware' => 'auth:api'], function() {
+    Route::get('rdt/applicants',"Rdt\RdtApplicantController@index");
     Route::get('rdt/applicants/{rdtApplicant}',"Rdt\RdtApplicantController@show");
     Route::post('rdt/applicants',"Rdt\RdtApplicantController@store");
     Route::put('rdt/applicants/{rdtApplicant}', "Rdt\RdtApplicantController@update");
