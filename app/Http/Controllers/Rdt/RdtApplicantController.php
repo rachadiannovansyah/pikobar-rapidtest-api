@@ -5,7 +5,8 @@ namespace App\Http\Controllers\Rdt;
 use App\Entities\RdtApplicant;
 use App\Enums\RdtApplicantStatus;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Rdt\RdtApplicantRequest;
+use App\Http\Requests\Rdt\RdtApplicantStoreRequest;
+use App\Http\Requests\Rdt\RdtApplicantUpdateRequest;
 use App\Http\Resources\RdtApplicantResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -30,10 +31,10 @@ class RdtApplicantController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  RdtApplicantRequest  $request
+     * @param  RdtApplicantStoreRequest  $request
      * @return \App\Http\Resources\RdtApplicantResource
      */
-    public function store(RdtApplicantRequest $request)
+    public function store(RdtApplicantStoreRequest $request)
     {
         $rdtApplicant         = new RdtApplicant();
         $rdtApplicant->status = RdtApplicantStatus::NEW();
@@ -57,11 +58,11 @@ class RdtApplicantController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  RdtApplicantRequest  $request
+     * @param  \App\Http\Requests\Rdt\RdtApplicantUpdateRequest  $request
      * @param  RdtApplicant  $rdtApplicant
      * @return \App\Http\Resources\RdtApplicantResource
      */
-    public function update(RdtApplicantRequest $request, RdtApplicant $rdtApplicant)
+    public function update(RdtApplicantUpdateRequest $request, RdtApplicant $rdtApplicant)
     {
         $rdtApplicant->fill($request->all());
         $rdtApplicant->save();
