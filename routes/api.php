@@ -61,6 +61,7 @@ Route::group(['middleware' => 'auth:api'], function() {
     Route::get('rdt/applicants/{rdtApplicant}',"Rdt\RdtApplicantController@show");
     Route::post('rdt/applicants',"Rdt\RdtApplicantController@store");
     Route::put('rdt/applicants/{rdtApplicant}', "Rdt\RdtApplicantController@update");
+    Route::delete('rdt/applicants/{rdtApplicant}',"Rdt\RdtApplicantController@destroy");
 });
 
 Route::group(['middleware' => 'guest:api'], function () {

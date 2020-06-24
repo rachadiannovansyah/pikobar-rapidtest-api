@@ -71,11 +71,16 @@ class RdtApplicantController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  RdtApplicant  $rdtApplicant
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(RdtApplicant $rdtApplicant)
     {
-        //
+
+        $rdtApplicant->delete();
+
+        return response()->json([
+            'success' => 'successful deleted RDT applicant'
+        ]);
     }
 }
