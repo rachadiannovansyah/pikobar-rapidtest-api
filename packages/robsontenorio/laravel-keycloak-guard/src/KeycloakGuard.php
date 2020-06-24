@@ -5,6 +5,7 @@ use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\UserProvider;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use KeycloakGuard\Exceptions\TokenException;
 use KeycloakGuard\Exceptions\UserNotFoundException;
 use KeycloakGuard\Exceptions\ResourceAccessNotAllowedException;
@@ -137,6 +138,9 @@ class KeycloakGuard implements Guard
       $user->name = $this->decodedToken->name;
     }
 
+    $user->name  = $this->decodedToken->name;
+    $user->email = $this->decodedToken->email;
+    $user->role  = Arr::first($this->getRealmRoles());
     $this->setUser($user);
 
     return true;
@@ -196,5 +200,20 @@ class KeycloakGuard implements Guard
       }
     }
     return false;
+  }
+
+  public function getRealmRoles()
+  {
+      if (! $this->decodedToken->realm_access) {
+          return false;
+      }
+
+      $realmAccess = $this->decodedToken->realm_access;
+
+      if (! $realmAccess->roles) {
+          return false;
+      }
+
+      return $realmAccess->roles;
   }
 }

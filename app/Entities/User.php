@@ -18,8 +18,6 @@ class User extends Authenticatable implements JWTSubject //, MustVerifyEmail
 {
     use HasEnums, SoftDeletes, HasArea, Notifiable;
 
-    public $incrementing = false;
-
     /**
      * The attributes that are mass assignable.
      *
@@ -70,6 +68,11 @@ class User extends Authenticatable implements JWTSubject //, MustVerifyEmail
     public function getPhotoUrlAttribute()
     {
         return 'https://www.gravatar.com/avatar/'.md5(strtolower($this->email)).'.jpg?s=200&d=mm';
+    }
+
+    public function hasRole($roleName)
+    {
+        return $this->role === $roleName;
     }
 
     /**
