@@ -6,76 +6,67 @@ use App\Entities\RdtApplicant;
 use App\Enums\RdtApplicantStatus;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Rdt\RdtApplicantRequest;
-use App\Http\Resources\RdtApplicants\ShowRdtApplicantCollection;
-use App\Http\Resources\RdtApplicants\ShowRdtApplicantResource;
-use App\Http\Resources\ShowRdtEventCollection;
+use App\Http\Resources\RdtApplicantResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
 class RdtApplicantController extends Controller
 {
-    const DEFAULT_PAGE = 15;
-
     /**
      * Display a listing of the resource.
      *
-     * @param Request $request
-     * @return \Illuminate\Http\Response
+     * @param  Request  $request
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
     public function index(Request $request)
     {
-        $perPage = ( empty($request->perPage) ) ?
-            self::DEFAULT_PAGE : $request->perPage;
+        $perPage = $request->input('per_page', 15);
 
-        return new ShowRdtApplicantCollection(
-            RdtApplicant::paginate($perPage)
-        );
+        $records = RdtApplicant::query();
+
+        return RdtApplicantResource::collection($records->paginate($perPage));
     }
 
     /**
      * Store a newly created resource in storage.
      *
      * @param  RdtApplicantRequest  $request
-     * @return \Illuminate\Http\Response
+     * @return \App\Http\Resources\RdtApplicantResource
      */
     public function store(RdtApplicantRequest $request)
     {
-        $applicant         = new RdtApplicant();
-        $applicant->status = RdtApplicantStatus::NEW();
-        $applicant->fill($request->all());
-        $applicant->save();
+        $rdtApplicant         = new RdtApplicant();
+        $rdtApplicant->status = RdtApplicantStatus::NEW();
+        $rdtApplicant->fill($request->all());
+        $rdtApplicant->save();
 
-        return response()->json([
-            'success' => 'successful create Rdt applicant'
-        ]);
+        return new RdtApplicantResource($rdtApplicant);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param RdtApplicant $rdtApplicant
-     * @return Response
+     * @param  RdtApplicant  $rdtApplicant
+     * @return \App\Http\Resources\RdtApplicantResource
      */
     public function show(RdtApplicant $rdtApplicant)
     {
-        return new ShowRdtApplicantResource($rdtApplicant);
+        return new RdtApplicantResource($rdtApplicant);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param RdtApplicantRequest $request
-     * @param RdtApplicant $rdtApplicant
-     * @return Response
+     * @param  RdtApplicantRequest  $request
+     * @param  RdtApplicant  $rdtApplicant
+     * @return \App\Http\Resources\RdtApplicantResource
      */
     public function update(RdtApplicantRequest $request, RdtApplicant $rdtApplicant)
     {
         $rdtApplicant->fill($request->all());
         $rdtApplicant->save();
 
-        return response()->json([
-            'success' => 'successful updated RDT applicant'
-        ]);
+        return new RdtApplicantResource($rdtApplicant);
     }
 
     /**
@@ -86,11 +77,8 @@ class RdtApplicantController extends Controller
      */
     public function destroy(RdtApplicant $rdtApplicant)
     {
-
         $rdtApplicant->delete();
 
-        return response()->json([
-            'success' => 'successful deleted RDT applicant'
-        ]);
+        return response()->json(['message' => 'DELETED']);
     }
 }
