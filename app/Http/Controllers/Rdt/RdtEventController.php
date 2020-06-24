@@ -12,7 +12,6 @@ use Illuminate\Http\Request;
 
 class RdtEventController extends Controller
 {
-    const DEFAULT_PAGE = 15;
 
     /**
      * Display a listing of the resource.
@@ -22,9 +21,11 @@ class RdtEventController extends Controller
      */
     public function index(Request $request)
     {
-        $perPage = ( empty($request->perPage) ) ? self::DEFAULT_PAGE : $request->perPage;
+        $perPage = $request->input('perPage', 15);
 
-        return RdtEventResource::collection(RdtEvent::paginate($perPage));
+        return RdtEventResource::collection(
+            RdtEvent::paginate($perPage)
+        );
     }
 
     /**
