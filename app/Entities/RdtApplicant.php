@@ -31,6 +31,7 @@ class RdtApplicant extends Model
      * @var array
      */
     protected $dates = [
+        'birth_date',
         'approved_at',
         'invited_at',
         'attended_at',
