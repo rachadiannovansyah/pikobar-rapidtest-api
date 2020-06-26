@@ -23,7 +23,12 @@ class RdtApplicantController extends Controller
     {
         $perPage = $request->input('per_page', 15);
 
+        if ($perPage > 100) {
+            $perPage = 15;
+        }
+
         $records = RdtApplicant::query();
+        $records->whereEnum('status', RdtApplicantStatus::NEW());
 
         return RdtApplicantResource::collection($records->paginate($perPage));
     }
