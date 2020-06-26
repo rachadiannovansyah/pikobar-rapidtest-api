@@ -47,6 +47,7 @@ class RdtApplicantController extends Controller
         $records = RdtApplicant::query();
         $records->whereEnum('status', $statusEnum);
         $records->orderBy($sortBy, $sortOrder);
+        $records->with(['city', 'district', 'village']);
 
         return RdtApplicantResource::collection($records->paginate($perPage));
     }

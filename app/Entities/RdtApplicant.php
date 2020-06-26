@@ -50,6 +50,21 @@ class RdtApplicant extends Model
         'status' => RdtApplicantStatus::class,
     ];
 
+    public function city()
+    {
+        return $this->belongsTo(Area::class, 'city_code', 'code_kemendagri');
+    }
+
+    public function district()
+    {
+        return $this->belongsTo(Area::class, 'district_code', 'code_kemendagri');
+    }
+
+    public function village()
+    {
+        return $this->belongsTo(Area::class, 'village_code', 'code_kemendagri');
+    }
+
     public function invitations()
     {
         return $this->hasMany(RdtInvitation::class, 'rdt_applicant_id');
