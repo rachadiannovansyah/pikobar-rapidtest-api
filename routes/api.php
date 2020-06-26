@@ -60,8 +60,6 @@ Route::group(['middleware' => 'auth:api'], function() {
 // RDT Applicants
 Route::group(['middleware' => 'auth:api'], function() {
     Route::get('rdt/applicants','Rdt\RdtApplicantController@index')->middleware('can:viewAny,'.RdtApplicant::class);
-    Route::get('rdt/applicants/approved','Rdt\RdtEventApplicantApprovedListController')->middleware('can:viewAny,'.RdtApplicant::class);
-
     Route::get('rdt/applicants/{rdtApplicant}','Rdt\RdtApplicantController@show')->middleware('can:view,rdtApplicant');
     Route::post('rdt/applicants','Rdt\RdtApplicantController@store')->middleware('can:create,'.RdtApplicant::class);
     Route::put('rdt/applicants/{rdtApplicant}', 'Rdt\RdtApplicantController@update')->middleware('can:update,rdtApplicant');;

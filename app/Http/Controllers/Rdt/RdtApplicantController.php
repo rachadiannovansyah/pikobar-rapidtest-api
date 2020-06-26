@@ -24,8 +24,9 @@ class RdtApplicantController extends Controller
         $perPage    = $request->input('per_page', 15);
         $sortBy     = $request->input('sort_by', 'name');
         $sortOrder  = $request->input('sort_order', 'asc');
+        $status     = $request->input('status', 'new');
 
-        if ($perPage > 100) {
+        if ($perPage > 20) {
             $perPage = 15;
         }
 
@@ -33,8 +34,18 @@ class RdtApplicantController extends Controller
             $sortBy = 'name';
         }
 
+        $statusEnum = 'new';
+
+        if ($status === 'new') {
+            $statusEnum = RdtApplicantStatus::NEW();
+        }
+
+        if ($status === 'approved') {
+            $statusEnum = RdtApplicantStatus::APPROVED();
+        }
+
         $records = RdtApplicant::query();
-        $records->whereEnum('status', RdtApplicantStatus::NEW());
+        $records->whereEnum('status', $statusEnum);
         $records->orderBy($sortBy, $sortOrder);
 
         return RdtApplicantResource::collection($records->paginate($perPage));
