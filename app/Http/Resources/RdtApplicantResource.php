@@ -2,7 +2,6 @@
 
 namespace App\Http\Resources;
 
-use Hashids;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class RdtApplicantResource extends JsonResource
@@ -17,7 +16,7 @@ class RdtApplicantResource extends JsonResource
     {
         return [
             $this->mergeWhen($request->user(), [
-                'id' => Hashids::encode($this->id),
+                'id' => $this->id,
             ]),
             'registration_code' => $this->registration_code,
             'name'              => $this->name,
