@@ -3,6 +3,8 @@ FROM jabardigitalservice/phpfpm-nginx
 # Switch to root user
 USER root
 
+RUN apk --no-cache add php-bcmath php-gmp
+
 # Copy configurations
 COPY ./docker/nginx.conf /etc/nginx/nginx.conf
 
