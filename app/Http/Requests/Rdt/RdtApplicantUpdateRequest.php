@@ -27,22 +27,22 @@ class RdtApplicantUpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'name'                 => ['required', 'min:3'],
-            'nik'                  => ['required', new NikRule()],
-            'address'              => 'required',
-            'city_code'            => ['required', 'exists:areas,code_kemendagri'],
-            'district_code'        => ['required', 'exists:areas,code_kemendagri'],
-            'village_code'         => ['required', 'exists:areas,code_kemendagri'],
-            'email'                => ['required', 'email'],
-            'phone_number'         => 'required',
-            'gender'               => ['required', new EnumValueRule(Gender::class)],
-            'birth_date'           => ['required', 'date'],
-            'occupation_type'      => ['required', 'integer'],
-            'workplace_name'       => 'required',
-            'symptoms'             => 'required',
-            'symptoms_notes'       => 'required',
-            'symptoms_interaction' => 'required',
-            'symptoms_activity'    => 'required',
+            'name'                 => ['sometimes', 'required', 'min:3'],
+            'nik'                  => ['sometimes', 'required', new NikRule()],
+            'address'              => ['sometimes', 'required'],
+            'city_code'            => ['sometimes', 'required', 'exists:areas,code_kemendagri'],
+            'district_code'        => ['sometimes', 'required', 'exists:areas,code_kemendagri'],
+            'village_code'         => ['sometimes', 'required', 'exists:areas,code_kemendagri'],
+            'email'                => ['sometimes', 'required', 'email'],
+            'phone_number'         => ['sometimes', 'required'],
+            'gender'               => ['sometimes', 'required', new EnumValueRule(Gender::class)],
+            'birth_date'           => ['sometimes', 'required', 'date'],
+            'occupation_type'      => ['sometimes', 'required', 'integer'],
+            'workplace_name'       => ['sometimes', 'required'],
+            'symptoms'             => ['sometimes', 'required'],
+            'symptoms_notes'       => ['sometimes', 'required'],
+            'symptoms_interaction' => ['sometimes', 'required'],
+            'symptoms_activity'    => ['sometimes', 'required'],
         ];
     }
 }
