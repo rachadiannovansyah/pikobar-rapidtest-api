@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Settings;
 
+use Hashids;
 use App\Entities\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -18,7 +19,7 @@ class ProfileController extends Controller
         $city     = $user->city ? $user->city()->select('code_kemendagri as code', 'name')->first() : null;
 
         return [
-            'id'            => $user->id,
+            'id'            => Hashids::encode($user->id),
             'name'          => $user->name,
             'email'         => $user->email,
             'province_code' => $user->province_code,

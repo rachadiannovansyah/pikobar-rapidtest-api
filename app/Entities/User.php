@@ -3,6 +3,7 @@
 namespace App\Entities;
 
 use App\Entities\Concerns\HasArea;
+use App\Entities\Concerns\HashidsRoutable;
 use App\Enums\UserStatus;
 use App\Notifications\ResetPassword;
 use App\Notifications\VerifyEmail;
@@ -16,7 +17,7 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
 
 class User extends Authenticatable implements JWTSubject //, MustVerifyEmail
 {
-    use HasEnums, SoftDeletes, HasArea, Notifiable;
+    use HashidsRoutable, HasEnums, SoftDeletes, HasArea, Notifiable;
 
     /**
      * The attributes that are mass assignable.
