@@ -2,12 +2,13 @@
 
 namespace App\Entities;
 
-use UrlSigner;
+use App\Entities\Concerns\HashidsRoutable;
 use App\Enums\RdtApplicantStatus;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\URL;
 use Spatie\Enum\Laravel\HasEnums;
+use UrlSigner;
 
 /**
  * @property string $registration_code
@@ -16,7 +17,7 @@ use Spatie\Enum\Laravel\HasEnums;
  */
 class RdtApplicant extends Model
 {
-    use HasEnums, SoftDeletes;
+    use HashidsRoutable, HasEnums, SoftDeletes;
 
     protected $fillable = [
         'nik', 'name', 'address', 'province_code', 'city_code', 'district_code', 'village_code',
