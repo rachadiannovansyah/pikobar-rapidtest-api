@@ -2,7 +2,6 @@
 
 namespace App\Entities;
 
-use App\Entities\Concerns\HashidsRoutable;
 use App\Enums\RdtApplicantStatus;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -17,7 +16,7 @@ use UrlSigner;
  */
 class RdtApplicant extends Model
 {
-    use HashidsRoutable, HasEnums, SoftDeletes;
+    use HasEnums, SoftDeletes;
 
     protected $fillable = [
         'nik', 'name', 'address', 'province_code', 'city_code', 'district_code', 'village_code',
