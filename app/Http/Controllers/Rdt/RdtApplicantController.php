@@ -9,7 +9,6 @@ use App\Http\Requests\Rdt\RdtApplicantStoreRequest;
 use App\Http\Requests\Rdt\RdtApplicantUpdateRequest;
 use App\Http\Resources\RdtApplicantResource;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 
 class RdtApplicantController extends Controller
 {
@@ -21,10 +20,11 @@ class RdtApplicantController extends Controller
      */
     public function index(Request $request)
     {
-        $perPage    = $request->input('per_page', 15);
-        $sortBy     = $request->input('sort_by', 'name');
-        $sortOrder  = $request->input('sort_order', 'asc');
-        $status     = $request->input('status', 'new');
+        $perPage   = $request->input('per_page', 15);
+        $sortBy    = $request->input('sort_by', 'name');
+        $sortOrder = $request->input('sort_order', 'asc');
+        $status    = $request->input('status', 'new');
+        $search    = $request->input('search');
 
         if ($perPage > 20) {
             $perPage = 15;
@@ -49,6 +49,14 @@ class RdtApplicantController extends Controller
         }
 
         $records = RdtApplicant::query();
+
+        if ($search) {
+            $records->where(function ($query) use ($search) {
+                $query->where('name', 'like', '%'.$search.'%')
+                    ->orWhere('registration_code', 'like', '%'.$search.'%');
+            });
+        }
+
         $records->whereEnum('status', $statusEnum);
         $records->orderBy($sortBy, $sortOrder);
         $records->with(['city', 'district', 'village']);
