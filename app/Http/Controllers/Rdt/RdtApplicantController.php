@@ -59,7 +59,7 @@ class RdtApplicantController extends Controller
 
         $records->whereEnum('status', $statusEnum);
         $records->orderBy($sortBy, $sortOrder);
-        $records->with(['city', 'district', 'village']);
+        $records->with(['invitations', 'invitations.event', 'city', 'district', 'village']);
 
         return RdtApplicantResource::collection($records->paginate($perPage));
     }
@@ -88,6 +88,8 @@ class RdtApplicantController extends Controller
      */
     public function show(RdtApplicant $rdtApplicant)
     {
+        $rdtApplicant->load(['invitations', 'invitations.event']);
+
         return new RdtApplicantResource($rdtApplicant);
     }
 
