@@ -14,7 +14,7 @@ class AddColumnPeopeStatusToTableRdtApplicants extends Migration
     public function up()
     {
         Schema::table('rdt_applicants', function (Blueprint $table) {
-            $table->tinyInteger('people_status')
+            $table->string('person_status',20)
                   ->after('symptoms_activity')
                   ->nullable();
         });
@@ -28,7 +28,7 @@ class AddColumnPeopeStatusToTableRdtApplicants extends Migration
     public function down()
     {
         Schema::table('rdt_applicants', function (Blueprint $table) {
-            $table->dropColumn('people_status');
+            $table->dropColumn('person_status');
         });
     }
 }

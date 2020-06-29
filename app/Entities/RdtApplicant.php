@@ -2,6 +2,7 @@
 
 namespace App\Entities;
 
+use App\Enums\PersonCaseStatusEnum;
 use App\Enums\RdtApplicantStatus;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -21,7 +22,7 @@ class RdtApplicant extends Model
     protected $fillable = [
         'nik', 'name', 'address', 'province_code', 'city_code', 'district_code', 'village_code',
         'email', 'phone_number', 'gender', 'birth_date', 'occupation_type', 'occupation_name', 'workplace_name',
-        'symptoms', 'symptoms_notes', 'symptoms_interaction', 'symptoms_activity','people_status',
+        'symptoms', 'symptoms_notes', 'symptoms_interaction', 'symptoms_activity', 'people_status',
         'latitude', 'longitude', 'pikobar_session_id', 'pikobar_user_id',
     ];
 
@@ -48,7 +49,8 @@ class RdtApplicant extends Model
     ];
 
     protected $enums = [
-        'status' => RdtApplicantStatus::class,
+        'person_status' => PersonCaseStatusEnum::class,
+        'status'        => RdtApplicantStatus::class,
     ];
 
     public function city()
