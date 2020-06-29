@@ -72,10 +72,10 @@ Route::group(['middleware' => 'auth:api'], function() {
 });
 
 Route::group(['middleware' => 'guest:api'], function () {
-    Route::post('login', 'Auth\LoginController@login');
+    // Route::post('login', 'Auth\LoginController@login');
 
-    Route::post('oauth/{driver}', 'Auth\OAuthController@redirectToProvider');
-    Route::get('oauth/{driver}/callback', 'Auth\OAuthController@handleProviderCallback')->name('oauth.callback');
+    // Route::post('oauth/{driver}', 'Auth\OAuthController@redirectToProvider');
+    // Route::get('oauth/{driver}/callback', 'Auth\OAuthController@handleProviderCallback')->name('oauth.callback');
 
     // API for Master data
     Route::prefix('master')->namespace('Master')->group(function() {
