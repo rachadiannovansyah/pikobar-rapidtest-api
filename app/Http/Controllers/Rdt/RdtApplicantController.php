@@ -57,6 +57,10 @@ class RdtApplicantController extends Controller
             });
         }
 
+        if ($request->user()->city_code) {
+            $records->where('city_code', $request->user()->city_code);
+        }
+
         $records->whereEnum('status', $statusEnum);
         $records->orderBy($sortBy, $sortOrder);
         $records->with(['invitations', 'invitations.event', 'city', 'district', 'village']);
