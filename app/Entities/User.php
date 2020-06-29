@@ -18,6 +18,8 @@ class User extends Authenticatable implements JWTSubject //, MustVerifyEmail
 {
     use HasEnums, SoftDeletes, HasArea, Notifiable;
 
+    public $incrementing = false;
+
     /**
      * The attributes that are mass assignable.
      *
