@@ -8,7 +8,7 @@ use Spatie\Enum\Enum;
  * @method static self ODP()
  * @method static self PDP()
  * @method static self OTG()
- * @method static self NOT_ALL_THREE()
+ * @method static self NOT_ALL()
  * @method static self UNKNOWN()
  */
 

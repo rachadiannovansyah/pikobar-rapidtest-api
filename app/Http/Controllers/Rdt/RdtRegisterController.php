@@ -45,7 +45,7 @@ class RdtRegisterController extends Controller
             'odp' => PersonCaseStatusEnum::ODP(),
             'pdp' => PersonCaseStatusEnum::PDP(),
             'otg' => PersonCaseStatusEnum::OTG(),
-            'tidak_ketiganya'  => PersonCaseStatusEnum::NOT_ALL_THREE(),
+            'tidak_ketiganya'  => PersonCaseStatusEnum::NOT_ALL(),
             'tidak_tahu'       => PersonCaseStatusEnum::UNKNOWN()
         ];
 
