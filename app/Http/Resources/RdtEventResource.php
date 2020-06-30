@@ -23,7 +23,7 @@ class RdtEventResource extends JsonResource
             'event_location' => $this->event_location,
             'start_at'       => $this->start_at,
             'end_at'         => $this->end_at,
-            'applicants'     => RdtApplicantResource::collection($this->whenLoaded('applicants')),
+            'invitations'    => RdtApplicantResource::collection($this->whenLoaded('invitations')),
             $this->mergeWhen($request->user(), [
                 'created_at' => $this->created_at,
                 'updated_at' => $this->updated_at,

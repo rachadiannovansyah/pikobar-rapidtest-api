@@ -38,8 +38,8 @@ class RdtEvent extends Model
         'end_at',
     ];
 
-    public function applicants()
+    public function invitations()
     {
-        return $this->hasMany(RdtApplicant::class, 'rdt_event_id');
+        return $this->hasMany(RdtInvitation::class, 'rdt_event_id');
     }
 }

@@ -2,11 +2,13 @@
 
 namespace App\Providers;
 
+use App\Entities\RdtInvitation;
 use App\Oauth\CustomKeycloakProvider;
 use App\Observers\RdtApplicantObserver;
 use App\Observers\RdtEventObserver;
 use App\Entities\RdtApplicant;
 use App\Entities\RdtEvent;
+use App\Observers\RdtInvitationObserver;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
 
@@ -24,6 +26,7 @@ class AppServiceProvider extends ServiceProvider
 
         RdtEvent::observe(RdtEventObserver::class);
         RdtApplicant::observe(RdtApplicantObserver::class);
+        RdtInvitation::observe(RdtInvitationObserver::class);
     }
 
     /**

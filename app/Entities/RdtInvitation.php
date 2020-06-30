@@ -7,9 +7,15 @@ use App\Enums\TestType;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Enum\Laravel\HasEnums;
 
+/**
+ * @property string $registration_code
+ * @property \App\Entities\RdtApplicant $applicant
+ */
 class RdtInvitation extends Model
 {
     use HasEnums;
+
+    protected $fillable = ['rdt_applicant_id'];
 
     protected $enums = [
         'lab_result_type' => LabResultType::class.':nullable',

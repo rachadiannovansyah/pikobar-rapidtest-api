@@ -57,6 +57,11 @@ Route::group(['middleware' => 'auth:api'], function() {
     Route::delete('rdt/events/{rdtEvent}','Rdt\RdtEventController@destroy');
 });
 
+// RDT Event Invitations Participants
+Route::group(['middleware' => 'auth:api'], function() {
+    Route::post('rdt/events/{rdtEvent}/participants','Rdt\RdtEventParticipantAddController');
+});
+
 // RDT Applicants
 Route::group(['middleware' => 'auth:api'], function() {
     Route::get('rdt/applicants','Rdt\RdtApplicantController@index')->middleware('can:viewAny,'.RdtApplicant::class);
@@ -64,11 +69,6 @@ Route::group(['middleware' => 'auth:api'], function() {
     Route::post('rdt/applicants','Rdt\RdtApplicantController@store')->middleware('can:create,'.RdtApplicant::class);
     Route::put('rdt/applicants/{rdtApplicant}', 'Rdt\RdtApplicantController@update')->middleware('can:update,rdtApplicant');;
     Route::delete('rdt/applicants/{rdtApplicant}','Rdt\RdtApplicantController@destroy')->middleware('can:delete,rdtApplicant');;
-});
-
-// RDT Event Invitations Participants
-Route::group(['middleware' => 'auth:api'], function() {
-    Route::post('rdt/events/{rdtEvent}/participants','Rdt\RdtEventApplicantAddController');
 });
 
 Route::group(['middleware' => 'guest:api'], function () {
