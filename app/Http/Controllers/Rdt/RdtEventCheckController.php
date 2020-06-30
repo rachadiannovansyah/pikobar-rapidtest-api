@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Rdt;
 
 use App\Entities\RdtEvent;
+use App\Entities\RdtInvitation;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Rdt\RdtEventCheckRequest;
 
@@ -18,13 +19,7 @@ class RdtEventCheckController extends Controller
     {
         $eventCode = $request->input('event_code');
 
-        $event = RdtEvent::where('event_code', $eventCode)
-            ->with([
-                'applicants' => function ($query) {
-                    $query->orderBy('name');
-                },
-            ])
-            ->firstOrFail();
+        $event = RdtEvent::where('event_code', $eventCode)->with(['invitations'])->firstOrFail();
 
         $record = [
             'event_code'     => $event->event_code,
@@ -32,10 +27,11 @@ class RdtEventCheckController extends Controller
             'event_location' => $event->event_location,
             'start_at'       => $event->start_at,
             'end_at'         => $event->end_at,
-            'applicants'     => $event->applicants->map(function ($applicant) {
+            'invitations'    => $event->invitations->map(function (RdtInvitation $invitation) {
+                // @TODO sort by name
                 return [
-                    'name'        => $applicant->name,
-                    'attended_at' => $applicant->attended_at,
+                    'name'        => $invitation->applicant->name,
+                    'attended_at' => $invitation->attended_at,
                 ];
             }),
         ];

@@ -10,6 +10,7 @@ use Spatie\Enum\Laravel\HasEnums;
 /**
  * @property string $registration_code
  * @property \App\Entities\RdtApplicant $applicant
+ * @property \Illuminate\Support\Carbon attended_at
  */
 class RdtInvitation extends Model
 {
@@ -28,6 +29,7 @@ class RdtInvitation extends Model
      * @var array
      */
     protected $dates = [
+        'attended_at',
         'notified_at',
         'confirmed_at',
         'result_at',
