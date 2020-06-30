@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Rdt;
 
 use App\Enums\Gender;
+use App\Enums\PersonCaseStatusEnum;
 use App\Rules\NikRule;
 use App\Rules\RecaptchaRule;
 use Illuminate\Foundation\Http\FormRequest;
@@ -39,6 +40,7 @@ class RdtRegisterRequest extends FormRequest
             'email'                => ['required', 'email'],
             'phone_number'         => 'required',
             'gender'               => ['required', new EnumValueRule(Gender::class)],
+            'person_status'        => ['required', new EnumValueRule(PersonCaseStatusEnum::class)],
             'birth_date'           => ['required', 'date'],
             'occupation_type'      => ['required', 'integer'],
             'workplace_name'       => 'required',
