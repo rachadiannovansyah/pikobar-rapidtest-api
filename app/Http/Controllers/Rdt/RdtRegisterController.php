@@ -2,15 +2,16 @@
 
 namespace App\Http\Controllers\Rdt;
 
-use UrlSigner;
 use App\Entities\RdtApplicant;
 use App\Enums\RdtApplicantStatus;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Rdt\RdtRegisterRequest;
 use Illuminate\Support\Facades\URL;
+use UrlSigner;
 
 class RdtRegisterController extends Controller
 {
+
     /**
      * Handle the incoming request.
      *
@@ -31,7 +32,7 @@ class RdtRegisterController extends Controller
 
         return response()->json([
             'registration_code' => $applicant->registration_code,
-            'download_url'      => UrlSigner::sign($url)
+            'download_url'      => UrlSigner::sign($url),
         ]);
     }
 }
