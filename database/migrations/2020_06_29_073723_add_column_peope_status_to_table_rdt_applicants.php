@@ -16,7 +16,7 @@ class AddColumnPeopeStatusToTableRdtApplicants extends Migration
         Schema::table('rdt_applicants', function (Blueprint $table) {
             $table->string('person_status',20)
                   ->after('symptoms_activity')
-                  ->nullable();
+                  ->nullable()->index();
         });
     }
 
