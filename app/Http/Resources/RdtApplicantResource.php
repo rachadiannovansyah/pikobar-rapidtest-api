@@ -35,6 +35,7 @@ class RdtApplicantResource extends JsonResource
                 'symptoms_interaction' => $this->symptoms_interaction,
                 'symptoms_notes'       => $this->symptoms_notes,
                 'symptoms_activity'    => $this->symptoms_activity,
+                'person_status'        => $this->person_status,
                 'created_at'           => $this->created_at,
                 'updated_at'           => $this->updated_at,
             ]),

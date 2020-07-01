@@ -50,7 +50,7 @@ class RdtApplicant extends Model
     ];
 
     protected $enums = [
-        'person_status' => PersonCaseStatusEnum::class,
+        'person_status' => PersonCaseStatusEnum::class.':nullable',
         'status'        => RdtApplicantStatus::class,
     ];
 
