@@ -57,6 +57,10 @@ class RdtApplicantController extends Controller
             });
         }
 
+        if ($request->has('city_code')) {
+            $records->where('city_code', $request->input('city_code'));
+        }
+
         if ($request->user()->city_code) {
             $records->where('city_code', $request->user()->city_code);
         }
