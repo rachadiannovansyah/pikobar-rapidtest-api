@@ -24,6 +24,9 @@ class RdtApplicantSeeder extends Seeder
 
             $invitation = new RdtInvitation();
             $invitation->event()->associate($event);
+            $invitation->test_type       = 'PCR';
+            $invitation->lab_result_type = 'NEGATIVE';
+            $invitation->result_at       = now();
 
             $applicant->status = RdtApplicantStatus::APPROVED();
             $applicant->invitations()->save($invitation);
