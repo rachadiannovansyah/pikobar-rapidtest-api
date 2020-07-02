@@ -79,7 +79,7 @@ class RdtEventController extends Controller
         foreach ($inputSchedules as $inputSchedule) {
             $schedule           = new RdtEventSchedule();
             $schedule->start_at = $inputSchedule['start_at'];
-            $schedule->end_at   = $inputSchedule['start_at'];
+            $schedule->end_at   = $inputSchedule['end_at'];
             $rdtEvent->schedules()->save($schedule);
         }
 
