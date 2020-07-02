@@ -11,6 +11,8 @@ use Spatie\Enum\Laravel\HasEnums;
  * @property \Carbon\Carbon $start_at
  * @property \Carbon\Carbon $end_at
  * @property string $event_code
+ * @property \App\Entities\RdtEventSchedule[] $schedules
+ * @property \App\Entities\RdtInvitation[] $invitations
  */
 class RdtEvent extends Model
 {
@@ -37,6 +39,11 @@ class RdtEvent extends Model
         'start_at',
         'end_at',
     ];
+
+    public function schedules()
+    {
+        return $this->hasMany(RdtEventSchedule::class, 'rdt_event_id');
+    }
 
     public function invitations()
     {

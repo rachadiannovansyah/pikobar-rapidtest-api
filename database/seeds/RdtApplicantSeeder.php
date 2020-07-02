@@ -22,15 +22,19 @@ class RdtApplicantSeeder extends Seeder
         $randomApplicants->each(function (RdtApplicant $applicant) {
             $event = RdtEvent::inRandomOrder()->first();
 
+            $eventSchedule = $event->schedules()->inRandomOrder()->first();
+
             $invitation = new RdtInvitation();
             $invitation->event()->associate($event);
             $invitation->test_type       = 'PCR';
             $invitation->lab_result_type = 'NEGATIVE';
             $invitation->result_at       = now();
+            $invitation->schedule()->associate($eventSchedule);
 
             $applicant->status = RdtApplicantStatus::APPROVED();
             $applicant->invitations()->save($invitation);
             $applicant->save();
+
         });
     }
 }
