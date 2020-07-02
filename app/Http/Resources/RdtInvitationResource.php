@@ -18,6 +18,7 @@ class RdtInvitationResource extends JsonResource
             'applicant'             => new RdtApplicantResource($this->whenLoaded('applicant')),
             'event'                 => new RdtEventResource($this->whenLoaded('event')),
             'schedule'              => new RdtEventScheduleResource($this->whenLoaded('schedules')),
+            'rdt_applicant_id'      => $this->rdt_applicant_id,
             'event_id'              => $this->rdt_event_id,
             'rdt_event_schedule_id' => $this->rdt_event_schedule_id,
             'test_type'             => $this->test_type,

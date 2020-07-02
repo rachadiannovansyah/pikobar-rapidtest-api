@@ -59,6 +59,7 @@ Route::group(['middleware' => 'auth:api'], function() {
 
 // RDT Event Invitations Participants
 Route::group(['middleware' => 'auth:api'], function() {
+    Route::get('rdt/events/{rdtEvent}/participants','Rdt\RdtEventParticipantListController');
     Route::post('rdt/events/{rdtEvent}/participants','Rdt\RdtEventParticipantAddController');
     Route::post('rdt/events/{rdtEvent}/participants-remove','Rdt\RdtEventParticipantRemoveController');
 });
