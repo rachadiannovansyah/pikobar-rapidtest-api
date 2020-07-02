@@ -24,6 +24,7 @@ class RdtEventResource extends JsonResource
             'start_at'       => $this->start_at,
             'end_at'         => $this->end_at,
             'status'         => $this->status,
+            'city'           => new AreaResource($this->whenLoaded('city')),
             $this->mergeWhen($this->invitations_count !== null, [
                 'invitations_count' => $this->invitations_count,
             ]),

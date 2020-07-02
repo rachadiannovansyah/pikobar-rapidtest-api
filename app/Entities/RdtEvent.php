@@ -40,6 +40,11 @@ class RdtEvent extends Model
         'end_at',
     ];
 
+    public function city()
+    {
+        return $this->belongsTo(Area::class, 'city_code', 'code_kemendagri');
+    }
+
     public function schedules()
     {
         return $this->hasMany(RdtEventSchedule::class, 'rdt_event_id');

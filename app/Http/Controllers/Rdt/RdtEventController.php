@@ -57,6 +57,7 @@ class RdtEventController extends Controller
 
         $records->whereEnum('status', $statusEnum);
         $records->orderBy($sortBy, $sortOrder);
+        $records->with(['city']);
         $records->withCount(['invitations', 'schedules']);
 
         return RdtEventResource::collection($records->paginate($perPage));
@@ -95,7 +96,7 @@ class RdtEventController extends Controller
     public function show(RdtEvent $rdtEvent)
     {
         $rdtEvent->loadCount(['invitations', 'schedules']);
-        $rdtEvent->load(['schedules']);
+        $rdtEvent->load(['schedules', 'city']);
 
         return new RdtEventResource($rdtEvent);
     }
