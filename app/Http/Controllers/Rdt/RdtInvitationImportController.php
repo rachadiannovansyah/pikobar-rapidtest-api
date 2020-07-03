@@ -5,13 +5,14 @@ namespace App\Http\Controllers\Rdt;
 use App\Entities\RdtApplicant;
 use App\Entities\RdtInvitation;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Rdt\RdtInvitationImportRequest;
 use Box\Spout\Reader\Common\Creator\ReaderEntityFactory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 
 class RdtInvitationImportController extends Controller
 {
-    public function __invoke(Request $request)
+    public function __invoke(RdtInvitationImportRequest $request)
     {
         $reader = ReaderEntityFactory::createXLSXReader();
 
