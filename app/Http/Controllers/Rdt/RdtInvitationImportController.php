@@ -18,6 +18,7 @@ class RdtInvitationImportController extends Controller
         $reader = ReaderEntityFactory::createXLSXReader();
 
         $reader->open($request->file->path());
+
         $count = 0;
 
         foreach ($reader->getSheetIterator() as $sheet) {
@@ -28,7 +29,6 @@ class RdtInvitationImportController extends Controller
 
                 if ($key > 1 ) {
                     $count++;
-                    $applicant = null;
                     $registrationCode = $rowArray[0];
                     $eventId = $rowArray[1];
                     $eventScheduleId = $rowArray[2];
@@ -36,19 +36,7 @@ class RdtInvitationImportController extends Controller
                     $name = $rowArray[4];
                     $now = Carbon::now();
 
-                    if (empty($registrationCode)) {
-                        $applicant = new RdtApplicant();
-                        $applicant->rdt_event_id = $eventId;
-                        $applicant->nik = $nik;
-                        $applicant->name = $name;
-                        $applicant->invited_at = $now;
-                        $applicant->save();
-                    } else {
-                        $applicant = RdtApplicant::where('nik', $nik)->first();
-                        $applicant->rdt_event_id = $eventId;
-                        $applicant->invited_at = $now;
-                        $applicant->save();
-                    }
+                    $applicant = $this->fillApplicant($registrationCode, $eventId, $nik,$name, $now);
 
                     $rdtInvitation = new RdtInvitation();
                     $rdtInvitation->rdt_applicant_id = $applicant->id;
@@ -67,5 +55,26 @@ class RdtInvitationImportController extends Controller
 
         return response()->json(['message' => 'import success, '. $count .' rows']);
 
+    }
+
+    private function fillApplicant( $registrationCode, $eventId, $nik, $name, $now)
+    {
+        $applicant = null;
+
+        if (empty($registrationCode)) {
+            $applicant = new RdtApplicant();
+            $applicant->rdt_event_id = $eventId;
+            $applicant->nik = $nik;
+            $applicant->name = $name;
+            $applicant->invited_at = $now;
+            $applicant->save();
+        } else {
+            $applicant = RdtApplicant::where('nik', $nik)->first();
+            $applicant->rdt_event_id = $eventId;
+            $applicant->invited_at = $now;
+            $applicant->save();
+        }
+
+        return $applicant;
     }
 }
