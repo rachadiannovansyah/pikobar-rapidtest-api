@@ -17,9 +17,13 @@ class RdtApplicantSeeder extends Seeder
     public function run()
     {
         factory(RdtApplicant::class, 500)->create()->each(function (RdtApplicant $rdtApplicant) {
-            $randomCity = Area::where('depth', 2)->inRandomOrder()->first();
+            $randomCity     = Area::where('depth', 2)->inRandomOrder()->first();
+            $randomDistrict = $randomCity->children()->inRandomOrder()->first();
+            $randomVillage  = $randomDistrict->children()->inRandomOrder()->first();
 
             $rdtApplicant->city()->associate($randomCity);
+            $rdtApplicant->district()->associate($randomDistrict);
+            $rdtApplicant->village()->associate($randomVillage);
             $rdtApplicant->save();
         });
 
