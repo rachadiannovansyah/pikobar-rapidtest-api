@@ -19,7 +19,7 @@ class RdtEventParticipantListController extends Controller
     {
         $records = $rdtEvent->invitations();
 
-        $records->with(['applicant']);
+        $records->with(['applicant', 'schedule']);
 
         return RdtInvitationResource::collection($records->paginate(15));
     }
