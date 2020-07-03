@@ -16,7 +16,8 @@ class RdtEventObserver
      */
     public function creating(RdtEvent $rdtEvent)
     {
-        $rdtEvent->event_code = $this->generateUniqueEventCode();
+        $rdtEvent->province_code = '32';
+        $rdtEvent->event_code    = $this->generateUniqueEventCode();
     }
 
     protected function generateUniqueEventCode()

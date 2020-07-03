@@ -28,6 +28,7 @@ class RdtEventUpdateRequest extends FormRequest
         return [
             'event_name'     => ['sometimes', 'required'],
             'event_location' => ['sometimes', 'required'],
+            'host_name'      => ['sometimes', 'required'],
             'start_at'       => ['sometimes', 'required', 'date'],
             'end_at'         => ['sometimes', 'required', 'date'],
             'schedules'      => ['sometimes', 'required', 'array'],

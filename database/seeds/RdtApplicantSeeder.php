@@ -1,5 +1,6 @@
 <?php
 
+use App\Entities\Area;
 use App\Entities\RdtApplicant;
 use App\Entities\RdtEvent;
 use App\Entities\RdtInvitation;
@@ -15,26 +16,31 @@ class RdtApplicantSeeder extends Seeder
      */
     public function run()
     {
-        factory(RdtApplicant::class, 50)->create();
+        factory(RdtApplicant::class, 500)->create()->each(function (RdtApplicant $rdtApplicant) {
+            $randomCity = Area::where('depth', 2)->inRandomOrder()->first();
 
-        $randomApplicants = RdtApplicant::inRandomOrder()->take(40)->get();
+            $rdtApplicant->city()->associate($randomCity);
+            $rdtApplicant->save();
+        });
+
+        $randomApplicants = RdtApplicant::inRandomOrder()->take(400)->get();
 
         $randomApplicants->each(function (RdtApplicant $applicant) {
             $event = RdtEvent::inRandomOrder()->first();
 
             $eventSchedule = $event->schedules()->inRandomOrder()->first();
 
-            $invitation = new RdtInvitation();
-            $invitation->event()->associate($event);
+            $invitation                  = new RdtInvitation();
             $invitation->test_type       = 'PCR';
             $invitation->lab_result_type = 'NEGATIVE';
             $invitation->result_at       = now();
             $invitation->schedule()->associate($eventSchedule);
+            $invitation->event()->associate($event);
 
-            $applicant->status = RdtApplicantStatus::APPROVED();
+            $applicant->city_code = $event->city_code;
+            $applicant->status    = RdtApplicantStatus::APPROVED();
             $applicant->invitations()->save($invitation);
             $applicant->save();
-
         });
     }
 }

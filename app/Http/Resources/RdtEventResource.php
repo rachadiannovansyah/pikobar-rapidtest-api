@@ -21,6 +21,7 @@ class RdtEventResource extends JsonResource
             ]),
             'event_name'     => $this->event_name,
             'event_location' => $this->event_location,
+            'host_name'      => $this->host_name,
             'start_at'       => $this->start_at,
             'end_at'         => $this->end_at,
             'status'         => $this->status,
