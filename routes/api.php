@@ -40,12 +40,7 @@ Route::post('rdt/checkin', 'Rdt\RdtCheckinController');
 Route::post('rdt/event-check', 'Rdt\RdtEventCheckController');
 
 Route::group(['middleware' => 'auth:api'], function () {
-    Route::post('logout', 'Auth\LoginController@logout');
-
     Route::get('/user', 'Settings\ProfileController@index');
-    Route::patch('settings/profile', 'Settings\ProfileController@update');
-    Route::patch('settings/password', 'Settings\PasswordController@update');
-
 });
 
 // RDT Events
