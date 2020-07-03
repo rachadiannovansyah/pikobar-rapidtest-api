@@ -7,6 +7,7 @@ use App\Entities\RdtInvitation;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Rdt\RdtInvitationImportRequest;
 use Box\Spout\Reader\Common\Creator\ReaderEntityFactory;
+use http\Env\Response;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 
@@ -17,6 +18,7 @@ class RdtInvitationImportController extends Controller
         $reader = ReaderEntityFactory::createXLSXReader();
 
         $reader->open($request->file->path());
+        $count = 0;
 
         foreach ($reader->getSheetIterator() as $sheet) {
 
@@ -25,10 +27,11 @@ class RdtInvitationImportController extends Controller
                 $rowArray = $row->toArray();
 
                 if ($key > 1 ) {
-
+                    $count++;
                     $applicant = null;
                     $registrationCode = $rowArray[0];
                     $eventId = $rowArray[1];
+                    $eventScheduleId = $rowArray[2];
                     $nik = $rowArray[3];
                     $name = $rowArray[4];
                     $now = Carbon::now();
@@ -50,6 +53,7 @@ class RdtInvitationImportController extends Controller
                     $rdtInvitation = new RdtInvitation();
                     $rdtInvitation->rdt_applicant_id = $applicant->id;
                     $rdtInvitation->rdt_event_id = $eventId;
+                    $rdtInvitation->rdt_event_schedule_id = $eventScheduleId;
                     $rdtInvitation->registration_code = $applicant->registration_code;
                     $rdtInvitation->save();
 
@@ -60,6 +64,8 @@ class RdtInvitationImportController extends Controller
         }
 
         $reader->close();
+
+        return response()->json(['message' => 'import success, '. $count .' rows']);
 
     }
 }
