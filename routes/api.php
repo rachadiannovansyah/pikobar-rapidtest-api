@@ -63,6 +63,12 @@ Route::group(['middleware' => 'auth:api'], function() {
     Route::post('rdt/events/{rdtEvent}/participants-remove','Rdt\RdtEventParticipantRemoveController');
 });
 
+// RDT Invitations
+Route::group(['middleware' => 'auth:api'], function() {
+    Route::post('rdt/invitations/import', 'Rdt\RdtInvitationImportController');
+});
+
+
 // RDT Applicants
 Route::group(['middleware' => 'auth:api'], function() {
     Route::get('rdt/applicants','Rdt\RdtApplicantController@index')->middleware('can:viewAny,'.RdtApplicant::class);
