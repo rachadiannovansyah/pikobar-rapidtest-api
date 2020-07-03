@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Rdt;
 
+use Illuminate\Support\Facades\Log;
 use PDF;
 use UrlSigner;
 use App\Entities\RdtApplicant;
@@ -31,6 +32,11 @@ class RdtRegisterDownloadController extends Controller
         $registrationCode = $request->input('registration_code');
 
         $applicant = RdtApplicant::where('registration_code', $registrationCode)->firstOrFail();
+
+        Log::info('APPLICANT_REGISTER_DOWNLOAD_PDF', [
+            'id'                => $applicant->id,
+            'registration_code' => $applicant->registration_code,
+        ]);
 
         $pdf = PDF::loadView('pdf.applicant', ['applicant' => $applicant]);
 

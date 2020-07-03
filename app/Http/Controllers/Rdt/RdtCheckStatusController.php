@@ -6,6 +6,7 @@ use App\Entities\RdtApplicant;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Rdt\RdtCheckStatusRequest;
 use App\Http\Resources\RdtApplicantResource;
+use Illuminate\Support\Facades\Log;
 
 class RdtCheckStatusController extends Controller
 {
@@ -24,6 +25,11 @@ class RdtCheckStatusController extends Controller
                 $query->orderBy('result_at');
             }, 'invitations.event'])
             ->firstOrFail();
+
+        Log::info('APPLICANT_STATUS_CHECK', [
+            'id'                => $applicant->id,
+            'registration_code' => $applicant->registration_code,
+        ]);
 
         return new RdtApplicantResource($applicant);
     }

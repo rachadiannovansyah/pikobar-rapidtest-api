@@ -1,6 +1,7 @@
 <?php
 namespace KeycloakGuard;
 
+use Illuminate\Auth\AuthenticationException;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Contracts\Auth\UserProvider;
@@ -39,7 +40,7 @@ class KeycloakGuard implements Guard
     try {
       $this->decodedToken = Token::decode($this->request->bearerToken(), $this->config['realm_public_key']);
     } catch (\Exception $e) {
-      throw new TokenException($e->getMessage());
+      throw new AuthenticationException('Token: ' . $e->getMessage());
     }
 
     if ($this->decodedToken) {

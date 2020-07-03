@@ -15,6 +15,7 @@ use UrlSigner;
  * @property string $province_code
  * @property int $status
  * @property string $name
+ * @property string $city_code
  */
 class RdtApplicant extends Model
 {

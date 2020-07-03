@@ -6,6 +6,7 @@ use App\Entities\RdtApplicant;
 use App\Enums\RdtApplicantStatus;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Rdt\RdtRegisterRequest;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\URL;
 use UrlSigner;
 
@@ -24,6 +25,11 @@ class RdtRegisterController extends Controller
         $applicant->status = RdtApplicantStatus::NEW();
         $applicant->fill($request->all());
         $applicant->save();
+
+        Log::info('APPLICANT_REGISTER', [
+            'id'                => $applicant->id,
+            'registration_code' => $applicant->registration_code,
+        ]);
 
         $url = URL::route(
             'registration.download',

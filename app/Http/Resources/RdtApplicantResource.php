@@ -18,7 +18,6 @@ class RdtApplicantResource extends JsonResource
             $this->mergeWhen($request->user(), [
                 'id' => $this->id,
             ]),
-            'rdt_applicant_id'  => $this->rdt_applicant_id,
             'registration_code' => $this->registration_code,
             'name'              => $this->name,
             'qrcode'            => $this->qrCodeUrl,

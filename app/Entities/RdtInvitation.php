@@ -44,4 +44,9 @@ class RdtInvitation extends Model
     {
         return $this->belongsTo(RdtEvent::class, 'rdt_event_id');
     }
+
+    public function schedule()
+    {
+        return $this->belongsTo(RdtEventSchedule::class, 'rdt_event_schedule_id');
+    }
 }

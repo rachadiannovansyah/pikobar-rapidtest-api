@@ -40,12 +40,7 @@ Route::post('rdt/checkin', 'Rdt\RdtCheckinController');
 Route::post('rdt/event-check', 'Rdt\RdtEventCheckController');
 
 Route::group(['middleware' => 'auth:api'], function () {
-    Route::post('logout', 'Auth\LoginController@logout');
-
     Route::get('/user', 'Settings\ProfileController@index');
-    Route::patch('settings/profile', 'Settings\ProfileController@update');
-    Route::patch('settings/password', 'Settings\PasswordController@update');
-
 });
 
 // RDT Events
@@ -59,8 +54,10 @@ Route::group(['middleware' => 'auth:api'], function() {
 
 // RDT Event Invitations Participants
 Route::group(['middleware' => 'auth:api'], function() {
+    Route::get('rdt/events/{rdtEvent}/participants','Rdt\RdtEventParticipantListController');
     Route::post('rdt/events/{rdtEvent}/participants','Rdt\RdtEventParticipantAddController');
     Route::post('rdt/events/{rdtEvent}/participants-remove','Rdt\RdtEventParticipantRemoveController');
+    Route::post('rdt/events/{rdtEvent}/participants-notify','Rdt\RdtEventNotifyParticipantController');
 });
 
 // RDT Invitations

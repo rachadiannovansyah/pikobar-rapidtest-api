@@ -10,7 +10,12 @@ use Spatie\Enum\Laravel\HasEnums;
 /**
  * @property \Carbon\Carbon $start_at
  * @property \Carbon\Carbon $end_at
+ * @property string $event_name
  * @property string $event_code
+ * @property \App\Entities\RdtEventSchedule[] $schedules
+ * @property \App\Entities\RdtInvitation[] $invitations
+ * @property string $province_code
+ * @property string $host_name
  */
 class RdtEvent extends Model
 {
@@ -23,6 +28,7 @@ class RdtEvent extends Model
     protected $fillable = [
         'event_name',
         'event_location',
+        'host_name',
         'start_at',
         'end_at',
         'status'
@@ -37,6 +43,16 @@ class RdtEvent extends Model
         'start_at',
         'end_at',
     ];
+
+    public function city()
+    {
+        return $this->belongsTo(Area::class, 'city_code', 'code_kemendagri');
+    }
+
+    public function schedules()
+    {
+        return $this->hasMany(RdtEventSchedule::class, 'rdt_event_id');
+    }
 
     public function invitations()
     {

@@ -18,7 +18,7 @@ class RdtApplicantPolicy
      */
     public function viewAny(User $user)
     {
-        return $user->hasPermission('manage-applicants');
+        return $user->hasPermission('list-applicants');
     }
 
     /**
@@ -30,7 +30,7 @@ class RdtApplicantPolicy
      */
     public function view(User $user, RdtApplicant $rdtApplicant)
     {
-        return $user->hasPermission('manage-applicants');
+        return $user->hasPermission('view-applicants');
     }
 
     /**

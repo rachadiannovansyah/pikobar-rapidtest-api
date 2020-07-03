@@ -7,6 +7,7 @@ use App\Entities\RdtSurvey;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\RdtSurveyResource;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class RdtSurveyStoreController extends Controller
 {
@@ -29,6 +30,11 @@ class RdtSurveyStoreController extends Controller
 
         $record->applicant()->associate($applicant);
         $record->save();
+
+        Log::info('APPLICANT_SURVEY_STORE', [
+            'id'                => $applicant->id,
+            'registration_code' => $applicant->registration_code,
+        ]);
 
         return new RdtSurveyResource($record);
     }

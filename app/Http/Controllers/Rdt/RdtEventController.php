@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\Rdt;
 
 use App\Entities\RdtEvent;
+use App\Entities\RdtEventSchedule;
 use App\Enums\RdtEventStatus;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Rdt\RdtEventRequest;
+use App\Http\Requests\Rdt\RdtEventStoreRequest;
+use App\Http\Requests\Rdt\RdtEventUpdateRequest;
 use App\Http\Resources\RdtEventResource;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -16,70 +18,108 @@ class RdtEventController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @param Request $request
-     * @return RdtEventResource
+     * @param  Request  $request
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
     public function index(Request $request)
     {
-        $perPage = $request->input('perPage', 15);
+        $perPage   = $request->input('per_page', 15);
+        $sortBy    = $request->input('sort_by', 'event_name');
+        $sortOrder = $request->input('sort_order', 'asc');
+        $status    = $request->input('status', 'draft');
+        $search    = $request->input('search');
 
-        return RdtEventResource::collection(
-            RdtEvent::paginate($perPage)
-        );
+        if ($perPage > 20) {
+            $perPage = 15;
+        }
+
+        if (in_array($sortBy, ['event_name', 'start_at', 'end_at', 'status', 'created_at']) === false) {
+            $sortBy = 'event_name';
+        }
+
+        $statusEnum = 'draft';
+
+        if ($status === 'draft') {
+            $statusEnum = RdtEventStatus::DRAFT();
+        }
+
+        if ($status === 'published') {
+            $statusEnum = RdtEventStatus::PUBLISHED();
+        }
+
+        $records = RdtEvent::query();
+
+        if ($search) {
+            $records->where(function ($query) use ($search) {
+                $query->where('event_name', 'like', '%'.$search.'%');
+            });
+        }
+
+        $records->whereEnum('status', $statusEnum);
+        $records->orderBy($sortBy, $sortOrder);
+        $records->with(['city']);
+        $records->withCount(['invitations', 'schedules']);
+
+        return RdtEventResource::collection($records->paginate($perPage));
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param RdtEventRequest $request
-     * @return JsonResponse
+     * @param  \App\Http\Requests\Rdt\RdtEventStoreRequest  $request
+     * @return \App\Http\Resources\RdtEventResource
      */
-    public function store(RdtEventRequest $request)
+    public function store(RdtEventStoreRequest $request)
     {
+        $rdtEvent = new RdtEvent();
+        $rdtEvent->fill($request->all());
+        $rdtEvent->save();
 
-        $rdtEventStatus = [
-            'published' => RdtEventStatus::PUBLISHED(),
-            'draft'     => RdtEventStatus::DRAFT()
-        ];
+        $inputSchedules = $request->input('schedules');
 
-        $rdt = new RdtEvent();
-        $rdt->status = $rdtEventStatus[$request->status];
-        $rdt->fill($request->except('status'));
-        $rdt->save();
+        foreach ($inputSchedules as $inputSchedule) {
+            $schedule           = new RdtEventSchedule();
+            $schedule->start_at = $inputSchedule['start_at'];
+            $schedule->end_at   = $inputSchedule['end_at'];
+            $rdtEvent->schedules()->save($schedule);
+        }
 
-        return new RdtEventResource($rdt);
+        return new RdtEventResource($rdtEvent);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param RdtEvent $rdtEvent
+     * @param  RdtEvent  $rdtEvent
      * @return RdtEventResource
      */
     public function show(RdtEvent $rdtEvent)
     {
+        $rdtEvent->loadCount(['invitations', 'schedules']);
+        $rdtEvent->load(['schedules', 'city']);
+
         return new RdtEventResource($rdtEvent);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param RdtEventRequest $request
-     * @param RdtEvent $rdtTestEvent
-     * @return JsonResponse
+     * @param  RdtEventUpdateRequest  $request
+     * @param  RdtEvent  $rdtEvent
+     * @return \App\Http\Resources\RdtEventResource
      */
-    public function update(RdtEventRequest $request, RdtEvent $rdtTestEvent)
+    public function update(RdtEventUpdateRequest $request, RdtEvent $rdtEvent)
     {
-        $rdtTestEvent->fill($request->all());
-        $rdtTestEvent->save();
+        $rdtEvent->fill($request->all());
+        $rdtEvent->save();
 
-        return response()->json(['success' => 'event success updated']);
+        return new RdtEventResource($rdtEvent);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param RdtEvent $rdtEvent
+     * @param  RdtEvent  $rdtEvent
      * @return JsonResponse
      * @throws \Exception
      */
@@ -87,7 +127,6 @@ class RdtEventController extends Controller
     {
         $rdtEvent->delete();
 
-        return response()
-            ->json(['message' => 'success deleted event']);
+        return response()->json(['message' => 'DELETED']);
     }
 }
