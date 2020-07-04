@@ -33,9 +33,8 @@ class RdtEventParticipantImportController extends Controller
                     $eventScheduleId = $rowArray[2];
                     $nik = $rowArray[3];
                     $name = $rowArray[4];
-                    $now = Carbon::now();
 
-                    $applicant = $this->fillApplicant($registrationCode, $eventId, $nik,$name, $now);
+                    $applicant = $this->fillApplicant($registrationCode, $eventId, $nik, $name);
 
                     $rdtInvitation = new RdtInvitation();
                     $rdtInvitation->rdt_applicant_id = $applicant->id;
@@ -56,23 +55,16 @@ class RdtEventParticipantImportController extends Controller
 
     }
 
-    private function fillApplicant( $registrationCode, $eventId, $nik, $name, $now)
+    private function fillApplicant( $registrationCode, $eventId, $nik, $name)
     {
-        $applicant = null;
+        $applicant = RdtApplicant::firstOrCreate([
+            'rdt_event_id' => $eventId,
+            'nik' => $nik,
+            'name' => $name
+        ]);
 
-        if (empty($registrationCode)) {
-            $applicant = new RdtApplicant();
-            $applicant->rdt_event_id = $eventId;
-            $applicant->nik = $nik;
-            $applicant->name = $name;
-            $applicant->invited_at = $now;
-            $applicant->save();
-        } else {
-            $applicant = RdtApplicant::where('registration_code', $registrationCode)->first();
-            $applicant->rdt_event_id = $eventId;
-            $applicant->invited_at = $now;
-            $applicant->save();
-        }
+        $applicant->rdt_event_id = $eventId;
+        $applicant->save();
 
         return $applicant;
     }
