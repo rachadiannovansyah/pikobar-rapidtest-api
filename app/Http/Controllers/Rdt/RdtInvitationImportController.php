@@ -69,7 +69,7 @@ class RdtInvitationImportController extends Controller
             $applicant->invited_at = $now;
             $applicant->save();
         } else {
-            $applicant = RdtApplicant::where('nik', $nik)->first();
+            $applicant = RdtApplicant::where('registration_code', $registrationCode)->first();
             $applicant->rdt_event_id = $eventId;
             $applicant->invited_at = $now;
             $applicant->save();
