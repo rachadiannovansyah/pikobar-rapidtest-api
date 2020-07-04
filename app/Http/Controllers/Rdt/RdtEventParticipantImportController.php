@@ -3,17 +3,16 @@
 namespace App\Http\Controllers\Rdt;
 
 use App\Entities\RdtApplicant;
+use App\Entities\RdtEvent;
 use App\Entities\RdtInvitation;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Rdt\RdtInvitationImportRequest;
 use Box\Spout\Reader\Common\Creator\ReaderEntityFactory;
-use http\Env\Response;
-use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 
-class RdtInvitationImportController extends Controller
+class RdtEventParticipantImportController extends Controller
 {
-    public function __invoke(RdtInvitationImportRequest $request)
+    public function __invoke(RdtInvitationImportRequest $request, RdtEvent $event)
     {
         $reader = ReaderEntityFactory::createXLSXReader();
 
@@ -30,7 +29,7 @@ class RdtInvitationImportController extends Controller
                 if ($key > 1 ) {
                     $count++;
                     $registrationCode = $rowArray[0];
-                    $eventId = $rowArray[1];
+                    $eventId = $event->id;
                     $eventScheduleId = $rowArray[2];
                     $nik = $rowArray[3];
                     $name = $rowArray[4];
