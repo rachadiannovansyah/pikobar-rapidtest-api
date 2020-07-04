@@ -34,7 +34,7 @@ class RdtEventParticipantImportController extends Controller
                     $nik = $rowArray[3];
                     $name = $rowArray[4];
 
-                    $applicant = $this->fillApplicant($registrationCode, $eventId, $nik, $name);
+                    $applicant = $this->fillApplicant($eventId, $nik, $name);
 
                     $rdtInvitation = new RdtInvitation();
                     $rdtInvitation->rdt_applicant_id = $applicant->id;
@@ -55,7 +55,7 @@ class RdtEventParticipantImportController extends Controller
 
     }
 
-    private function fillApplicant( $registrationCode, $eventId, $nik, $name)
+    private function fillApplicant( $eventId, $nik, $name)
     {
         $applicant = RdtApplicant::firstOrCreate([
             'rdt_event_id' => $eventId,
