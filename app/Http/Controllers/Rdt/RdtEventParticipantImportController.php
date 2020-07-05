@@ -35,7 +35,7 @@ class RdtEventParticipantImportController extends Controller
                         'rdt_event_schedule_id' => $rowArray[2],
                         'nik'                   => $rowArray[3],
                         'name'                  => $rowArray[4],
-                        'city_code'             => (isset($rowArray[5])) ? $rowArray[5]: null
+                        'city_code'             => $rowArray[5]
                     ];
 
 
