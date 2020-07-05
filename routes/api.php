@@ -50,7 +50,6 @@ Route::group(['middleware' => 'auth:api'], function() {
     Route::post('rdt/events','Rdt\RdtEventController@store');
     Route::put('rdt/events/{rdtEvent}','Rdt\RdtEventController@update');
     Route::delete('rdt/events/{rdtEvent}','Rdt\RdtEventController@destroy');
-    Route::post('rdt/events/{rdtEvent}/participants-import', 'Rdt\RdtEventParticipantImportController');
 });
 
 // RDT Event Invitations Participants
@@ -59,13 +58,8 @@ Route::group(['middleware' => 'auth:api'], function() {
     Route::post('rdt/events/{rdtEvent}/participants','Rdt\RdtEventParticipantAddController');
     Route::post('rdt/events/{rdtEvent}/participants-remove','Rdt\RdtEventParticipantRemoveController');
     Route::post('rdt/events/{rdtEvent}/participants-notify','Rdt\RdtEventNotifyParticipantController');
+    Route::post('rdt/events/{rdtEvent}/participants-import', 'Rdt\RdtEventParticipantImportController');
 });
-
-// RDT Invitations
-Route::group(['middleware' => 'auth:api'], function() {
-
-});
-
 
 // RDT Applicants
 Route::group(['middleware' => 'auth:api'], function() {
