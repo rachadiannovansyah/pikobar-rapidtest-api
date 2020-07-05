@@ -8,7 +8,6 @@ use App\Entities\RdtInvitation;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Rdt\RdtInvitationImportRequest;
 use Box\Spout\Reader\Common\Creator\ReaderEntityFactory;
-use Illuminate\Support\Carbon;
 
 class RdtEventParticipantImportController extends Controller
 {
@@ -27,28 +26,22 @@ class RdtEventParticipantImportController extends Controller
                 $rowArray = $row->toArray();
 
                 if ($key > 1 ) {
+
                     $count++;
-                    $eventId = $event->id;
-                    $registrationCode = $rowArray[1];
-                    $eventScheduleId = $rowArray[2];
-                    $nik = $rowArray[3];
-                    $name = $rowArray[4];
-                    $cityCode = (isset($rowArray[5])) ? $rowArray[5]: null;
 
-                    $applicant = $this->fillApplicant(
-                        $registrationCode,
-                        $eventId,
-                        $nik,
-                        $name,
-                        $cityCode
-                    );
+                    $participant = [
+                        'registration_code'     => $rowArray[0],
+                        'rdt_event_id'          => $rowArray[1],
+                        'rdt_event_schedule_id' => $rowArray[2],
+                        'nik'                   => $rowArray[3],
+                        'name'                  => $rowArray[4],
+                        'city_code'             => (isset($rowArray[5])) ? $rowArray[5]: null
+                    ];
 
-                    $rdtInvitation = new RdtInvitation();
-                    $rdtInvitation->rdt_applicant_id = $applicant->id;
-                    $rdtInvitation->rdt_event_id = $eventId;
-                    $rdtInvitation->rdt_event_schedule_id = $eventScheduleId;
-                    $rdtInvitation->registration_code = $applicant->registration_code;
-                    $rdtInvitation->save();
+
+                    $applicant = $this->fillApplicant($participant);
+
+                    $this->fillInvitation($applicant, $participant);
 
                 }
 
@@ -62,19 +55,31 @@ class RdtEventParticipantImportController extends Controller
 
     }
 
-    private function fillApplicant( $registrationCode, $eventId, $nik, $name, $cityCode)
+    private function fillApplicant( array $participant )
     {
+
         $applicant = RdtApplicant::firstOrCreate([
-            'registration_code' => $registrationCode,
-            'rdt_event_id'      => $eventId,
-            'nik'               => $nik,
-            'name'              => $name,
-            'city_code'         => $cityCode
+            'registration_code' => $participant['registration_code'],
+            'rdt_event_id'      => $participant['rdt_event_id'],
+            'nik'               => $participant['nik'],
+            'name'              => $participant['name'],
+            'city_code'         => $participant['city_code']
         ]);
 
-        $applicant->rdt_event_id = $eventId;
+        $applicant->rdt_event_id = $participant['rdt_event_id'];
         $applicant->save();
 
         return $applicant;
+    }
+
+    private function fillInvitation( $applicant, array $participant  )
+    {
+        $rdtInvitation = new RdtInvitation();
+        $rdtInvitation->rdt_applicant_id = $applicant->id;
+        $rdtInvitation->rdt_event_id = $participant['rdt_event_id'];
+        $rdtInvitation->rdt_event_schedule_id = $participant['rdt_event_schedule_id'];
+        $rdtInvitation->registration_code = $applicant->registration_code;
+        $rdtInvitation->save();
+
     }
 }
