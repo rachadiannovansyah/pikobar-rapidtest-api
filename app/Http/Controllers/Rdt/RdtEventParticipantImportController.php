@@ -58,13 +58,12 @@ class RdtEventParticipantImportController extends Controller
     private function fillApplicant( array $participant )
     {
 
-        $applicant = RdtApplicant::firstOrCreate([
-            'registration_code' => $participant['registration_code'],
-            'rdt_event_id'      => $participant['rdt_event_id'],
-            'nik'               => $participant['nik'],
-            'name'              => $participant['name'],
-            'city_code'         => $participant['city_code']
-        ]);
+        $applicant = RdtApplicant::firstOrCreate(
+            [ 'registration_code' => $participant['registration_code']],
+            [ 'rdt_event_id'      => $participant['rdt_event_id'],
+              'nik'               => $participant['nik'],
+              'name'              => $participant['name'],
+              'city_code'         => $participant['city_code'] ]);
 
         $applicant->rdt_event_id = $participant['rdt_event_id'];
         $applicant->save();
