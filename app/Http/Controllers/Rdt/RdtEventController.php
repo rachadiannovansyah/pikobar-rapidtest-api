@@ -110,8 +110,19 @@ class RdtEventController extends Controller
      */
     public function update(RdtEventUpdateRequest $request, RdtEvent $rdtEvent)
     {
+
         $rdtEvent->fill($request->all());
         $rdtEvent->save();
+
+        foreach ($request->schedules as $schedule) {
+
+            RdtEventSchedule::find($schedule['id'])
+                ->update([
+                    'start_at' => $schedule['start_at'],
+                    'end_at'   => $schedule['end_at']
+                ]);
+
+        }
 
         return new RdtEventResource($rdtEvent);
     }
