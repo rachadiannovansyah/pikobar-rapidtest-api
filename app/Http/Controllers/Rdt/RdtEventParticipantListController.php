@@ -13,6 +13,7 @@ class RdtEventParticipantListController extends Controller
      * Handle the incoming request.
      *
      * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Entities\RdtEvent  $rdtEvent
      * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
     public function __invoke(Request $request, RdtEvent $rdtEvent)
