@@ -21,8 +21,8 @@ class RdtApplicantController extends Controller
     public function index(Request $request)
     {
         $perPage   = $request->input('per_page', 15);
-        $sortBy    = $request->input('sort_by', 'name');
-        $sortOrder = $request->input('sort_order', 'asc');
+        $sortBy    = $request->input('sort_by', 'created_at');
+        $sortOrder = $request->input('sort_order', 'desc');
         $status    = $request->input('status', 'new');
         $search    = $request->input('search');
 

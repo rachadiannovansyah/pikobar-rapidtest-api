@@ -17,10 +17,23 @@ class RdtEventParticipantListController extends Controller
      */
     public function __invoke(Request $request, RdtEvent $rdtEvent)
     {
+        $perPage   = $request->input('per_page', 15);
+        $sortBy    = $request->input('sort_by', 'created_at');
+        $sortOrder = $request->input('sort_order', 'desc');
+        $search    = $request->input('search');
+
         $records = $rdtEvent->invitations();
 
+        if ($search) {
+            $records->whereHas('applicant', function ($query) use ($search) {
+                $query->where('name', 'like', '%'.$search.'%')
+                    ->orWhere('registration_code', 'like', '%'.$search.'%');
+            });
+        }
+
+        $records->orderBy($sortBy, $sortOrder);
         $records->with(['applicant', 'schedule']);
 
-        return RdtInvitationResource::collection($records->paginate(15));
+        return RdtInvitationResource::collection($records->paginate($perPage));
     }
 }

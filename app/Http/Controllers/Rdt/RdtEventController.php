@@ -24,8 +24,8 @@ class RdtEventController extends Controller
     public function index(Request $request)
     {
         $perPage   = $request->input('per_page', 15);
-        $sortBy    = $request->input('sort_by', 'event_name');
-        $sortOrder = $request->input('sort_order', 'asc');
+        $sortBy    = $request->input('sort_by', 'created_at');
+        $sortOrder = $request->input('sort_order', 'desc');
         $status    = $request->input('status', 'draft');
         $search    = $request->input('search');
 
