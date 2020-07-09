@@ -15,6 +15,7 @@ class RdtInvitationResource extends JsonResource
     public function toArray($request)
     {
         return [
+            'id'                    => $this->id,
             'applicant'             => new RdtApplicantResource($this->whenLoaded('applicant')),
             'event'                 => new RdtEventResource($this->whenLoaded('event')),
             'schedule'              => new RdtEventScheduleResource($this->whenLoaded('schedule')),
