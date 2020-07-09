@@ -29,6 +29,7 @@ class RdtEvent extends Model
         'event_name',
         'event_location',
         'host_name',
+        'city_code',
         'start_at',
         'end_at',
         'status'

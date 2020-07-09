@@ -29,6 +29,7 @@ class RdtEventStoreRequest extends FormRequest
             'event_name'     => 'required',
             'event_location' => 'required',
             'host_name'      => 'required',
+            'city_code'      => ['required'],
             'start_at'       => ['required', 'date'],
             'end_at'         => ['required', 'date'],
             'schedules'      => ['required', 'array'],
