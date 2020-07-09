@@ -4,7 +4,7 @@ FROM jabardigitalservice/phpfpm-nginx
 USER root
 
 # Install additional packages
-RUN apk --no-cache add php-pdo_mysql php-mysqli php-gd php-iconv php-bcmath php-gmp
+RUN apk --no-cache add php-pdo_mysql php-mysqli php-gd php-iconv php-bcmath php-gmp php-zip
 
 # Copy configurations
 COPY ./docker/nginx.conf /etc/nginx/nginx.conf
