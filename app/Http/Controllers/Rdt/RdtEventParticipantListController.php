@@ -35,6 +35,12 @@ class RdtEventParticipantListController extends Controller
         $records->orderBy($sortBy, $sortOrder);
         $records->with(['applicant', 'schedule']);
 
-        return RdtInvitationResource::collection($records->paginate($perPage));
+        if ($perPage === 'ALL') {
+            $records = $records->get();
+        } else {
+            $records = $records->paginate($perPage);
+        }
+
+        return RdtInvitationResource::collection($records);
     }
 }
