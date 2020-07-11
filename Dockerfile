@@ -24,5 +24,5 @@ RUN composer install --no-cache --prefer-dist --optimize-autoloader --no-interac
 
 RUN cd /var/www/html && \
     php artisan optimize && \
-    php artisan config:cache && \
     php artisan route:cache
+    # php artisan config:cache
