@@ -11,7 +11,7 @@ use Box\Spout\Reader\Common\Creator\ReaderEntityFactory;
 
 class RdtEventParticipantImportController extends Controller
 {
-    public function __invoke(RdtInvitationImportRequest $request, RdtEvent $event)
+    public function __invoke( RdtInvitationImportRequest $request, RdtEvent $event)
     {
         $reader = ReaderEntityFactory::createXLSXReader();
 
@@ -26,7 +26,7 @@ class RdtEventParticipantImportController extends Controller
                 $rowArray = $row->toArray();
 
                 if ($key > 1 ) {
-
+                    
                     $count++;
 
                     $participant = [
@@ -45,6 +45,10 @@ class RdtEventParticipantImportController extends Controller
                     $applicant = $this->fillApplicant($participant);
 
                     $this->fillInvitation($applicant, $participant);
+
+                    if ( strtolower($participant['notify']) === 'yes' ) {
+                        // @todo push notification to que aws
+                    }
 
                 }
 
