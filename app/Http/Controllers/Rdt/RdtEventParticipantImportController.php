@@ -11,7 +11,7 @@ use Box\Spout\Reader\Common\Creator\ReaderEntityFactory;
 
 class RdtEventParticipantImportController extends Controller
 {
-    public function __invoke( RdtInvitationImportRequest $request, RdtEvent $event)
+    public function __invoke(RdtInvitationImportRequest $request, RdtEvent $event)
     {
         $reader = ReaderEntityFactory::createXLSXReader();
 
@@ -62,7 +62,7 @@ class RdtEventParticipantImportController extends Controller
 
     }
 
-    private function fillApplicant( array $participant )
+    private function fillApplicant(array $participant)
     {
 
         $applicant = RdtApplicant::firstOrCreate(
@@ -80,7 +80,7 @@ class RdtEventParticipantImportController extends Controller
         return $applicant;
     }
 
-    private function fillInvitation( $applicant, array $participant  )
+    private function fillInvitation($applicant, array $participant)
     {
         $rdtInvitation = new RdtInvitation();
         $rdtInvitation->rdt_applicant_id = $applicant->id;
