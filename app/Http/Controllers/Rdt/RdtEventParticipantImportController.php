@@ -26,7 +26,7 @@ class RdtEventParticipantImportController extends Controller
                 $rowArray = $row->toArray();
 
                 if ($key > 1 ) {
-                    
+
                     $count++;
 
                     $participant = [
