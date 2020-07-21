@@ -25,8 +25,8 @@ class RdtEventParticipantImportController extends Controller
 
                 $rowArray = $row->toArray();
 
-                if ($key > 1) {
-                    
+                if ($key > 1 ) {
+
                     $count++;
 
                     $participant = [
@@ -46,7 +46,7 @@ class RdtEventParticipantImportController extends Controller
 
                     $this->fillInvitation($applicant, $participant);
 
-                    if (strtolower($participant['notify']) === 'yes') {
+                    if ( strtolower($participant['notify']) === 'yes' ) {
                         // @todo push notification to que aws
                     }
 
