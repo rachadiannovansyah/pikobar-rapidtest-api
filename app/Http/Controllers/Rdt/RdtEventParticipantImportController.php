@@ -35,13 +35,20 @@ class RdtEventParticipantImportController extends Controller
                         'rdt_event_schedule_id' => $rowArray[2],
                         'nik'                   => $rowArray[3],
                         'name'                  => $rowArray[4],
-                        'city_code'             => $rowArray[5]
+                        'city_code'             => $rowArray[5],
+                        'phone_number'          => $rowArray[6],
+                        'notify'                => $rowArray[7],
+                        'notify_method'         => $rowArray[8]
                     ];
 
 
                     $applicant = $this->fillApplicant($participant);
 
                     $this->fillInvitation($applicant, $participant);
+
+                    if ( strtolower($participant['notify']) === 'yes' ) {
+                        // @todo push notification to que aws
+                    }
 
                 }
 
@@ -55,7 +62,7 @@ class RdtEventParticipantImportController extends Controller
 
     }
 
-    private function fillApplicant( array $participant )
+    private function fillApplicant(array $participant)
     {
 
         $applicant = RdtApplicant::firstOrCreate(
@@ -63,7 +70,9 @@ class RdtEventParticipantImportController extends Controller
             [ 'rdt_event_id'      => $participant['rdt_event_id'],
               'nik'               => $participant['nik'],
               'name'              => $participant['name'],
-              'city_code'         => $participant['city_code'] ]);
+              'city_code'         => $participant['city_code'],
+              'phone_number'      => $participant['phone_number']
+            ]);
 
         $applicant->rdt_event_id = $participant['rdt_event_id'];
         $applicant->save();
@@ -71,7 +80,7 @@ class RdtEventParticipantImportController extends Controller
         return $applicant;
     }
 
-    private function fillInvitation( $applicant, array $participant  )
+    private function fillInvitation($applicant, array $participant)
     {
         $rdtInvitation = new RdtInvitation();
         $rdtInvitation->rdt_applicant_id = $applicant->id;
