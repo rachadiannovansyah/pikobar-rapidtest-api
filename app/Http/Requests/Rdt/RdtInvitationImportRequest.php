@@ -24,7 +24,7 @@ class RdtInvitationImportRequest extends FormRequest
     public function rules()
     {
         return [
-            'file' => 'required|mimes:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel,'
+            'file' => 'required|mimes:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
         ];
     }
 }

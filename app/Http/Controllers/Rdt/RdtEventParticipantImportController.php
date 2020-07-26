@@ -7,11 +7,39 @@ use App\Entities\RdtEvent;
 use App\Entities\RdtInvitation;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Rdt\RdtInvitationImportRequest;
+use AsyncAws\Core\AwsClientFactory;
+use AsyncAws\Sqs\Input\GetQueueAttributesRequest;
+use AsyncAws\Sqs\Input\GetQueueUrlRequest;
+use AsyncAws\Sqs\Input\SendMessageRequest;
+use Aws\Sqs\SqsClient;
 use Box\Spout\Reader\Common\Creator\ReaderEntityFactory;
+use Illuminate\Http\Request;
+
 
 class RdtEventParticipantImportController extends Controller
 {
-    public function __invoke(RdtInvitationImportRequest $request, RdtEvent $event)
+
+    const SMS_QUEUE_NAME = 'smsblast-queue';
+
+    const WA_QUEUE_NAME = 'wablast-queue';
+
+    private $sqs;
+
+    public function __construct()
+    {
+
+        // set credential sqs
+        $factory = new AwsClientFactory([
+            'region'            => env('AWS_DEFAULT_REGION'),
+            'accessKeyId'       => env('AWS_ACCESS_KEY_ID'),
+            'accessKeySecret'   => env('AWS_SECRET_ACCESS_KEY')
+        ]);
+
+        $this->sqs = $factory->sqs();
+
+    }
+
+    public function __invoke(Request $request, RdtEvent $event)
     {
         $reader = ReaderEntityFactory::createXLSXReader();
 
@@ -38,7 +66,7 @@ class RdtEventParticipantImportController extends Controller
                         'city_code'             => $rowArray[5],
                         'phone_number'          => $rowArray[6],
                         'notify'                => $rowArray[7],
-                        'notify_method'         => $rowArray[8]
+                        'notify_method'         => $rowArray[8] // SMS/WA/BOTH
                     ];
 
 
@@ -47,7 +75,39 @@ class RdtEventParticipantImportController extends Controller
                     $this->fillInvitation($applicant, $participant);
 
                     if ( strtolower($participant['notify']) === 'yes' ) {
+
+                        if (strtolower($participant['notify_method']) === 'wa') {
+                            $this->sendMessageToQueue(
+                            self::WA_QUEUE_NAME,
+                            '628112181993',
+                            'test message to wa');
+                        }
+
+                        if (strtolower($participant['notify_method']) === 'sms') {
+                            $this->sendMessageToQueue(
+                                self::SMS_QUEUE_NAME,
+                                '628112181993',
+                                'test message to wa');
+                        }
+
+                        if (strtolower($participant['notify_method']) === 'both') {
+
+                            $this->sendMessageToQueue(
+                                self::SMS_QUEUE_NAME,
+                                '628112181993',
+                                'test message to wa');
+
+                            $this->sendMessageToQueue(
+                                self::WA_QUEUE_NAME,
+                                '628112181993',
+                                'test message to wa');
+                        }
+
+
+
                         // @todo push notification to que aws
+
+
                     }
 
                 }
@@ -88,6 +148,49 @@ class RdtEventParticipantImportController extends Controller
         $rdtInvitation->rdt_event_schedule_id = $participant['rdt_event_schedule_id'];
         $rdtInvitation->registration_code = $applicant->registration_code;
         $rdtInvitation->save();
+    }
+
+    private function getQueueUrl($queueName) {
+
+        return $this->sqs->getQueueUrl(new GetQueueUrlRequest([
+            'QueueName' => $queueName
+        ]))->getQueueUrl();
+    }
+
+    private function sendMessageToQueue($queueName, $phoneNumber, $message) {
+
+        $messageRequest = new SendMessageRequest([
+            'QueueUrl'          => $this->getQueueUrl($queueName),
+            'DelaySeconds'      => 10,
+            'MessageAttributes' => [
+                'PhoneNumber'   => [
+                    'DataType'  => 'String',
+                    'StringValue'   => $phoneNumber
+                ]
+            ],
+            'MessageBody'       => $message
+        ]);
+
+
+        $result = $this->sqs->sendMessage($messageRequest);
+
+        return [
+            $result->getMessageId(),
+            $result->getMD5OfMessageBody(),
+            $result->getMD5OfMessageSystemAttributes()
+        ];
 
     }
+
+    private function reformatPhoneNumber($phoneNumber, $format = 'sms')
+    {
+        if ($format === 'sms') {
+
+            if ($phoneNumber[0] == '6') {
+                return substr_replace($phoneNumber,'0',1);
+            }
+
+        }
+    }
+
 }
