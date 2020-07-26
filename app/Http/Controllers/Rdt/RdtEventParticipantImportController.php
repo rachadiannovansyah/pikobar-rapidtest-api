@@ -11,7 +11,6 @@ use AsyncAws\Core\AwsClientFactory;
 use AsyncAws\Sqs\Input\GetQueueUrlRequest;
 use AsyncAws\Sqs\Input\SendMessageRequest;
 use Box\Spout\Reader\Common\Creator\ReaderEntityFactory;
-use Illuminate\Http\Request;
 
 
 class RdtEventParticipantImportController extends Controller
@@ -43,7 +42,7 @@ class RdtEventParticipantImportController extends Controller
 
     }
 
-    public function __invoke(Request $request, RdtEvent $event)
+    public function __invoke(RdtInvitationImportRequest $request, RdtEvent $event)
     {
         $reader = ReaderEntityFactory::createXLSXReader();
 
