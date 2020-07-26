@@ -14,7 +14,7 @@ class AddScheduleToRdtInvitationsTable extends Migration
     public function up()
     {
         Schema::table('rdt_invitations', function (Blueprint $table) {
-            $table->foreignId('rdt_event_schedule_id')->after('rdt_event_id')->constrained('rdt_event_schedules');
+            $table->foreignId('rdt_event_schedule_id')->nullable()->after('rdt_event_id')->constrained('rdt_event_schedules');
         });
     }
 
