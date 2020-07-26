@@ -8,10 +8,8 @@ use App\Entities\RdtInvitation;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Rdt\RdtInvitationImportRequest;
 use AsyncAws\Core\AwsClientFactory;
-use AsyncAws\Sqs\Input\GetQueueAttributesRequest;
 use AsyncAws\Sqs\Input\GetQueueUrlRequest;
 use AsyncAws\Sqs\Input\SendMessageRequest;
-use Aws\Sqs\SqsClient;
 use Box\Spout\Reader\Common\Creator\ReaderEntityFactory;
 use Illuminate\Http\Request;
 
@@ -22,6 +20,12 @@ class RdtEventParticipantImportController extends Controller
     const SMS_QUEUE_NAME = 'smsblast-queue';
 
     const WA_QUEUE_NAME = 'wablast-queue';
+
+    const NOTIFY_SMS = 'sms';
+
+    const NOTIFY_WA = 'wa';
+
+    const NOTIFY_BOTH = 'both';
 
     private $sqs;
 
@@ -76,42 +80,11 @@ class RdtEventParticipantImportController extends Controller
 
                     if ( strtolower($participant['notify']) === 'yes' ) {
 
-                        if (strtolower($participant['notify_method']) === 'wa') {
-                            $this->sendMessageToQueue(
-                            self::WA_QUEUE_NAME,
-                            '628112181993',
-                            'test message to wa');
-                        }
-
-                        if (strtolower($participant['notify_method']) === 'sms') {
-                            $this->sendMessageToQueue(
-                                self::SMS_QUEUE_NAME,
-                                '628112181993',
-                                'test message to wa');
-                        }
-
-                        if (strtolower($participant['notify_method']) === 'both') {
-
-                            $this->sendMessageToQueue(
-                                self::SMS_QUEUE_NAME,
-                                '628112181993',
-                                'test message to wa');
-
-                            $this->sendMessageToQueue(
-                                self::WA_QUEUE_NAME,
-                                '628112181993',
-                                'test message to wa');
-                        }
-
-
-
-                        // @todo push notification to que aws
-
+                        $this->pushNotification($participant, $applicant);
 
                     }
 
                 }
-
 
             }
         }
@@ -172,25 +145,81 @@ class RdtEventParticipantImportController extends Controller
         ]);
 
 
-        $result = $this->sqs->sendMessage($messageRequest);
-
-        return [
-            $result->getMessageId(),
-            $result->getMD5OfMessageBody(),
-            $result->getMD5OfMessageSystemAttributes()
-        ];
+        $this->sqs->sendMessage($messageRequest);
 
     }
 
     private function reformatPhoneNumber($phoneNumber, $format = 'sms')
     {
-        if ($format === 'sms') {
 
-            if ($phoneNumber[0] == '6') {
-                return substr_replace($phoneNumber,'0',1);
-            }
+        if ($format === 'wa') {
+
+            return $this->reformatWa($phoneNumber);
 
         }
+
+        return $this->reformatSms($phoneNumber);
+
     }
 
+    private function reformatSms($phoneNumber)
+    {
+        if ($phoneNumber[0] == '6') {
+            return substr_replace($phoneNumber,'0',0, 2);
+        }
+
+        if ($phoneNumber[0] == '+') {
+            return substr_replace($phoneNumber,'0',0, 3);
+        }
+
+        return $phoneNumber;
+    }
+
+    private function reformatWa($phoneNumber)
+    {
+        if ($phoneNumber[0] == '0') {
+            return substr_replace($phoneNumber,'62',0, 1);
+        }
+
+        if ($phoneNumber[0] == '+') {
+            return substr_replace($phoneNumber,'',0, 1);
+        }
+
+        return $phoneNumber;
+    }
+
+    private function messageWa($name, $area, $registrationCode){
+
+        return  'Yth. '.$name.'
+                Sampurasun, Anda diundang untuk melakukan Tes Masif
+                COVID-19 oleh Dinkes '.$area.'
+                Silakan buka tautan https://s.id/tesmasif2 dan
+                masukkan Nomor Pendaftaran berikut: '.$registrationCode.' untuk melihat undangan. Hatur nuhun';
+    }
+
+    private function messageSms($area, $registrationCode){
+
+        return  'Sampurasun. Anda diundang Tes Masif COVID-19 Dinkes '. $area .'.Buka tautan s.id/tesmasif1 dan input nomor: '.$registrationCode.' untuk melihat undangan.';
+    }
+
+    private function pushNotification($participant, $applicant)
+    {
+        $phoneNumberWa  = $this->reformatPhoneNumber($participant['phone_number'], self::NOTIFY_WA);
+        $phoneNumberSms = $this->reformatPhoneNumber($participant['phone_number'], self::NOTIFY_SMS);
+        $messageWa      = $this->messageWa($applicant->name, $applicant->city->name, $applicant->registration_code);
+        $messageSms     = $this->messageSms($applicant->city->name, $applicant->registration_code);
+
+        if (strtolower($participant['notify_method']) === self::NOTIFY_WA ) {
+            $this->sendMessageToQueue(self::WA_QUEUE_NAME, $phoneNumberWa, $messageWa);
+        }
+
+        if (strtolower($participant['notify_method']) === self::NOTIFY_SMS) {
+            $this->sendMessageToQueue(self::SMS_QUEUE_NAME, $phoneNumberSms, $messageSms);
+        }
+
+        if (strtolower($participant['notify_method']) === self::NOTIFY_BOTH) {
+            $this->sendMessageToQueue(self::WA_QUEUE_NAME, $phoneNumberWa, $messageWa);
+            $this->sendMessageToQueue(self::SMS_QUEUE_NAME, $phoneNumberSms, $messageSms);
+        }
+    }
 }
