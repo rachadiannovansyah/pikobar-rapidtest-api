@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\Rdt;
 
-use App\Entities\RdtApplicant;
 use App\Entities\RdtEvent;
+use App\Entities\RdtInvitation;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Rdt\RdtCheckinRequest;
 use App\Http\Resources\RdtApplicantResource;
@@ -23,12 +23,14 @@ class RdtCheckinController extends Controller
         $eventCode = $request->input('event_code');
         $event     = RdtEvent::where('event_code', $eventCode)->firstOrFail();
 
-        $applicant = RdtApplicant::where('registration_code', $registrationCode)
+        $invitation = RdtInvitation::where('registration_code', $registrationCode)
 //            ->where('rdt_event_id', $event->id)
             ->firstOrFail();
 
-        $applicant->attended_at = now();
-        $applicant->save();
+        $invitation->attended_at = now();
+        $invitation->save();
+
+        $applicant = $invitation->applicant;
 
         return new RdtApplicantResource($applicant);
     }
