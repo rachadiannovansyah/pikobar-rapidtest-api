@@ -14,6 +14,8 @@ class RdtInvitationObserver
      */
     public function creating(RdtInvitation $rdtInvitation)
     {
-        $rdtInvitation->registration_code = $rdtInvitation->applicant->registration_code;
+        if ($rdtInvitation->applicant) {
+            $rdtInvitation->registration_code = $rdtInvitation->applicant->registration_code;
+        }
     }
 }

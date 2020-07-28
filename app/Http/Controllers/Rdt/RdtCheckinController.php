@@ -7,6 +7,7 @@ use App\Entities\RdtInvitation;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Rdt\RdtCheckinRequest;
 use App\Http\Resources\RdtApplicantResource;
+use Illuminate\Support\Facades\Log;
 
 class RdtCheckinController extends Controller
 {
@@ -31,6 +32,11 @@ class RdtCheckinController extends Controller
         $invitation->save();
 
         $applicant = $invitation->applicant;
+
+        Log::info('APPLICANT_EVENT_CHECKIN', [
+            'id'                => $applicant->id,
+            'registration_code' => $applicant->registration_code,
+        ]);
 
         return new RdtApplicantResource($applicant);
     }
