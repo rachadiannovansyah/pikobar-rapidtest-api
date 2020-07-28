@@ -21,11 +21,11 @@ class RdtEventParticipantAddController extends Controller
     public function __invoke(Request $request, RdtEvent $rdtEvent)
     {
         $applicants   = $request->input('applicants');
-        $applicantIds = Arr::pluck($applicants, 'rdt_applicant_id');
 
-        foreach ($applicantIds as $applicantId) {
-            $invitation = RdtInvitation::firstOrNew(['rdt_applicant_id' => $applicantId]);
+        foreach ($applicants as $applicant) {
+            $invitation = RdtInvitation::firstOrNew(['rdt_applicant_id' => $applicant['rdt_applicant_id']]);
             $invitation->event()->associate($rdtEvent);
+            $invitation->rdt_event_schedule_id = $applicant['rdt_event_schedule_id'];
             $invitation->save();
         }
 
