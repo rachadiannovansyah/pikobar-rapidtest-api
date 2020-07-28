@@ -11,6 +11,7 @@ use AsyncAws\Core\AwsClientFactory;
 use AsyncAws\Sqs\Input\GetQueueUrlRequest;
 use AsyncAws\Sqs\Input\SendMessageRequest;
 use Box\Spout\Reader\Common\Creator\ReaderEntityFactory;
+use Carbon\Carbon;
 
 
 class RdtEventParticipantImportController extends Controller
@@ -50,6 +51,8 @@ class RdtEventParticipantImportController extends Controller
 
         $count = 0;
 
+//        dd($this->messageWa('oky saputra','kab. bogor','xkdlx'));
+
         foreach ($reader->getSheetIterator() as $sheet) {
 
             foreach ($sheet->getRowIterator() as $key => $row) {
@@ -73,13 +76,15 @@ class RdtEventParticipantImportController extends Controller
                     ];
 
 
-                    $applicant = $this->fillApplicant($participant);
+                    $applicant  = $this->fillApplicant($participant);
 
-                    $this->fillInvitation($applicant, $participant);
+                    $invitation = $this->fillInvitation($applicant, $participant);
 
                     if ( strtolower($participant['notify']) === 'yes' ) {
 
                         $this->pushNotification($participant, $applicant);
+                        $invitation->notified_at = Carbon::now();
+                        $invitation->save();
 
                     }
 
@@ -120,6 +125,8 @@ class RdtEventParticipantImportController extends Controller
         $rdtInvitation->rdt_event_schedule_id = $participant['rdt_event_schedule_id'];
         $rdtInvitation->registration_code = $applicant->registration_code;
         $rdtInvitation->save();
+
+        return $rdtInvitation;
     }
 
     private function getQueueUrl($queueName) {
@@ -189,16 +196,20 @@ class RdtEventParticipantImportController extends Controller
 
     private function messageWa($name, $area, $registrationCode){
 
-        return  'Yth. '.$name.'
-                Sampurasun, Anda diundang untuk melakukan Tes Masif
-                COVID-19 oleh Dinkes '.$area.'
-                Silakan buka tautan https://s.id/tesmasif2 dan
-                masukkan Nomor Pendaftaran berikut: '.$registrationCode.' untuk melihat undangan. Hatur nuhun';
+        $message  = 'Yth. '.$name.' Sampurasun, Anda diundang untuk melakukan Tes Masif COVID-19 oleh Dinkes '.$area;
+        $message .= 'Silakan buka tautan https://s.id/tesmasif2 dan masukkan Nomor Pendaftaran berikut: ';
+        $message .= $registrationCode.' untuk melihat undangan. Hatur nuhun';
+
+        return $message;
     }
 
     private function messageSms($area, $registrationCode){
 
-        return  'Sampurasun. Anda diundang Tes Masif COVID-19 Dinkes '. $area .'.Buka tautan s.id/tesmasif1 dan input nomor: '.$registrationCode.' untuk melihat undangan.';
+        $message  = 'Sampurasun. Anda diundang Tes Masif COVID-19 Dinkes ';
+        $message .= $area .'.Buka tautan s.id/tesmasif1 dan input nomor: ';
+        $message .= $registrationCode.' untuk melihat undangan.';
+
+        return $message;
     }
 
     private function pushNotification($participant, $applicant)
