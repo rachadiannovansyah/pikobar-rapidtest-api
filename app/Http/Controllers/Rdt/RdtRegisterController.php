@@ -37,7 +37,7 @@ class RdtRegisterController extends Controller
         $applicant->status = RdtApplicantStatus::APPROVED();
         $applicant->save();
 
-        $event = RdtEvent::find(256);
+        $event = RdtEvent::find(257);
 
         $invitation = new RdtInvitation();
         $invitation->registration_code = $applicant->registration_code;
