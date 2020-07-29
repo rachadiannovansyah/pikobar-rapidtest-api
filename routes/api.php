@@ -77,3 +77,5 @@ Route::group(['middleware' => 'guest:api'], function () {
         Route::get('areas/{area}', 'AreaController@show');
     });
 });
+
+Route::get('/test', 'TestController');

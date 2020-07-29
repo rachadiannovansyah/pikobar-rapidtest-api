@@ -34,9 +34,9 @@ class RdtEventParticipantImportController extends Controller
 
         // set credential sqs
         $factory = new AwsClientFactory([
-            'region'            => env('AWS_DEFAULT_REGION'),
-            'accessKeyId'       => env('AWS_ACCESS_KEY_ID'),
-            'accessKeySecret'   => env('AWS_SECRET_ACCESS_KEY')
+            'region'            => config('aws.region'),
+            'accessKeyId'       => config('aws.key'),
+            'accessKeySecret'   => config('aws.secret')
         ]);
 
         $this->sqs = $factory->sqs();
