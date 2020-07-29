@@ -195,7 +195,7 @@ class RdtEventParticipantImportController extends Controller
     private function messageWa($name, $hostName, $registrationCode){
 
         $message  = 'Yth. '.$name.' Sampurasun, Anda diundang untuk melakukan Tes Masif COVID-19 oleh '.$hostName;
-        $message .= 'Silakan buka tautan https://s.id/tesmasif2 dan masukkan Nomor Pendaftaran berikut: ';
+        $message .= ' Silakan buka tautan https://s.id/tesmasif2 dan masukkan Nomor Pendaftaran berikut: ';
         $message .= $registrationCode.' untuk melihat undangan. Hatur nuhun';
 
         return $message;
