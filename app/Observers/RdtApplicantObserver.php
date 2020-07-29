@@ -17,13 +17,16 @@ class RdtApplicantObserver
     public function creating(RdtApplicant $rdtApplicant)
     {
         $rdtApplicant->province_code     = '32';
-        $rdtApplicant->registration_code = $this->generateUniqueEventCode();
+
+        $prefixAreaCode = str_replace('.', '', $rdtApplicant->city_code);
+
+        $rdtApplicant->registration_code = $this->generateUniqueCode($prefixAreaCode);
     }
 
-    protected function generateUniqueEventCode()
+    protected function generateUniqueCode($prefixAreaCode)
     {
         while(true) {
-            $code = $this->generateCode();
+            $code = $prefixAreaCode . $this->generateCode();
 
             $doesCodeExist = DB::table('rdt_applicants')
                 ->where('registration_code', $code)
@@ -39,6 +42,6 @@ class RdtApplicantObserver
     {
         $random = new Random();
 
-        return $random->numeric()->size(9)->get();
+        return $random->numeric()->size(5)->get();
     }
 }
