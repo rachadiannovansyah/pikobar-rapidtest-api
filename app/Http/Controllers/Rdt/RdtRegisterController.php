@@ -34,10 +34,11 @@ class RdtRegisterController extends Controller
         ]);
 
         // @TODO Temporary register on the spot what the father
+        /**
         $applicant->status = RdtApplicantStatus::APPROVED();
         $applicant->save();
 
-        $event = RdtEvent::find(256);
+        $event = RdtEvent::find(257);
 
         $invitation = new RdtInvitation();
         $invitation->registration_code = $applicant->registration_code;
@@ -45,6 +46,7 @@ class RdtRegisterController extends Controller
         $invitation->save();
 
         $applicant->invitations()->save($invitation);
+         */
 
         $url = URL::route(
             'registration.download',
