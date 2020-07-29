@@ -11,6 +11,7 @@ use AsyncAws\Core\AwsClientFactory;
 use AsyncAws\Sqs\Input\GetQueueUrlRequest;
 use AsyncAws\Sqs\Input\SendMessageRequest;
 use Box\Spout\Reader\Common\Creator\ReaderEntityFactory;
+use Carbon\Carbon;
 
 
 class RdtEventParticipantImportController extends Controller
@@ -42,7 +43,7 @@ class RdtEventParticipantImportController extends Controller
 
     }
 
-    public function __invoke(RdtInvitationImportRequest $request, RdtEvent $event)
+    public function __invoke(RdtInvitationImportRequest $request, RdtEvent $rdtEvent)
     {
         $reader = ReaderEntityFactory::createXLSXReader();
 
@@ -73,13 +74,15 @@ class RdtEventParticipantImportController extends Controller
                     ];
 
 
-                    $applicant = $this->fillApplicant($participant);
+                    $applicant  = $this->fillApplicant($participant);
 
-                    $this->fillInvitation($applicant, $participant);
+                    $invitation = $this->fillInvitation($applicant, $participant);
 
                     if ( strtolower($participant['notify']) === 'yes' ) {
 
-                        $this->pushNotification($participant, $applicant);
+                        $this->pushNotification($participant, $rdtEvent, $applicant);
+                        $invitation->notified_at = Carbon::now();
+                        $invitation->save();
 
                     }
 
@@ -120,6 +123,8 @@ class RdtEventParticipantImportController extends Controller
         $rdtInvitation->rdt_event_schedule_id = $participant['rdt_event_schedule_id'];
         $rdtInvitation->registration_code = $applicant->registration_code;
         $rdtInvitation->save();
+
+        return $rdtInvitation;
     }
 
     private function getQueueUrl($queueName) {
@@ -187,26 +192,30 @@ class RdtEventParticipantImportController extends Controller
         return $phoneNumber;
     }
 
-    private function messageWa($name, $area, $registrationCode){
+    private function messageWa($name, $hostName, $registrationCode){
 
-        return  'Yth. '.$name.'
-                Sampurasun, Anda diundang untuk melakukan Tes Masif
-                COVID-19 oleh Dinkes '.$area.'
-                Silakan buka tautan https://s.id/tesmasif2 dan
-                masukkan Nomor Pendaftaran berikut: '.$registrationCode.' untuk melihat undangan. Hatur nuhun';
+        $message  = 'Yth. '.$name.' Sampurasun, Anda diundang untuk melakukan Tes Masif COVID-19 oleh '.$hostName;
+        $message .= ' Silakan buka tautan https://s.id/tesmasif2 dan masukkan Nomor Pendaftaran berikut: ';
+        $message .= $registrationCode.' untuk melihat undangan. Hatur nuhun';
+
+        return $message;
     }
 
-    private function messageSms($area, $registrationCode){
+    private function messageSms($hostName, $registrationCode){
 
-        return  'Sampurasun. Anda diundang Tes Masif COVID-19 Dinkes '. $area .'.Buka tautan s.id/tesmasif1 dan input nomor: '.$registrationCode.' untuk melihat undangan.';
+        $message  = 'Sampurasun. Anda diundang Tes Masif COVID-19 ';
+        $message .= $hostName .'.Buka tautan s.id/tesmasif1 dan input nomor: ';
+        $message .= $registrationCode.' untuk melihat undangan.';
+
+        return $message;
     }
 
-    private function pushNotification($participant, $applicant)
+    private function pushNotification($participant, $event, $applicant)
     {
         $phoneNumberWa  = $this->reformatPhoneNumber($participant['phone_number'], self::NOTIFY_WA);
         $phoneNumberSms = $this->reformatPhoneNumber($participant['phone_number'], self::NOTIFY_SMS);
-        $messageWa      = $this->messageWa($applicant->name, $applicant->city->name, $applicant->registration_code);
-        $messageSms     = $this->messageSms($applicant->city->name, $applicant->registration_code);
+        $messageWa      = $this->messageWa($applicant->name, $event->host_name, $applicant->registration_code);
+        $messageSms     = $this->messageSms($event->host_name, $applicant->registration_code);
 
         if (strtolower($participant['notify_method']) === self::NOTIFY_WA ) {
             $this->sendMessageToQueue(self::WA_QUEUE_NAME, $phoneNumberWa, $messageWa);
