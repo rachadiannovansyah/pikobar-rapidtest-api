@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use AsyncAws\Core\AwsClientFactory;
 use AsyncAws\Sqs\Input\SendMessageRequest;
 use Illuminate\Http\Request;
 
@@ -16,13 +15,9 @@ class TestController extends Controller
      */
     public function __invoke(Request $request)
     {
-        $factory = new AwsClientFactory([
-            'region'            => config('aws.region'),
-            'accessKeyId'       => config('aws.key'),
-            'accessKeySecret'   => config('aws.secret')
-        ]);
+        $aws = app('aws');
 
-        $sqs = $factory->sqs();
+        $sqs = $aws->sqs();
 
         $queueUrl = $sqs->getQueueUrl(['QueueName' => 'smsblast-queue'])->getQueueUrl();
 

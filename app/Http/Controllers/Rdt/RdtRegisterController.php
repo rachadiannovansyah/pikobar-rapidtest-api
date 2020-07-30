@@ -3,12 +3,10 @@
 namespace App\Http\Controllers\Rdt;
 
 use App\Entities\RdtApplicant;
-use App\Entities\RdtEvent;
-use App\Entities\RdtInvitation;
 use App\Enums\RdtApplicantStatus;
+use App\Events\Rdt\ApplicantRegistered;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Rdt\RdtRegisterRequest;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\URL;
 use UrlSigner;
 
@@ -28,10 +26,7 @@ class RdtRegisterController extends Controller
         $applicant->fill($request->all());
         $applicant->save();
 
-        Log::info('APPLICANT_REGISTER', [
-            'id'                => $applicant->id,
-            'registration_code' => $applicant->registration_code,
-        ]);
+        event(new ApplicantRegistered($applicant));
 
         // @TODO Temporary register on the spot what the father
         /**

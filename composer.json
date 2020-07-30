@@ -6,6 +6,7 @@
     "type": "project",
     "require": {
         "php": "^7.2.5",
+        "async-aws/sns": "^1.0",
         "async-aws/sqs": "^1.2",
         "avdevs/keycloak": "^1.0@dev",
         "barryvdh/laravel-dompdf": "^0.8.6",

@@ -9,6 +9,7 @@ use App\Observers\RdtEventObserver;
 use App\Entities\RdtApplicant;
 use App\Entities\RdtEvent;
 use App\Observers\RdtInvitationObserver;
+use AsyncAws\Core\AwsClientFactory;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
 
@@ -22,7 +23,6 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         Schema::defaultStringLength(191);
-        $this->bootKeycloakSocialite();
 
         RdtEvent::observe(RdtEventObserver::class);
         RdtApplicant::observe(RdtApplicantObserver::class);
@@ -36,22 +36,12 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
-    }
-
-    /**
-     * bootKeycloakSocialite func
-     *
-     */
-    private function bootKeycloakSocialite()
-    {
-        $socialite = $this->app->make('Laravel\Socialite\Contracts\Factory');
-        $socialite->extend(
-            'keycloak',
-            function ($app) use ($socialite) {
-                $config = $app['config']['services.keycloak'];
-                return new CustomKeycloakProvider($config);
-            }
-        );
+        $this->app->singleton('aws', function ($app) {
+            return new AwsClientFactory([
+                'region'            => config('aws.region'),
+                'accessKeyId'       => config('aws.key'),
+                'accessKeySecret'   => config('aws.secret')
+            ]);
+        });
     }
 }
