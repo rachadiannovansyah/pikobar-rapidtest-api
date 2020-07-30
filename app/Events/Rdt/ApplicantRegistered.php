@@ -24,9 +24,9 @@ class ApplicantRegistered
     /**
      * Create a new event instance.
      *
-     * @return void
+     * @param RdtApplicant $applicant
      */
-    public function __construct($applicant)
+    public function __construct(RdtApplicant $applicant)
     {
         $this->applicant = $applicant;
 

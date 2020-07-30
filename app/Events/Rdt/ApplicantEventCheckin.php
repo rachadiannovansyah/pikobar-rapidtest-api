@@ -1,0 +1,51 @@
+<?php
+
+namespace App\Events\Rdt;
+
+use App\Entities\RdtApplicant;
+use App\Entities\RdtInvitation;
+use Illuminate\Broadcasting\Channel;
+use Illuminate\Broadcasting\InteractsWithSockets;
+use Illuminate\Broadcasting\PresenceChannel;
+use Illuminate\Broadcasting\PrivateChannel;
+use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+use Illuminate\Foundation\Events\Dispatchable;
+use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Log;
+
+class ApplicantEventCheckin
+{
+    use Dispatchable, InteractsWithSockets, SerializesModels;
+
+    /**
+     * @var RdtInvitation
+     */
+    public $rdtInvitation;
+
+    /**
+     * @var RdtApplicant
+     */
+    public $rdtApplicant;
+
+    /**
+     * Create a new event instance.
+     *
+     * @param RdtApplicant $rdtApplicant
+     * @param RdtInvitation $rdtInvitation
+     */
+    public function __construct(RdtApplicant $rdtApplicant, RdtInvitation $rdtInvitation)
+    {
+        $this->rdtInvitation = $rdtInvitation;
+
+        Log::info('APPLICANT_EVENT_CHECKIN', [
+            'applicant_id'      => $rdtApplicant->id,
+            'registration_code' => $rdtApplicant->registration_code,
+            'invitation_id'     => $rdtInvitation->id,
+            'event_id'          => $rdtInvitation->rdt_event_id,
+            'event_schedule_id' => $rdtInvitation->rdt_event_schedule_id,
+            'attended_at'       => $rdtInvitation->attended_at,
+        ]);
+
+        $this->rdtApplicant = $rdtApplicant;
+    }
+}

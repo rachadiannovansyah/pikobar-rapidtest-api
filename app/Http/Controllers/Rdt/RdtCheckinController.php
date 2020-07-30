@@ -4,10 +4,10 @@ namespace App\Http\Controllers\Rdt;
 
 use App\Entities\RdtEvent;
 use App\Entities\RdtInvitation;
+use App\Events\Rdt\ApplicantEventCheckin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Rdt\RdtCheckinRequest;
 use App\Http\Resources\RdtApplicantResource;
-use Illuminate\Support\Facades\Log;
 
 class RdtCheckinController extends Controller
 {
@@ -33,10 +33,7 @@ class RdtCheckinController extends Controller
 
         $applicant = $invitation->applicant;
 
-        Log::info('APPLICANT_EVENT_CHECKIN', [
-            'id'                => $applicant->id,
-            'registration_code' => $applicant->registration_code,
-        ]);
+        event(new ApplicantEventCheckin($applicant, $invitation));
 
         return new RdtApplicantResource($applicant);
     }

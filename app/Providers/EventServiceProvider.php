@@ -2,7 +2,9 @@
 
 namespace App\Providers;
 
+use App\Events\Rdt\ApplicantEventCheckin;
 use App\Events\Rdt\ApplicantRegistered;
+use App\Listeners\Rdt\SendApplicantEventCheckinTopic;
 use App\Listeners\Rdt\SendRegisteredTopic;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 
@@ -17,6 +19,9 @@ class EventServiceProvider extends ServiceProvider
         ApplicantRegistered::class => [
             SendRegisteredTopic::class,
         ],
+        ApplicantEventCheckin::class => [
+            SendApplicantEventCheckinTopic::class,
+        ]
     ];
 
     /**
