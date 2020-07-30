@@ -2,6 +2,7 @@
 
 namespace App\Events\Rdt;
 
+use App\Entities\RdtApplicant;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PresenceChannel;
@@ -15,6 +16,9 @@ class ApplicantRegistered
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
+    /**
+     * @var RdtApplicant
+     */
     public $applicant;
 
     /**
