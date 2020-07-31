@@ -38,7 +38,7 @@ class RdtRegisterRequest extends FormRequest
             'district_code'        => ['required', 'exists:areas,code_kemendagri'],
             'village_code'         => ['required', 'exists:areas,code_kemendagri'],
             'email'                => ['required', 'email'],
-            'phone_number'         => 'required',
+            'phone_number'         => ['required', 'min:11','max:13'],
             'gender'               => ['required', new EnumValueRule(Gender::class)],
             'person_status'        => ['required', new EnumValueRule(PersonCaseStatusEnum::class)],
             'birth_date'           => ['required', 'date'],
