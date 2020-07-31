@@ -24,8 +24,10 @@ class RdtCheckinController extends Controller
         $eventCode = $request->input('event_code');
         $event     = RdtEvent::where('event_code', $eventCode)->firstOrFail();
 
+        // Make sure checkin on latest invitation
         $invitation = RdtInvitation::where('registration_code', $registrationCode)
 //            ->where('rdt_event_id', $event->id)
+            ->orderBy('id', 'desc')
             ->firstOrFail();
 
         $invitation->attended_at = now();
