@@ -36,12 +36,12 @@ class Area extends Model
 
     public function children()
     {
-        return $this->hasMany(Area::class, 'parent_code_kemendagri');
+        return $this->hasMany(Area::class, 'parent_code_kemendagri', 'code_kemendagri');
     }
 
     public function parent()
     {
-        return $this->belongsTo(Area::class, 'id', 'parent_code_kemendagri');
+        return $this->belongsTo(Area::class, 'code_kemendagri', 'parent_code_kemendagri');
     }
 
     /**

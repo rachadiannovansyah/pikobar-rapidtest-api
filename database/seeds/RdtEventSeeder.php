@@ -19,7 +19,7 @@ class RdtEventSeeder extends Seeder
         $start->hours(8)->minutes(0)->seconds(0);
 
         factory(RdtEvent::class, 50)->make()->each(function (RdtEvent $event) use ($start) {
-            $randomCity = Area::where('depth', 2)->inRandomOrder()->first();
+            $randomCity = Area::where('parent_code_kemendagri', '32')->inRandomOrder()->first();
 
             $event->event_name = 'Tes Masif '.$randomCity->name;
             $event->host_name  = 'Dinas Kesehatan '.$randomCity->name;

@@ -15,16 +15,14 @@ class CreateAreasTable extends Migration
     {
         Schema::create('areas', function (Blueprint $table) {
             $table->id();
-            $table->integer('parent_id')->nullable();
             $table->integer('depth')->nullable();
             $table->string('name')->nullable()->index();
-            $table->string('code_bps')->nullable()->unique();
+            $table->string('parent_code_kemendagri')->nullable()->index();
             $table->string('code_kemendagri')->nullable()->unique();
-            $table->string('code_dinkes')->nullable()->unique();
-            $table->string('longitude')->nullable();
+            $table->string('code_bps')->nullable()->unique();
             $table->string('latitude')->nullable();
+            $table->string('longitude')->nullable();
             $table->string('meta')->nullable();
-            $table->tinyInteger('status')->nullable();
             $table->timestamps();
         });
     }
