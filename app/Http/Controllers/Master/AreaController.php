@@ -12,32 +12,26 @@ class AreaController extends ApiController
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
     public function index(Request $request)
     {
-        $areas = Area::query();
+        $records = Area::query();
 
         if ($request->has('depth')) {
-            $areas = $areas->where('depth', $request->input('depth'));
+            $records = $records->where('depth', $request->input('depth'));
         }
 
-        if ($request->has('parent_id')) {
-            $areas = $areas->where('id', $request->input('parent_id'));
-        } elseif ($request->has('parent_code_kemendagri')) {
-            $areas = $areas->where('code_kemendagri', $request->input('parent_code_kemendagri'));
-        } elseif ($request->has('parent_code_bps')) {
-            $areas = $areas->where('code_bps', $request->input('parent_code_bps'));
-            // if no parent_id, code_kemendagri, or bps defined, default to
-            // parent_id ='1' (jawa barat)
+        if ($request->has('parent_code_kemendagri')) {
+            $records = $records->where('parent_code_kemendagri', $request->input('parent_code_kemendagri'));
         } else {
-            $areas = $areas->where('id', 1);
+            $records = $records->where('parent_code_kemendagri', '32');
         }
 
-        $parentArea = $areas->first();
-        $childAreas = $parentArea->children()->orderBy('name')->get();
+        $records->orderBy('name');
 
-        return AreaResource::collection($childAreas);
+        return AreaResource::collection($records->get());
     }
 
     /**
