@@ -16,7 +16,8 @@ class RdtApplicantObserver
      */
     public function creating(RdtApplicant $rdtApplicant)
     {
-        $rdtApplicant->province_code     = '32';
+        $rdtApplicant->name          = strtoupper($rdtApplicant->name);
+        $rdtApplicant->province_code = '32';
 
         $prefixAreaCode = str_replace('.', '', $rdtApplicant->city_code);
 
