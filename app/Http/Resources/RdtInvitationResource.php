@@ -24,6 +24,8 @@ class RdtInvitationResource extends JsonResource
             'rdt_event_schedule_id' => $this->rdt_event_schedule_id,
             'test_type'             => $this->test_type,
             'lab_result_type'       => $this->lab_result_type,
+            'notified_at'           => $this->notified_at,
+            'attended_at'           => $this->attended_at,
             'result_at'             => $this->result_at,
             'created_at'            => $this->created_at,
         ];
