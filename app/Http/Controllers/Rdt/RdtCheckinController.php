@@ -22,7 +22,7 @@ class RdtCheckinController extends Controller
         $registrationCode = $request->input('registration_code');
 
         $eventCode = $request->input('event_code');
-        $event     = RdtEvent::where('event_code', $eventCode)->firstOrFail();
+//        $event     = RdtEvent::where('event_code', $eventCode)->firstOrFail();
 
         // Make sure checkin on latest invitation
         $invitation = RdtInvitation::where('registration_code', $registrationCode)
@@ -30,7 +30,8 @@ class RdtCheckinController extends Controller
             ->orderBy('id', 'desc')
             ->firstOrFail();
 
-        $invitation->attended_at = now();
+        $invitation->lab_code_sample = $request->input('lab_code_sample');
+        $invitation->attended_at     = now();
         $invitation->save();
 
         $applicant = $invitation->applicant;

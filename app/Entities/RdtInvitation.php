@@ -8,15 +8,31 @@ use Illuminate\Database\Eloquent\Model;
 use Spatie\Enum\Laravel\HasEnums;
 
 /**
+ * @property string $rdt_applicant_id
+ * @property string $rdt_event_id
+ * @property string $rdt_event_schedule_id
  * @property string $registration_code
+ * @property string $test_type
+ * @property string $lab_result_type
+ * @property string $lab_code_sample
  * @property \App\Entities\RdtApplicant $applicant
- * @property \Illuminate\Support\Carbon attended_at
+ * @property \App\Entities\RdtEvent $event
+ * @property \App\Entities\RdtEventSchedule $schedule
+ * @property \Illuminate\Support\Carbon $confirmed_at
+ * @property \Illuminate\Support\Carbon $attended_at
+ * @property \Illuminate\Support\Carbon $result_at
+ * @property \Illuminate\Support\Carbon $notified_at
  */
 class RdtInvitation extends Model
 {
     use HasEnums;
 
-    protected $fillable = ['rdt_applicant_id'];
+    protected $fillable = [
+        'rdt_applicant_id',
+        'test_type',
+        'lab_result_type',
+        'lab_code_sample'
+    ];
 
     protected $enums = [
         'lab_result_type' => LabResultType::class.':nullable',
