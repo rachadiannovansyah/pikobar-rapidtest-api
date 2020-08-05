@@ -108,7 +108,7 @@ class RdtEventParticipantImportController extends Controller
               'name'              => $participant['name'],
               'city_code'         => $participant['city_code'],
               'phone_number'      => $participant['phone_number'],
-              'status'            => RdtApplicantStatus::NEW()
+              'status'            => RdtApplicantStatus::APPROVED()
             ]);
 
         $applicant->rdt_event_id = $participant['rdt_event_id'];
