@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Rdt;
 use App\Entities\RdtApplicant;
 use App\Entities\RdtEvent;
 use App\Entities\RdtInvitation;
+use App\Enums\RdtApplicantStatus;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Rdt\RdtInvitationImportRequest;
 use AsyncAws\Core\AwsClientFactory;
@@ -106,7 +107,8 @@ class RdtEventParticipantImportController extends Controller
               'nik'               => $participant['nik'],
               'name'              => $participant['name'],
               'city_code'         => $participant['city_code'],
-              'phone_number'      => $participant['phone_number']
+              'phone_number'      => $participant['phone_number'],
+              'status'            => RdtApplicantStatus::APPROVED()
             ]);
 
         $applicant->rdt_event_id = $participant['rdt_event_id'];
