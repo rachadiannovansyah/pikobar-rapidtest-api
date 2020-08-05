@@ -16,6 +16,7 @@ use UrlSigner;
  * @property int $status
  * @property string $name
  * @property string $city_code
+ * @property bool $is_pns
  */
 class RdtApplicant extends Model
 {
@@ -24,6 +25,7 @@ class RdtApplicant extends Model
     protected $fillable = [
         'nik', 'name', 'address', 'province_code', 'city_code', 'district_code', 'village_code',
         'email', 'phone_number', 'gender', 'birth_date', 'occupation_type', 'occupation_name', 'workplace_name',
+        'is_pns',
         'symptoms', 'symptoms_notes', 'symptoms_interaction', 'symptoms_activity', 'person_status',
         'latitude', 'longitude', 'pikobar_session_id', 'pikobar_user_id',
     ];
@@ -48,6 +50,7 @@ class RdtApplicant extends Model
     protected $casts = [
         'symptoms'          => 'array',
         'symptoms_activity' => 'array',
+        'is_pns'            => 'boolean',
     ];
 
     protected $enums = [

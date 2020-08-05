@@ -36,6 +36,7 @@ class RdtApplicantResource extends JsonResource
                 'workplace_name'       => $this->workplace_name,
                 'occupation_type'      => $this->occupation_type,
                 'occupation_name'      => $this->occupation_name,
+                'is_pns'               => $this->is_pns,
                 'symptoms'             => $this->symptoms,
                 'symptoms_interaction' => $this->symptoms_interaction,
                 'symptoms_notes'       => $this->symptoms_notes,
