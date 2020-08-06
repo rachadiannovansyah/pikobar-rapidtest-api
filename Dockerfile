@@ -8,6 +8,7 @@ RUN apk --no-cache add php-pdo_mysql php-mysqli php-gd php-iconv php-bcmath php-
 
 # Copy configurations
 COPY ./docker/nginx.conf /etc/nginx/nginx.conf
+COPY ./docker/fpm-pool.conf /etc/php7/php-fpm.d/www.conf
 
 # Switch to use a non-root user from here on
 USER nobody
