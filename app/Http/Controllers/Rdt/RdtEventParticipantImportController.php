@@ -6,6 +6,7 @@ use App\Entities\RdtApplicant;
 use App\Entities\RdtEvent;
 use App\Entities\RdtInvitation;
 use App\Enums\RdtApplicantStatus;
+use App\Enums\RdtEventStatus;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Rdt\RdtInvitationImportRequest;
 use AsyncAws\Core\AwsClientFactory;
@@ -51,6 +52,9 @@ class RdtEventParticipantImportController extends Controller
         $reader->open($request->file->path());
 
         $count = 0;
+
+        $rdtEvent->status = RdtEventStatus::PUBLISHED();
+        $rdtEvent->save();
 
         foreach ($reader->getSheetIterator() as $sheet) {
 
