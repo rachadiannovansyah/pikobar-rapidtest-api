@@ -12,6 +12,7 @@ use UrlSigner;
 
 /**
  * @property string $registration_code
+ * @property string $pikobar_session_id
  * @property string $province_code
  * @property int $status
  * @property string $name
