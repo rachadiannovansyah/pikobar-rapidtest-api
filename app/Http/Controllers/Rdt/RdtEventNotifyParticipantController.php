@@ -50,19 +50,17 @@ class RdtEventNotifyParticipantController extends Controller
 
             if ( $notifyMethod === 'BOTH') {
 
-                $phoneNumberSms = $this->reformatPhoneNumber
+                $phoneNumber    = $this->reformatPhoneNumber
                                        ->reformat($applicant->phone_number);
-                $phoneNumberWa  = $this->reformatPhoneNumber
-                                       ->reformat($applicant->phone_number, ReformatPhoneNumber::FORMAT_WA);
                 $messageSms     = $this->invitationMessage
                                        ->messageSms($rdtEvent->host_name, $applicant->registration_code);
                 $messageWa      = $this->invitationMessage
                                        ->messageWa($applicant->name, $rdtEvent->host_name, $applicant->registration_code);
 
                 $this->sqsMessage
-                     ->sendMessageToQueue(SqsMessage::SMS_QUEUE_NAME, $phoneNumberSms, $messageSms);
+                     ->sendMessageToQueue(SqsMessage::SMS_QUEUE_NAME, $phoneNumber, $messageSms);
                 $this->sqsMessage
-                     ->sendMessageToQueue(SqsMessage::WA_QUEUE_NAME, $phoneNumberWa, $messageWa);
+                     ->sendMessageToQueue(SqsMessage::WA_QUEUE_NAME, $phoneNumber, $messageWa);
 
                 $invitation->notified_at = Carbon::now();
                 $invitation->save();
