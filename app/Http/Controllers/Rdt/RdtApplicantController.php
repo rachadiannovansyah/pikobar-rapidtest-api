@@ -25,7 +25,7 @@ class RdtApplicantController extends Controller
         $sortOrder         = $request->input('sort_order', 'desc');
         $status            = $request->input('status', 'new');
         $search            = $request->input('search');
-        $pikobarSessionId  = $request->input('pikobar_session_id');
+        $sessionId         = $request->input('session_id');
 
         if ($perPage > 20) {
             $perPage = 15;
@@ -59,10 +59,6 @@ class RdtApplicantController extends Controller
             });
         }
 
-        if ($pikobarSessionId) {
-            $records->where('pikobar_session_id', '=', $pikobarSessionId);
-        }
-
         if ($request->has('city_code')) {
             $records->where('city_code', $request->input('city_code'));
         }
@@ -78,7 +74,14 @@ class RdtApplicantController extends Controller
         $records->orderBy($sortBy, $sortOrder);
         $records->with(['invitations', 'invitations.event', 'city', 'district', 'village']);
 
-        return RdtApplicantResource::collection($records->paginate($perPage));
+        if ($request->has('session_id') === true &&  strtolower($perPage) === 'all') {
+            $records->where('pikobar_session_id', '=', $sessionId);
+            $records = $records->get();
+        }else{
+            $records = $records->paginate($perPage);
+        }
+
+        return RdtApplicantResource::collection($records);
     }
 
     /**
