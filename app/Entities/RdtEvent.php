@@ -59,4 +59,9 @@ class RdtEvent extends Model
     {
         return $this->hasMany(RdtInvitation::class, 'rdt_event_id');
     }
+
+    public function attendees()
+    {
+        return $this->hasMany(RdtInvitation::class, 'rdt_event_id')->whereNotNull('attended_at');
+    }
 }
