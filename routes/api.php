@@ -59,6 +59,8 @@ Route::group(['middleware' => 'auth:api'], function() {
     Route::post('rdt/events/{rdtEvent}/participants-remove','Rdt\RdtEventParticipantRemoveController');
     Route::post('rdt/events/{rdtEvent}/participants-notify','Rdt\RdtEventNotifyParticipantController');
     Route::post('rdt/events/{rdtEvent}/participants-import', 'Rdt\RdtEventParticipantImportController');
+
+    Route::put('rdt/events/{rdtEvent}/participants-set-labcode', 'Rdt\RdtEventParticipantSetLabCodeController');
 });
 
 // RDT Applicants
