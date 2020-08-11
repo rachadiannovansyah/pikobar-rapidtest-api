@@ -21,14 +21,16 @@ class SqsMessage {
         $this->sqs = $factory->sqs();
     }
 
-    private function getQueueUrl($queueName) {
+    private function getQueueUrl($queueName)
+    {
 
         return $this->sqs->getQueueUrl(new GetQueueUrlRequest([
             'QueueName' => $queueName
         ]))->getQueueUrl();
     }
 
-    public function sendMessageToQueue($queueName, $phoneNumber, $message) {
+    public function sendMessageToQueue($queueName, $phoneNumber, $message)
+    {
 
         $messageRequest = new SendMessageRequest([
             'QueueUrl'          => $this->getQueueUrl($queueName),
