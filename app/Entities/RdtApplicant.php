@@ -6,6 +6,7 @@ use App\Enums\PersonCaseStatusEnum;
 use App\Enums\RdtApplicantStatus;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\URL;
 use Spatie\Enum\Laravel\HasEnums;
 use UrlSigner;
@@ -21,7 +22,7 @@ use UrlSigner;
  */
 class RdtApplicant extends Model
 {
-    use HasEnums, SoftDeletes;
+    use Notifiable, HasEnums, SoftDeletes;
 
     protected $fillable = [
         'nik', 'name', 'address', 'province_code', 'city_code', 'district_code', 'village_code',

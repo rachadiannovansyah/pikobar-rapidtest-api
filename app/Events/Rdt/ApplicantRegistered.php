@@ -3,6 +3,7 @@
 namespace App\Events\Rdt;
 
 use App\Entities\RdtApplicant;
+use App\Notifications\RegisterThankYou;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PresenceChannel;
@@ -34,5 +35,7 @@ class ApplicantRegistered
             'id'                => $applicant->id,
             'registration_code' => $applicant->registration_code,
         ]);
+
+        $applicant->notify(new RegisterThankYou());
     }
 }
