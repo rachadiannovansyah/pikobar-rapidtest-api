@@ -166,5 +166,6 @@ return [
         'symptoms_interaction' => 'Riwayat Kontak',
         'symptoms_activity'    => 'Riwayat Kegiatan',
         'registration_code'    => 'Nomor Pendaftaran',
+        'lab_code_sample'      => 'Nomor Sampel Lab',
     ],
 ];
