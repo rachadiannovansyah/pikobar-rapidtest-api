@@ -60,7 +60,7 @@ class RdtApplicantController extends Controller
         }
 
         if ($pikobarSessionId) {
-            $records->where('pikobar_session_id', 'like', '%'.$pikobarSessionId.'%');
+            $records->where('pikobar_session_id', '=', $pikobarSessionId);
         }
 
         if ($request->has('city_code')) {
