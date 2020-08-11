@@ -16,12 +16,7 @@ class SqsMessage {
 
     public function __construct()
     {
-        // set credential sqs
-        $factory = new AwsClientFactory([
-            'region'            => config('aws.region'),
-            'accessKeyId'       => config('aws.key'),
-            'accessKeySecret'   => config('aws.secret')
-        ]);
+        $factory = app('aws');
 
         $this->sqs = $factory->sqs();
     }
