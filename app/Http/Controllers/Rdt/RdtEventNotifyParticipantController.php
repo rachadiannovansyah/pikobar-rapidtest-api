@@ -4,18 +4,32 @@ namespace App\Http\Controllers\Rdt;
 
 use App\Entities\RdtEvent;
 use App\Http\Controllers\Controller;
+use App\Services\Rdt\InvitationMessage;
+use App\Services\Rdt\ReformatPhoneNumber;
+use App\Services\Rdt\SqsMessage;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
 class RdtEventNotifyParticipantController extends Controller
 {
-    /**
-     * Handle the incoming request.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Entities\RdtEvent  $rdtEvent
-     * @return \Illuminate\Http\JsonResponse
-     */
+    private $sqsMessage;
+
+    private $reformatPhoneNumber;
+
+    private $invitationMessage;
+
+    public function __construct(
+        SqsMessage $sqsMessage,
+        ReformatPhoneNumber $reformatPhoneNumber,
+        InvitationMessage  $invitationMessage)
+    {
+        $this->sqsMessage          = $sqsMessage;
+        $this->reformatPhoneNumber = $reformatPhoneNumber;
+        $this->invitationMessage   = $invitationMessage;
+    }
+
+
     public function __invoke(Request $request, RdtEvent $rdtEvent)
     {
         $notifyTarget  = $request->input('target', 'ALL');
@@ -31,9 +45,29 @@ class RdtEventNotifyParticipantController extends Controller
         $invitations->load(['applicant']);
 
         foreach ($invitations as $invitation) {
+
             $applicant = $invitation->applicant;
 
-            // @TODO push AWS SQS Queue
+            if ( $notifyMethod === 'BOTH') {
+
+                $phoneNumberSms = $this->reformatPhoneNumber
+                                       ->reformat($applicant->phone_number);
+                $phoneNumberWa  = $this->reformatPhoneNumber
+                                       ->reformat($applicant->phone_number, ReformatPhoneNumber::FORMAT_WA);
+                $messageSms     = $this->invitationMessage
+                                       ->messageSms($rdtEvent->host_name, $applicant->registration_code);
+                $messageWa      = $this->invitationMessage
+                                       ->messageWa($applicant->name, $rdtEvent->host_name, $applicant->registration_code);
+
+                $this->sqsMessage
+                     ->sendMessageToQueue(SqsMessage::SMS_QUEUE_NAME, $phoneNumberSms, $messageSms);
+                $this->sqsMessage
+                     ->sendMessageToQueue(SqsMessage::WA_QUEUE_NAME, $phoneNumberWa, $messageWa);
+
+                $invitation->notified_at = Carbon::now();
+                $invitation->save();
+
+            }
 
             Log::info('EVENT_NOTIFY_PARTICIPANT', [
                 'event_id'                    => $rdtEvent->id, 'invitation_id' => $invitation->id,
