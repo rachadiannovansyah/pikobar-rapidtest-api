@@ -20,11 +20,12 @@ class RdtApplicantController extends Controller
      */
     public function index(Request $request)
     {
-        $perPage   = $request->input('per_page', 15);
-        $sortBy    = $request->input('sort_by', 'created_at');
-        $sortOrder = $request->input('sort_order', 'desc');
-        $status    = $request->input('status', 'new');
-        $search    = $request->input('search');
+        $perPage           = $request->input('per_page', 15);
+        $sortBy            = $request->input('sort_by', 'created_at');
+        $sortOrder         = $request->input('sort_order', 'desc');
+        $status            = $request->input('status', 'new');
+        $search            = $request->input('search');
+        $pikobarSessionId  = $request->input('pikobar_session_id');
 
         if ($perPage > 20) {
             $perPage = 15;
@@ -56,6 +57,10 @@ class RdtApplicantController extends Controller
                     ->orWhere('registration_code', 'like', '%'.$search.'%')
                     ->orWhere('phone_number', 'like', '%'.$search.'%');
             });
+        }
+
+        if ($pikobarSessionId) {
+            $records->where('pikobar_session_id', '=', $pikobarSessionId);
         }
 
         if ($request->has('city_code')) {
