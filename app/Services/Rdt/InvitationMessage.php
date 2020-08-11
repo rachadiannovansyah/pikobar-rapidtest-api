@@ -18,7 +18,7 @@ class InvitationMessage {
     {
 
         $message  = 'Sampurasun. Anda diundang Tes Masif COVID-19 ';
-        $message .= $hostName .'.Buka tautan s.id/tesmasif1 dan input nomor: ';
+        $message .= $hostName .'. Buka tautan s.id/tesmasif1 dan input nomor: ';
         $message .= $registrationCode.' untuk melihat undangan.';
 
         return $message;
