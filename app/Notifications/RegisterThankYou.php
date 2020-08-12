@@ -47,8 +47,8 @@ Nomor Pendaftaran Anda adalah: *{$notifiable->registration_code}*
 *1. Simpan Nomor Pendaftaran Anda*
 Nomor Pendaftaran digunakan untuk mendapatkan undangan dan hasil test.
 
-*2. Cek status pendaftaran Anda melalui website*
-https://tesmasif.pikobar.jabarprov.go.id
+*2. Cek status pendaftaran/undangan Anda melalui website*
+Buka https://tesmasif.pikobar.jabarprov.go.id dan masukkan Nomor Pendaftaran.
 
 *3. Jangan membagikan nomor pendaftaran ini kepada orang lain.*
 Pastikan identitas Anda tidak digunakan orang lain.
