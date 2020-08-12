@@ -4,6 +4,7 @@ namespace App\Events\Rdt;
 
 use App\Entities\RdtApplicant;
 use App\Entities\RdtInvitation;
+use App\Notifications\CheckinThankYou;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PresenceChannel;
@@ -47,5 +48,7 @@ class ApplicantEventCheckin
         ]);
 
         $this->rdtApplicant = $rdtApplicant;
+
+        $rdtApplicant->notify(new CheckinThankYou($rdtInvitation->event, $rdtInvitation));
     }
 }
