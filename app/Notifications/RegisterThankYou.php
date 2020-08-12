@@ -50,11 +50,11 @@ Nomor Pendaftaran digunakan untuk mendapatkan undangan dan hasil test.
 *2. Cek status pendaftaran Anda melalui website*
 https://tesmasif.pikobar.jabarprov.go.id
 
-*3. Jangan membagikan nomor pendaftaran ini kepada siapapun.*
+*3. Jangan membagikan nomor pendaftaran ini kepada orang lain.*
 Pastikan identitas Anda tidak digunakan orang lain.
 
 *4. Unduh aplikasi PIKOBAR (Android/iOS)*
-Untuk mengakses informasi perkembangan terkini penangangan COVID-19 di Jawa Barat, unduh di https://bit.ly/PIKOBAR-V1
+Untuk mengakses informasi perkembangan terkini penanganan COVID-19 di Jawa Barat, unduh di https://bit.ly/PIKOBAR-V1
 
 *5. Informasi dan pertanyaan lebih lanjut hubungi Pusat Bantuan PIKOBAR*
 Hotline 08112093306 atau Gugus Tugas/Dinas Kesehatan Kota/Kabupaten/Provinsi setempat.
