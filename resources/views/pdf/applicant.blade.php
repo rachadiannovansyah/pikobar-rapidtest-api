@@ -27,12 +27,11 @@
   <tbody>
   <tr>
     <td align="center" style="padding: 30px">
-      <p><img src="data:image/png;base64, {{ base64_encode(QrCode::errorCorrection('H')->format('png')->merge('/storage/pikobar.png')->margin(0)->size(320)->generate($applicant->registration_code)) }}"></p>
+      <h1 style="font-size: 14pt; margin: 0; margin-top: 15px">Nama Peserta:</h1>
+      <h1 style="font-size: 24pt; margin: 0; font-weight: normal">{{ $applicant->name }}</h1>
+      <p><img src="data:image/png;base64, {{ base64_encode(QrCode::errorCorrection('H')->format('png')->merge('/storage/pikobar.png')->margin(0)->size(600)->generate($applicant->registration_code)) }}"></p>
       <h1 style="font-size: 14pt; margin: 0">Nomor Pendaftaran:</h1>
       <h1 style="font-size: 48pt; margin: 0">{{ $applicant->registration_code }}</h1>
-
-      <h1 style="font-size: 14pt; margin: 0; margin-top: 15px">Nama Peserta:</h1>
-      <h1 style="font-size: 14pt; margin: 0; font-weight: normal">{{ $applicant->name }}</h1>
     </td>
   </tr>
   <tr>
