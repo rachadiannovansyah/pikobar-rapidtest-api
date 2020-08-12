@@ -30,6 +30,8 @@ class RdtEventParticipantListController extends Controller
                 $query->where('name', 'like', '%'.$search.'%')
                     ->orWhere('registration_code', 'like', '%'.$search.'%');
             });
+
+            $records->orWhere('lab_code_sample', 'like', '%'.$search.'%');
         }
 
         $records->orderBy($sortBy, $sortOrder);
