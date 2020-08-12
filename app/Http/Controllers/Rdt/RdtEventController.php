@@ -33,7 +33,7 @@ class RdtEventController extends Controller
             $perPage = 15;
         }
 
-        if (in_array($sortBy, ['event_name', 'start_at', 'end_at', 'status', 'created_at']) === false) {
+        if (in_array($sortBy, ['id', 'event_name', 'start_at', 'end_at', 'status', 'created_at']) === false) {
             $sortBy = 'event_name';
         }
 

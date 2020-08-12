@@ -31,7 +31,7 @@ class RdtApplicantController extends Controller
             $perPage = 15;
         }
 
-        if (in_array($sortBy, ['name', 'gender', 'age', 'person_status', 'created_at']) === false) {
+        if (in_array($sortBy, ['id', 'name', 'gender', 'age', 'person_status', 'created_at']) === false) {
             $sortBy = 'name';
         }
 
