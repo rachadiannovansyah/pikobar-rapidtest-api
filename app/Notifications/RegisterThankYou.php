@@ -51,7 +51,7 @@ Nomor Pendaftaran digunakan untuk mendapatkan undangan dan hasil test.
 https://tesmasif.pikobar.jabarprov.go.id
 
 *3. Jangan membagikan nomor pendaftaran ini kepada siapapun.*
-Pastikan identitas Anda tidak digunakan orang lain dan hasil test tidak tertukar.
+Pastikan identitas Anda tidak digunakan orang lain.
 
 *4. Unduh aplikasi PIKOBAR (Android/iOS)*
 Untuk mengakses informasi perkembangan terkini penangangan COVID-19 di Jawa Barat, unduh di https://bit.ly/PIKOBAR-V1
