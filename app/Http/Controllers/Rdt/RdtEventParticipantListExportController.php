@@ -21,6 +21,11 @@ class RdtEventParticipantListExportController extends Controller
      */
     public function __invoke(Request $request, RdtEvent $rdtEvent)
     {
+        header('Access-Control-Allow-Origin: *');
+        header('Access-Control-Allow-Methods: *');
+        header('Access-Control-Allow-Headers: *');
+        header('Access-Control-Expose-Headers: *');
+
         $writer = WriterEntityFactory::createXLSXWriter();
 
         $now = now()->format('YmdHis');
@@ -33,6 +38,8 @@ class RdtEventParticipantListExportController extends Controller
 
         $cells = [
             WriterEntityFactory::createCell('NOMOR PENDAFTARAN'),
+            WriterEntityFactory::createCell('ID EVENT'),
+            WriterEntityFactory::createCell('ID KLOTER'),
             WriterEntityFactory::createCell('NIK'),
             WriterEntityFactory::createCell('NAMA PESERTA'),
             WriterEntityFactory::createCell('NOMOR TELEPON'),
@@ -78,13 +85,22 @@ class RdtEventParticipantListExportController extends Controller
                 $address = strtoupper($invitation->applicant->address);
                 $address = preg_replace("/[\r\n]*/","", $address);
 
-                $symptoms = implode(', ', $invitation->applicant->symptoms);
-                $symptomsActivity= implode(', ', $invitation->applicant->symptoms_activity);
+                $symptoms = null;
+                if ($invitation->applicant->symptoms) {
+                    $symptoms = implode(', ', $invitation->applicant->symptoms);
+                }
+
+                $symptomsActivity = null;
+                if ($invitation->applicant->symptoms_activity) {
+                    $symptomsActivity= implode(', ', $invitation->applicant->symptoms_activity);
+                }
 
                 $symptomsNotes = preg_replace("/[\r\n]*/","", $invitation->applicant->symptoms_notes);
 
                 $cells = [
                     WriterEntityFactory::createCell($invitation->applicant->registration_code),
+                    WriterEntityFactory::createCell($invitation->rdt_event_id),
+                    WriterEntityFactory::createCell($invitation->rdt_event_schedule_id),
                     WriterEntityFactory::createCell($invitation->applicant->nik),
                     WriterEntityFactory::createCell($invitation->applicant->name),
                     WriterEntityFactory::createCell($invitation->applicant->phone_number),
