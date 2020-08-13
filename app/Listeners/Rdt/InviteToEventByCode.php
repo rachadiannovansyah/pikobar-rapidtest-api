@@ -36,12 +36,19 @@ class InviteToEventByCode
             return;
         }
 
+        // Jika pendaftar dari Prixa, skip proses
+        if (strlen($applicant->pikobar_session_id) === 36) {
+            return;
+        }
+
         /**
          * @var RdtEvent $rdtEvent
          */
         $rdtEvent = RdtEvent::where('referral_code', $applicant->pikobar_session_id)->first();
 
         if ($rdtEvent === null) {
+            $applicant->pikobar_session_id = null;
+            $applicant->save();
             return;
         }
 
@@ -52,7 +59,6 @@ class InviteToEventByCode
         if ($now->gt($eventEndAt)) {
             $applicant->pikobar_session_id = null;
             $applicant->save();
-            
             return;
         }
 
