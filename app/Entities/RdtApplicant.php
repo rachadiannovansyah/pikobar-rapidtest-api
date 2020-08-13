@@ -4,6 +4,7 @@ namespace App\Entities;
 
 use App\Enums\PersonCaseStatusEnum;
 use App\Enums\RdtApplicantStatus;
+use App\Enums\SymptomsInteraction;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
@@ -20,6 +21,7 @@ use UrlSigner;
  * @property string $city_code
  * @property bool $is_pns
  * @property \Illuminate\Support\Carbon $birth_date
+ * @property \App\Enums\SymptomsInteraction $symptoms_interaction
  * @property \App\Enums\UserStatus $person_status
  */
 class RdtApplicant extends Model
@@ -58,8 +60,9 @@ class RdtApplicant extends Model
     ];
 
     protected $enums = [
-        'person_status' => PersonCaseStatusEnum::class.':nullable',
-        'status'        => RdtApplicantStatus::class,
+        'symptoms_interaction' => SymptomsInteraction::class.':nullable',
+        'person_status'        => PersonCaseStatusEnum::class.':nullable',
+        'status'               => RdtApplicantStatus::class,
     ];
 
     public function city()

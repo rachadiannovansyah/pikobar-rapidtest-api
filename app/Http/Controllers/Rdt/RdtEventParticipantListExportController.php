@@ -94,7 +94,7 @@ class RdtEventParticipantListExportController extends Controller
                     WriterEntityFactory::createCell(strtoupper($invitation->applicant->workplace_name)),
                     WriterEntityFactory::createCell($symptoms),
                     WriterEntityFactory::createCell($symptomsNotes),
-                    WriterEntityFactory::createCell($invitation->applicant->symptoms_interaction),
+                    WriterEntityFactory::createCell($invitation->applicant->symptoms_interaction ? $invitation->applicant->symptoms_interaction->getName() : null),
                     WriterEntityFactory::createCell($symptomsActivity),
                     WriterEntityFactory::createCell($invitation->applicant->person_status ? $invitation->applicant->person_status->getName() : null),
                     WriterEntityFactory::createCell($invitation->applicant->created_at->setTimezone('Asia/Jakarta')->toDateTimeString()),
