@@ -31,25 +31,39 @@ class InviteToEventByCode
     {
         $applicant = $event->applicant;
 
-        if ($applicant->pikobar_session_id !== null) {
-            /**
-             * @var RdtEvent $rdtEvent
-             */
-            $rdtEvent = RdtEvent::where('referral_code', $applicant->pikobar_session_id)->first();
-
-            if ($rdtEvent === null) {
-                return;
-            }
-
-            $invitation = new RdtInvitation();
-            $invitation->registration_code = $applicant->registration_code;
-
-            $invitation->event()->associate($rdtEvent);
-            $invitation->applicant()->associate($applicant);
-            $invitation->save();
-
-            $applicant->status = RdtApplicantStatus::APPROVED();
-            $applicant->save();
+        // Jika pendaftar tidak memiliki pikobar_session_id, skip proses
+        if ($applicant->pikobar_session_id === null) {
+            return;
         }
+
+        /**
+         * @var RdtEvent $rdtEvent
+         */
+        $rdtEvent = RdtEvent::where('referral_code', $applicant->pikobar_session_id)->first();
+
+        if ($rdtEvent === null) {
+            return;
+        }
+
+        $eventEndAt = $rdtEvent->end_at;
+        $now = now();
+
+        // Jika event sudah berakhir, jangan auto-invite ke event.
+        if ($now->gt($eventEndAt)) {
+            $applicant->pikobar_session_id = null;
+            $applicant->save();
+            
+            return;
+        }
+
+        $invitation = new RdtInvitation();
+        $invitation->registration_code = $applicant->registration_code;
+
+        $invitation->event()->associate($rdtEvent);
+        $invitation->applicant()->associate($applicant);
+        $invitation->save();
+
+        $applicant->status = RdtApplicantStatus::APPROVED();
+        $applicant->save();
     }
 }
