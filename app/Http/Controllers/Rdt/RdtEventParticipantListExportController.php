@@ -6,6 +6,7 @@ use App\Entities\RdtEvent;
 use App\Http\Controllers\Controller;
 use Box\Spout\Writer\Common\Creator\WriterEntityFactory;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class RdtEventParticipantListExportController extends Controller
 {
@@ -21,36 +22,44 @@ class RdtEventParticipantListExportController extends Controller
     public function __invoke(Request $request, RdtEvent $rdtEvent)
     {
         $writer = WriterEntityFactory::createXLSXWriter();
-        $writer->openToBrowser('test.xlsx');
+
+        $now = now()->format('YmdHis');
+        $eventDate = $rdtEvent->start_at->format('Ymd');
+        $eventNumber = str_pad($rdtEvent->id, 5, '0', STR_PAD_LEFT);
+        $eventName = strtoupper(Str::slug($rdtEvent->event_name, '_'));
+
+        $fileName = sprintf('PIKOBAR_TESMASIF_PESERTA_%s_%s_%s_%s.xlsx', $eventNumber, $eventDate, $now, $eventName);
+        $writer->openToBrowser($fileName);
 
         $cells = [
-            WriterEntityFactory::createCell('Nomor Pendaftaran'),
+            WriterEntityFactory::createCell('NOMOR PENDAFTARAN'),
             WriterEntityFactory::createCell('NIK'),
-            WriterEntityFactory::createCell('Nama Peserta'),
-            WriterEntityFactory::createCell('Nomor Telepon'),
-            WriterEntityFactory::createCell('Jenis Kelamin'),
-            WriterEntityFactory::createCell('Tanggal Lahir'),
-            WriterEntityFactory::createCell('Umur (Tahun)'),
-            WriterEntityFactory::createCell('Alamat Domisili'),
-            WriterEntityFactory::createCell('Kab/Kota Domisili'),
-            WriterEntityFactory::createCell('Kode Kab/Kota Domisili'),
-            WriterEntityFactory::createCell('Kecamatan Domisili'),
-            WriterEntityFactory::createCell('Kode Kecamatan Domisili'),
-            WriterEntityFactory::createCell('Kelurahan/Desa Domisili'),
-            WriterEntityFactory::createCell('Kode Kelurahan/Desa Domisili'),
-            WriterEntityFactory::createCell('Jenis Pekerjaan / Profesi'),
-            WriterEntityFactory::createCell('Nama Pekerjaan / Profesi'),
-            WriterEntityFactory::createCell('Nama Tempat Bekerja'),
-            WriterEntityFactory::createCell('Gejala'),
-            WriterEntityFactory::createCell('Catatan Gejala'),
-            WriterEntityFactory::createCell('Riwayat Kontak'),
-            WriterEntityFactory::createCell('Riwayat Kegiatan'),
-            WriterEntityFactory::createCell('Status Kesehatan'),
-            WriterEntityFactory::createCell('Tanggal Pendaftaran'),
-            WriterEntityFactory::createCell('Checkin Kehadiran'),
-            WriterEntityFactory::createCell('Tanggal Hasil Lab'),
-            WriterEntityFactory::createCell('Kode Sampel Lab'),
-            WriterEntityFactory::createCell('Hasil Test'),
+            WriterEntityFactory::createCell('NAMA PESERTA'),
+            WriterEntityFactory::createCell('NOMOR TELEPON'),
+            WriterEntityFactory::createCell('JENIS KELAMIN'),
+            WriterEntityFactory::createCell('TANGGAL LAHIR'),
+            WriterEntityFactory::createCell('UMUR (TAHUN)'),
+            WriterEntityFactory::createCell('ALAMAT DOMISILI'),
+            WriterEntityFactory::createCell('KAB/KOTA DOMISILI'),
+            WriterEntityFactory::createCell('KODE KAB/KOTA DOMISILI'),
+            WriterEntityFactory::createCell('KECAMATAN DOMISILI'),
+            WriterEntityFactory::createCell('KODE KECAMATAN DOMISILI'),
+            WriterEntityFactory::createCell('KELURAHAN/DESA DOMISILI'),
+            WriterEntityFactory::createCell('KODE KELURAHAN/DESA DOMISILI'),
+            WriterEntityFactory::createCell('PNS'),
+            WriterEntityFactory::createCell('JENIS PEKERJAAN/PROFESI'),
+            WriterEntityFactory::createCell('NAMA PEKERJAAN/PROFESI'),
+            WriterEntityFactory::createCell('NAMA TEMPAT BEKERJA'),
+            WriterEntityFactory::createCell('GEJALA'),
+            WriterEntityFactory::createCell('CATATAN GEJALA'),
+            WriterEntityFactory::createCell('RIWAYAT KONTAK'),
+            WriterEntityFactory::createCell('RIWAYAT KEGIATAN'),
+            WriterEntityFactory::createCell('STATUS KESEHATAN'),
+            WriterEntityFactory::createCell('TANGGAL PENDAFTARAN'),
+            WriterEntityFactory::createCell('CHECKIN KEHADIRAN'),
+            WriterEntityFactory::createCell('TANGGAL HASIL LAB'),
+            WriterEntityFactory::createCell('KODE SAMPEL LAB'),
+            WriterEntityFactory::createCell('HASIL TEST'),
         ];
 
         $singleRow = WriterEntityFactory::createRow($cells);
@@ -89,6 +98,7 @@ class RdtEventParticipantListExportController extends Controller
                     WriterEntityFactory::createCell($invitation->applicant->district_code),
                     WriterEntityFactory::createCell($invitation->applicant->village ? $invitation->applicant->village->name : null),
                     WriterEntityFactory::createCell($invitation->applicant->village_code),
+                    WriterEntityFactory::createCell((int) $invitation->applicant->is_pns),
                     WriterEntityFactory::createCell($invitation->applicant->occupation_type),
                     WriterEntityFactory::createCell(strtoupper($invitation->applicant->occupation_name)),
                     WriterEntityFactory::createCell(strtoupper($invitation->applicant->workplace_name)),
