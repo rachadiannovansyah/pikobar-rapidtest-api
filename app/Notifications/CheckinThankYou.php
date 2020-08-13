@@ -58,24 +58,10 @@ Nomor Pendaftaran: *{$notifiable->registration_code}*
 Tanggal/Waktu: *{$this->rdtInvitation->attended_at->setTimezone('Asia/Jakarta')}*
 Tempat: *{$this->rdtEvent->event_location}*
 
-Selama menunggu hasil tes, Anda diharapkan tetap menggunakan masker, menjaga jarak dan protokol kesehatan, serta melakukan pola hidup bersih dan sehat (PHBS).
-
-*Informasi Penting*
-
-*1. Simpan Nomor Pendaftaran Anda*
-Nomor Pendaftaran digunakan untuk mendapatkan hasil test.
-
-*2. Hasil tes akan diberitahukan melalui SMS, Whatsapp, dan website.*
+*Hasil tes akan diberitahukan melalui SMS, Whatsapp, dan Website.*
 Buka https://tesmasif.pikobar.jabarprov.go.id dan masukkan Nomor Pendaftaran.
 
-*3. Jangan membagikan nomor pendaftaran ini kepada orang lain.*
-Pastikan identitas Anda tidak digunakan orang lain.
-
-*4. Unduh aplikasi PIKOBAR (Android/iOS)*
-Untuk mengakses informasi perkembangan terkini penanganan COVID-19 di Jawa Barat, unduh di https://bit.ly/PIKOBAR-V1
-
-*5. Informasi dan pertanyaan lebih lanjut hubungi Pusat Bantuan PIKOBAR*
-Hotline 08112093306 atau Gugus Tugas/Dinas Kesehatan Kota/Kabupaten/Provinsi setempat.
+Selama menunggu hasil tes, Anda diharapkan tetap memperbanyak aktivitas di rumah, menggunakan masker jika berpergian, menjaga jarak dan protokol kesehatan, serta melakukan pola hidup bersih dan sehat (PHBS).
 
 Hatur nuhun.
 EOT;
