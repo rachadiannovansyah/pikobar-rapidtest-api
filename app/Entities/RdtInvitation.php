@@ -13,7 +13,7 @@ use Spatie\Enum\Laravel\HasEnums;
  * @property string $rdt_event_schedule_id
  * @property string $registration_code
  * @property string $test_type
- * @property string $lab_result_type
+ * @property \App\Enums\LabResultType $lab_result_type
  * @property string $lab_code_sample
  * @property \App\Entities\RdtApplicant $applicant
  * @property \App\Entities\RdtEvent $event

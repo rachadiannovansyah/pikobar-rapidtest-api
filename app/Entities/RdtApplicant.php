@@ -19,6 +19,8 @@ use UrlSigner;
  * @property string $name
  * @property string $city_code
  * @property bool $is_pns
+ * @property \Illuminate\Support\Carbon $birth_date
+ * @property \App\Enums\UserStatus $person_status
  */
 class RdtApplicant extends Model
 {
