@@ -93,7 +93,7 @@ class RdtApplicantController extends Controller
     public function store(RdtApplicantStoreRequest $request)
     {
         $rdtApplicant         = new RdtApplicant();
-        $rdtApplicant->status = RdtApplicantStatus::NEW();
+        $rdtApplicant->status = $request->input('status');
         $rdtApplicant->fill($request->all());
         $rdtApplicant->save();
 
