@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Enum\Laravel\HasEnums;
 
 /**
+ * @property int $id
  * @property \Carbon\Carbon $start_at
  * @property \Carbon\Carbon $end_at
  * @property string $event_name
