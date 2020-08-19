@@ -35,6 +35,9 @@ class RdtEventResource extends JsonResource
             $this->mergeWhen($this->schedules_count !== null, [
                 'schedules_count' => $this->schedules_count,
             ]),
+            $this->mergeWhen($this->attendees_result_count !== null, [
+                'attendees_result_count' => $this->attendees_result_count,
+            ]),
             $this->mergeWhen($request->user(), [
                 'invitations' => RdtInvitationResource::collection($this->whenLoaded('invitations')),
                 'schedules'   => RdtEventScheduleResource::collection($this->whenLoaded('schedules')),

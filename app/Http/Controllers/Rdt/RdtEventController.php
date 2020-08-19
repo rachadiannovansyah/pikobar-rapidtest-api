@@ -105,7 +105,10 @@ class RdtEventController extends Controller
      */
     public function show(RdtEvent $rdtEvent)
     {
-        $rdtEvent->loadCount(['invitations', 'schedules', 'attendees']);
+        $rdtEvent->loadCount([
+            'invitations', 'schedules', 'attendees', 'attendeesResult'
+        ]);
+
         $rdtEvent->load(['schedules', 'city']);
 
         return new RdtEventResource($rdtEvent);

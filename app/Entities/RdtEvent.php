@@ -2,6 +2,7 @@
 
 namespace App\Entities;
 
+use App\Enums\LabResultType;
 use App\Enums\RdtEventStatus;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -64,5 +65,10 @@ class RdtEvent extends Model
     public function attendees()
     {
         return $this->hasMany(RdtInvitation::class, 'rdt_event_id')->whereNotNull('attended_at');
+    }
+
+    public function attendeesResult()
+    {
+        return $this->hasMany(RdtInvitation::class, 'rdt_event_id')->whereNotNull('lab_result_type');
     }
 }
