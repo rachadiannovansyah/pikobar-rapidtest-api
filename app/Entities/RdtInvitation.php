@@ -28,6 +28,7 @@ class RdtInvitation extends Model
     use HasEnums;
 
     protected $fillable = [
+        'rdt_event_id',
         'rdt_applicant_id',
         'test_type',
         'lab_result_type',

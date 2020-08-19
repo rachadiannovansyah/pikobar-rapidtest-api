@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers\Rdt;
 
+use App\Entities\RdtApplicant;
 use App\Entities\RdtEvent;
 use App\Entities\RdtInvitation;
+use App\Enums\RdtApplicantStatus;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\RdtEventResource;
 use Illuminate\Http\Request;
-use Illuminate\Support\Arr;
 
 class RdtEventParticipantAddController extends Controller
 {
@@ -20,12 +21,31 @@ class RdtEventParticipantAddController extends Controller
      */
     public function __invoke(Request $request, RdtEvent $rdtEvent)
     {
-        $applicants   = $request->input('applicants');
+        $applicantIds = $request->input('applicants');
 
-        foreach ($applicants as $applicant) {
-            $invitation = RdtInvitation::firstOrNew(['rdt_applicant_id' => $applicant['rdt_applicant_id']]);
-            $invitation->event()->associate($rdtEvent);
-            $invitation->rdt_event_schedule_id = $applicant['rdt_event_schedule_id'];
+        foreach ($applicantIds as $applicantId) {
+            /**
+             * @var RdtApplicant $applicant
+             */
+            $applicant = RdtApplicant::find($applicantId['rdt_applicant_id']);
+
+            if ($applicant === null) {
+                continue;
+            }
+
+            // Jika status peserta masih NEW, ubah jadi APPROVED
+            $applicant->status = RdtApplicantStatus::APPROVED();
+            $applicant->save();
+
+            // Cek existing undangan/invitation.
+            // Jika sudah terdaftar di event yang sama, update kloter saja.
+            // Jika belum terdaftar, insert baru.
+            $invitation = RdtInvitation::firstOrNew([
+                'rdt_event_id' => $rdtEvent->id,
+                'rdt_applicant_id' => $applicantId['rdt_applicant_id']]
+            );
+
+            $invitation->rdt_event_schedule_id = $applicantId['rdt_event_schedule_id'];
             $invitation->save();
         }
 
