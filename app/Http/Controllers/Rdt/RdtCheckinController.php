@@ -15,8 +15,9 @@ class RdtCheckinController extends Controller
     /**
      * Handle the incoming request.
      *
-     * @param  \App\Http\Requests\Rdt\RdtCheckStatusRequest  $request
+     * @param \App\Http\Requests\Rdt\RdtCheckStatusRequest $request
      * @return \App\Http\Resources\RdtApplicantResource
+     * @throws \Illuminate\Validation\ValidationException
      */
     public function __invoke(RdtCheckinRequest $request)
     {
@@ -35,6 +36,17 @@ class RdtCheckinController extends Controller
         if ($invitation->attended_at !== null) {
             throw ValidationException::withMessages([
                'registration_code' => ['Already checkin.']
+            ]);
+        }
+
+        // Make sure lab code sample doesn't duplicate
+        $labCodeSampleExisting = RdtInvitation::where('rdt_event_id', $event->id)
+            ->where('lab_code_sample', $request->input('lab_code_sample'))
+            ->first();
+
+        if ($labCodeSampleExisting !== null) {
+            throw ValidationException::withMessages([
+                'lab_code_sample' => ['Lab Code Sample already used.']
             ]);
         }
 
