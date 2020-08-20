@@ -2,6 +2,7 @@
 
 namespace App\Events\Rdt;
 
+use App\Channels\WhatsappChannel;
 use App\Entities\RdtApplicant;
 use App\Entities\RdtInvitation;
 use App\Notifications\CheckinThankYou;
@@ -49,6 +50,6 @@ class ApplicantEventCheckin
 
         $this->rdtApplicant = $rdtApplicant;
 
-        $rdtApplicant->notify(new CheckinThankYou($rdtInvitation->event, $rdtInvitation));
+        $rdtApplicant->notifyNow(new CheckinThankYou($rdtInvitation->event, $rdtInvitation), [WhatsappChannel::class]);
     }
 }
