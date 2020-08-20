@@ -32,7 +32,7 @@ class RdtRegisterRequest extends FormRequest
         return [
             'g-recaptcha-response' => ['required', new RecaptchaRule()],
             'name'                 => ['required', 'min:3'],
-            'nik'                  => ['required', new NikRule(), 'unique:rdt_applicants'],
+            'nik'                  => ['required', new NikRule()],
             'address'              => 'required',
             'city_code'            => ['required', 'exists:areas,code_kemendagri'],
             'district_code'        => ['required', 'exists:areas,code_kemendagri'],
@@ -48,13 +48,6 @@ class RdtRegisterRequest extends FormRequest
             'symptoms_notes'       => 'required',
             'symptoms_interaction' => 'required',
             'symptoms_activity'    => 'required',
-        ];
-    }
-
-    public function messages()
-    {
-        return [
-          'nik.unique' => 'Nomor Identitas Kependudukan (NIK) sudah terdaftar.'
         ];
     }
 }
