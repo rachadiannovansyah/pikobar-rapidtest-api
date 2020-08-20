@@ -21,6 +21,7 @@ class RdtEventResource extends JsonResource
             ]),
             'event_name'     => $this->event_name,
             'event_location' => $this->event_location,
+            'event_reg_url'  => sprintf('%s/#/?sessionId=%s', config('app.client_url'), $this->event_code),
             'host_name'      => $this->host_name,
             'start_at'       => $this->start_at,
             'end_at'         => $this->end_at,
