@@ -8,6 +8,7 @@ use App\Events\Rdt\ApplicantEventCheckin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Rdt\RdtCheckinRequest;
 use App\Http\Resources\RdtApplicantResource;
+use Illuminate\Validation\ValidationException;
 
 class RdtCheckinController extends Controller
 {
@@ -22,13 +23,20 @@ class RdtCheckinController extends Controller
         $registrationCode = $request->input('registration_code');
 
         $eventCode = $request->input('event_code');
-//        $event     = RdtEvent::where('event_code', $eventCode)->firstOrFail();
+        $event     = RdtEvent::where('event_code', $eventCode)->firstOrFail();
 
-        // Make sure checkin on latest invitation
+        /**
+         * @var RdtInvitation $invitation
+         */
         $invitation = RdtInvitation::where('registration_code', $registrationCode)
-//            ->where('rdt_event_id', $event->id)
-            ->orderBy('id', 'desc')
+            ->where('rdt_event_id', $event->id)
             ->firstOrFail();
+
+        if ($invitation->attended_at !== null) {
+            throw ValidationException::withMessages([
+               'registration_code' => ['Already checkin.']
+            ]);
+        }
 
         $invitation->lab_code_sample = $request->input('lab_code_sample');
         $invitation->attended_at     = now();
