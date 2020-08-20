@@ -1,8 +1,5 @@
-# PIKOBAR Pendaftaran Rapid Test (API)
+# Aplikasi Pendaftaran Tes Masif COVID-19 PIKOBAR
 
-TBD.
+Backend API
 
-## Docker Build
-```
-docker build -t jabardigitalservice/pikobar-rapidtest-api .
-```
+<a href="https://codeclimate.com/github/jabardigitalservice/pikobar-rapidtest-api/maintainability"><img src="https://api.codeclimate.com/v1/badges/fae1475c143f7a532884/maintainability" /></a>
