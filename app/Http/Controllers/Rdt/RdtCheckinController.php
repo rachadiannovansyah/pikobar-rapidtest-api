@@ -51,6 +51,7 @@ class RdtCheckinController extends Controller
         }
 
         $invitation->lab_code_sample = $request->input('lab_code_sample');
+        $invitation->attend_location = $request->input('location');
         $invitation->attended_at     = now();
         $invitation->save();
 

@@ -12,6 +12,7 @@ use Spatie\Enum\Laravel\HasEnums;
  * @property string $rdt_event_id
  * @property string $rdt_event_schedule_id
  * @property string $registration_code
+ * @property string $attend_location
  * @property string $test_type
  * @property \App\Enums\LabResultType $lab_result_type
  * @property string $lab_code_sample
@@ -30,6 +31,7 @@ class RdtInvitation extends Model
     protected $fillable = [
         'rdt_event_id',
         'rdt_applicant_id',
+        'attend_location',
         'test_type',
         'lab_result_type',
         'lab_code_sample'
