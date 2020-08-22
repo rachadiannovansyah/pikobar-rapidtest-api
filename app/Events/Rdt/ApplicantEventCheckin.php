@@ -38,6 +38,7 @@ class ApplicantEventCheckin
     public function __construct(RdtApplicant $rdtApplicant, RdtInvitation $rdtInvitation)
     {
         $this->rdtInvitation = $rdtInvitation;
+        $this->rdtApplicant = $rdtApplicant;
 
         Log::info('APPLICANT_EVENT_CHECKIN', [
             'applicant_id'      => $rdtApplicant->id,
@@ -47,8 +48,6 @@ class ApplicantEventCheckin
             'event_schedule_id' => $rdtInvitation->rdt_event_schedule_id,
             'attended_at'       => $rdtInvitation->attended_at,
         ]);
-
-        $this->rdtApplicant = $rdtApplicant;
 
         $currentEnvironment = config('app.env');
 
