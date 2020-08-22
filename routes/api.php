@@ -30,12 +30,14 @@ Route::get('/', 'HomeController');
 
 // RDT Registration
 Route::post('rdt/register', 'Rdt\RdtRegisterController');
+Route::get('rdt/check-event', 'Rdt\RdtCheckEventController');
 Route::post('rdt/check', 'Rdt\RdtCheckStatusController');
 Route::get('rdt/register/download', 'Rdt\RdtRegisterDownloadController')->name('registration.download');
 Route::get('rdt/qrcode', 'Rdt\RdtQrCodeController')->name('registration.qrcode');
 
 Route::post('rdt/survey', 'Rdt\RdtSurveyStoreController');
 
+// Checkin App
 Route::post('rdt/checkin', 'Rdt\RdtCheckinController');
 Route::post('rdt/event-check', 'Rdt\RdtEventCheckController');
 

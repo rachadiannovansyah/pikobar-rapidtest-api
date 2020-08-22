@@ -26,6 +26,7 @@ class RdtCheckinRequest extends FormRequest
         return [
             'registration_code' => ['required'],
             'lab_code_sample' => ['required'],
+            'location' => ['sometimes', 'required'],
         ];
     }
 }

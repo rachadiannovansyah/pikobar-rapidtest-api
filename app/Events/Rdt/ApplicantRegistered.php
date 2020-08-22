@@ -31,11 +31,14 @@ class ApplicantRegistered
     {
         $this->applicant = $applicant;
 
-        Log::info('APPLICANT_REGISTER', [
-            'id'                => $applicant->id,
-            'registration_code' => $applicant->registration_code,
-        ]);
+        Log::info('APPLICANT_REGISTER', $applicant->toArray());
 
-        $applicant->notify(new RegisterThankYou());
+        $currentEnvironment = config('app.env');
+
+        if ($currentEnvironment !== 'production') {
+            return;
+        }
+
+        // $applicant->notify(new RegisterThankYou());
     }
 }

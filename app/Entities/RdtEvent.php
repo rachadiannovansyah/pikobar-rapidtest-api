@@ -2,12 +2,14 @@
 
 namespace App\Entities;
 
+use App\Enums\LabResultType;
 use App\Enums\RdtEventStatus;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Enum\Laravel\HasEnums;
 
 /**
+ * @property int $id
  * @property \Carbon\Carbon $start_at
  * @property \Carbon\Carbon $end_at
  * @property string $event_name
@@ -63,5 +65,10 @@ class RdtEvent extends Model
     public function attendees()
     {
         return $this->hasMany(RdtInvitation::class, 'rdt_event_id')->whereNotNull('attended_at');
+    }
+
+    public function attendeesResult()
+    {
+        return $this->hasMany(RdtInvitation::class, 'rdt_event_id')->whereNotNull('lab_result_type');
     }
 }

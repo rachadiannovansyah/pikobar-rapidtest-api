@@ -2,6 +2,7 @@
 
 namespace App\Notifications;
 
+use App\Channels\SmsChannel;
 use App\Channels\WhatsappChannel;
 use App\Entities\RdtEvent;
 use App\Entities\RdtInvitation;
@@ -44,7 +45,12 @@ class CheckinThankYou extends Notification
      */
     public function via($notifiable)
     {
-        return [WhatsappChannel::class];
+        return [WhatsappChannel::class, SmsChannel::class];
+    }
+
+    public function toSms($notifiable)
+    {
+        return "Yth. {$notifiable->name}. Terima kasih menghadiri Tes Masif COVID19 PIKOBAR. Nomor Pendaftaran: {$notifiable->registration_code}. Datang: {$this->rdtInvitation->attended_at->setTimezone('Asia/Jakarta')}. Info: s.id/tesmasif";
     }
 
     public function toWhatsapp($notifiable)

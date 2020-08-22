@@ -40,6 +40,6 @@ class RdtRegisterDownloadController extends Controller
 
         $pdf = PDF::loadView('pdf.applicant', ['applicant' => $applicant]);
 
-        return $pdf->download("BUKTI_PENDAFTARAN_RDT_{$registrationCode}.pdf");
+        return $pdf->download("PIKOBAR_BUKTI_PENDAFTARAN_TESMASIF_{$registrationCode}.pdf");
     }
 }

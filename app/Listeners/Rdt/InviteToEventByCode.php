@@ -44,7 +44,7 @@ class InviteToEventByCode
         /**
          * @var RdtEvent $rdtEvent
          */
-        $rdtEvent = RdtEvent::where('referral_code', $applicant->pikobar_session_id)->first();
+        $rdtEvent = RdtEvent::where('event_code', $applicant->pikobar_session_id)->first();
 
         if ($rdtEvent === null) {
             $applicant->pikobar_session_id = null;

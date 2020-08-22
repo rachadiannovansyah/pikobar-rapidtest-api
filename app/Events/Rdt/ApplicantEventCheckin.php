@@ -2,6 +2,7 @@
 
 namespace App\Events\Rdt;
 
+use App\Channels\WhatsappChannel;
 use App\Entities\RdtApplicant;
 use App\Entities\RdtInvitation;
 use App\Notifications\CheckinThankYou;
@@ -37,6 +38,7 @@ class ApplicantEventCheckin
     public function __construct(RdtApplicant $rdtApplicant, RdtInvitation $rdtInvitation)
     {
         $this->rdtInvitation = $rdtInvitation;
+        $this->rdtApplicant = $rdtApplicant;
 
         Log::info('APPLICANT_EVENT_CHECKIN', [
             'applicant_id'      => $rdtApplicant->id,
@@ -47,8 +49,12 @@ class ApplicantEventCheckin
             'attended_at'       => $rdtInvitation->attended_at,
         ]);
 
-        $this->rdtApplicant = $rdtApplicant;
+        $currentEnvironment = config('app.env');
 
-        $rdtApplicant->notify(new CheckinThankYou($rdtInvitation->event, $rdtInvitation));
+        if ($currentEnvironment !== 'production') {
+            return;
+        }
+
+        $rdtApplicant->notifyNow(new CheckinThankYou($rdtInvitation->event, $rdtInvitation), [WhatsappChannel::class]);
     }
 }

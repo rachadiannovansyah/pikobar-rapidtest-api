@@ -19,7 +19,10 @@ class RdtEventCheckController extends Controller
     {
         $eventCode = $request->input('event_code');
 
-        $event = RdtEvent::where('event_code', $eventCode)->with(['invitations'])->firstOrFail();
+        $event = RdtEvent::where('event_code', $eventCode)
+            ->with(['invitations'])
+            ->withCount(['invitations', 'schedules', 'attendees'])
+            ->firstOrFail();
 
         $record = [
             'event_code'     => $event->event_code,
@@ -27,11 +30,16 @@ class RdtEventCheckController extends Controller
             'event_location' => $event->event_location,
             'start_at'       => $event->start_at,
             'end_at'         => $event->end_at,
+            'invitations_count' => $event->invitations_count,
+            'attendees_count'   => $event->attendees_count,
             'invitations'    => $event->invitations->map(function (RdtInvitation $invitation) {
                 // @TODO sort by name
                 return [
-                    'name'        => $invitation->applicant->name,
-                    'attended_at' => $invitation->attended_at,
+                    'name'              => $invitation->applicant->name,
+                    'registration_code' => $invitation->registration_code,
+                    'lab_code_sample'   => $invitation->lab_code_sample,
+                    'created_at '       => $invitation->created_at,
+                    'attended_at'       => $invitation->attended_at,
                 ];
             }),
         ];

@@ -24,6 +24,8 @@ class RdtEventParticipantListController extends Controller
         $search    = $request->input('search');
 
         $records = $rdtEvent->invitations();
+        $records->select('rdt_invitations.*');
+        $records->join('rdt_applicants', 'rdt_invitations.rdt_applicant_id', '=', 'rdt_applicants.id');
 
         if ($search) {
             $records->whereHas('applicant', function ($query) use ($search) {
@@ -34,7 +36,10 @@ class RdtEventParticipantListController extends Controller
             $records->orWhere('lab_code_sample', 'like', '%'.$search.'%');
         }
 
+        $sortBy = str_replace('applicant.', 'rdt_applicants.', $sortBy);
+
         $records->orderBy($sortBy, $sortOrder);
+
         $records->with(['applicant', 'schedule']);
 
         if ($perPage === 'ALL') {

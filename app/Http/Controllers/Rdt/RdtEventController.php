@@ -49,6 +49,14 @@ class RdtEventController extends Controller
 
         $records = RdtEvent::query();
 
+        if ($request->has('city_code')) {
+            $records->where('city_code', $request->input('city_code'));
+        }
+
+        if ($request->user()->city_code) {
+            $records->where('city_code', $request->user()->city_code);
+        }
+
         if ($search) {
             $records->where(function ($query) use ($search) {
                 $query->where('event_name', 'like', '%'.$search.'%');
@@ -97,7 +105,10 @@ class RdtEventController extends Controller
      */
     public function show(RdtEvent $rdtEvent)
     {
-        $rdtEvent->loadCount(['invitations', 'schedules', 'attendees']);
+        $rdtEvent->loadCount([
+            'invitations', 'schedules', 'attendees', 'attendeesResult'
+        ]);
+
         $rdtEvent->load(['schedules', 'city']);
 
         return new RdtEventResource($rdtEvent);
