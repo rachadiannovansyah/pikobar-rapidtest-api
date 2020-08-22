@@ -42,6 +42,6 @@ class ApplicantRegistered
             return;
         }
 
-        $applicant->notify(new RegisterThankYou());
+        // $applicant->notify(new RegisterThankYou());
     }
 }
