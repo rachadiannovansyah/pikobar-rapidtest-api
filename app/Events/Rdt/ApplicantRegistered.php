@@ -36,6 +36,12 @@ class ApplicantRegistered
             'registration_code' => $applicant->registration_code,
         ]);
 
+        $currentEnvironment = config('app.env');
+
+        if ($currentEnvironment !== 'production') {
+            return;
+        }
+
         $applicant->notify(new RegisterThankYou());
     }
 }

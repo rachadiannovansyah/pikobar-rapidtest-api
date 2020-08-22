@@ -50,6 +50,12 @@ class ApplicantEventCheckin
 
         $this->rdtApplicant = $rdtApplicant;
 
+        $currentEnvironment = config('app.env');
+
+        if ($currentEnvironment !== 'production') {
+            return;
+        }
+
         $rdtApplicant->notifyNow(new CheckinThankYou($rdtInvitation->event, $rdtInvitation), [WhatsappChannel::class]);
     }
 }
