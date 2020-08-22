@@ -36,13 +36,13 @@ class TestResult extends Notification
     public function toSms($notifiable)
     {
         $message  = 'Sampurasun, hasil Tes COVID Anda sudah keluar.';
-        $message .= 'Silahkan buka tautan bit.ly/tesmasif dan input Nomor Pendaftaran';
-        $message .=  $notifiable->registration_code . 'untuk melihat hasil tes.';
+        $message .= 'Silahkan buka tautan bit.ly/tesmasif dan input Nomor Pendaftaran ';
+        $message .=  $notifiable->registration_code . ' untuk melihat hasil tes.';
 
         return $message;
     }
 
-    public function toWa($notifiable)
+    public function toWhatsapp($notifiable)
     {
         $message   = '*Yth. '. $notifiable->name .'*';
         $message  .= 'Sampurasun, hasil Tes COVID-19 Anda sudah keluar.';
