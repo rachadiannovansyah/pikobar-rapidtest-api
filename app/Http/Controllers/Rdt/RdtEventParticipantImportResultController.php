@@ -5,32 +5,15 @@ namespace App\Http\Controllers\Rdt;
 use App\Entities\RdtApplicant;
 use App\Entities\RdtInvitation;
 use App\Http\Controllers\Controller;
-use App\Services\Rdt\ReformatPhoneNumber;
-use App\Services\Rdt\ResultMessage;
-use App\Services\Rdt\SqsMessage;
+use App\Http\Requests\Rdt\RdtInvitationImportRequest;
+use App\Notifications\TestResult;
 use Box\Spout\Reader\Common\Creator\ReaderEntityFactory;
-use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 class RdtEventParticipantImportResultController extends Controller
 {
 
-    private $sqsMessage;
-
-    private $reformatPhoneNumber;
-
-    private $resultMessage;
-
-    public function __construct(
-        SqsMessage $sqsMessage,
-        ReformatPhoneNumber $reformatPhoneNumber,
-        ResultMessage $resultMessage)
-    {
-        $this->sqsMessage          = $sqsMessage;
-        $this->reformatPhoneNumber = $reformatPhoneNumber;
-        $this->resultMessage       = $resultMessage;
-    }
-
-    public function __invoke(Request  $request)
+    public function __invoke(RdtInvitationImportRequest $request)
     {
         $reader = ReaderEntityFactory::createXLSXReader();
 
@@ -46,21 +29,19 @@ class RdtEventParticipantImportResultController extends Controller
 
                     $registrationCode = $rowArray[0];
                     $result           = $rowArray[1];
+                    $notify           = $rowArray[2];
 
                     $invitation = RdtInvitation::where('registration_code', $registrationCode)->first();
                     $invitation->lab_result_type = $result;
+
+                    if($notify === 'YES'){
+                        $applicant  = RdtApplicant::find($invitation->rdt_applicant_id);
+                        $applicant->notify(new TestResult());
+
+                        $invitation->notified_result_at = Carbon::today();
+                    }
+
                     $invitation->save();
-
-                    $applicant     = RdtApplicant::find($invitation->rdt_applicant_id);
-                    $phoneNumber   = $this->reformatPhoneNumber->reformat($applicant->phone_number);
-                    $applicantName = $applicant->name;
-                    $messageSms    = $this->resultMessage->messageSms($registrationCode);
-                    $messageWa     = $this->resultMessage->messageWa($applicantName, $registrationCode);
-
-                    $this->sqsMessage
-                         ->sendMessageToQueue(SqsMessage::SMS_QUEUE_NAME, $phoneNumber, $messageSms);
-                    $this->sqsMessage
-                         ->sendMessageToQueue(SqsMessage::WA_QUEUE_NAME, $phoneNumber, $messageWa);
 
                 }
             }
