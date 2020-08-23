@@ -38,7 +38,7 @@ class RdtEventParticipantImportResultController extends Controller
                         $applicant  = RdtApplicant::find($invitation->rdt_applicant_id);
                         $applicant->notify(new TestResult());
 
-                        $invitation->notified_result_at = Carbon::today();
+                        $invitation->notified_result_at = Carbon::now();
                     }
 
                     $invitation->save();
