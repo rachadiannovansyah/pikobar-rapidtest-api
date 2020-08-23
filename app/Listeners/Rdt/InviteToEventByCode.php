@@ -34,11 +34,19 @@ class InviteToEventByCode
 
         // Jika pendaftar tidak memiliki pikobar_session_id, skip proses
         if ($applicant->pikobar_session_id === null) {
+            Log::info('APPLICANT_REGISTER_NO_SESSION_ID', [
+                'applicant' => $applicant->toArray(),
+            ]);
+
             return;
         }
 
         // Jika pendaftar dari Prixa, skip proses
         if (strlen($applicant->pikobar_session_id) === 36) {
+            Log::info('APPLICANT_REGISTER_FROM_PERIKSA_MANDIRI', [
+                'applicant' => $applicant->toArray(),
+            ]);
+
             return;
         }
 
@@ -50,6 +58,11 @@ class InviteToEventByCode
         if ($rdtEvent === null) {
             $applicant->pikobar_session_id = null;
             $applicant->save();
+
+            Log::info('APPLICANT_REGISTER_INVITE_TO_EVENT_NOTFOUND', [
+                'applicant' => $applicant->toArray(),
+            ]);
+
             return;
         }
 
@@ -60,6 +73,12 @@ class InviteToEventByCode
         if ($now->gt($eventEndAt)) {
             $applicant->pikobar_session_id = null;
             $applicant->save();
+
+            Log::info('APPLICANT_REGISTER_INVITE_TO_EVENT_ENDED', [
+                'applicant' => $applicant->toArray(),
+                'event' => $rdtEvent->toArray(),
+            ]);
+
             return;
         }
 
