@@ -60,6 +60,7 @@ Route::group(['middleware' => 'auth:api'], function() {
     Route::post('rdt/events/{rdtEvent}/participants','Rdt\RdtEventParticipantAddController');
     Route::post('rdt/events/{rdtEvent}/participants-remove','Rdt\RdtEventParticipantRemoveController');
     Route::post('rdt/events/{rdtEvent}/participants-notify','Rdt\RdtEventNotifyParticipantController');
+    Route::post('rdt/events/{rdtEvent}/notify-test-result','Rdt\RdtEventNotifyTestResultController');
     Route::post('rdt/events/{rdtEvent}/participants-import', 'Rdt\RdtEventParticipantImportController');
     Route::get('rdt/events/{rdtEvent}/participants-export','Rdt\RdtEventParticipantListExportController');
     Route::post('rdt/events/{rdtEvents}/participants-import-results','Rdt\RdtEventParticipantImportResultController');
