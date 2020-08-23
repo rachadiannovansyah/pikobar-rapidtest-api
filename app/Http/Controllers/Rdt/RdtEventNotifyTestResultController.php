@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Rdt;
 
 use App\Entities\RdtEvent;
 use App\Http\Controllers\Controller;
-use App\Notifications\RdtEventInvitation;
+use App\Notifications\TestResult;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -21,8 +21,8 @@ class RdtEventNotifyTestResultController extends Controller
             $invitations = $rdtEvent->invitations()->whereIn('id', $invitationIds)->get();
         }
 
-        foreach ($invitations as $invitation){
-            $invitation->applicant->notify(new RdtEventInvitation($rdtEvent));
+        foreach ($invitations as $invitation) {
+            $invitation->applicant->notify(new TestResult());
             $invitation->notified_result_at = Carbon::now();
 
             Log::info('NOTIFY_TEST_RESULT', [
