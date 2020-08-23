@@ -24,6 +24,8 @@ use UrlSigner;
  * @property \Illuminate\Support\Carbon $birth_date
  * @property \App\Enums\SymptomsInteraction $symptoms_interaction
  * @property \App\Enums\UserStatus $person_status
+ * @property string $occupation_name
+ * @property string $workplace_name
  */
 class RdtApplicant extends Model
 {
