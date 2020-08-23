@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Rdt;
 
 use App\Entities\RdtApplicant;
+use App\Entities\RdtEvent;
 use App\Entities\RdtInvitation;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Rdt\RdtInvitationImportRequest;
@@ -13,7 +14,7 @@ use Carbon\Carbon;
 class RdtEventParticipantImportResultController extends Controller
 {
 
-    public function __invoke(RdtInvitationImportRequest $request)
+    public function __invoke(RdtInvitationImportRequest $request, RdtEvent $rdtEvent)
     {
         $reader = ReaderEntityFactory::createXLSXReader();
 
@@ -31,7 +32,9 @@ class RdtEventParticipantImportResultController extends Controller
                     $result           = $rowArray[1];
                     $notify           = $rowArray[2];
 
-                    $invitation = RdtInvitation::where('registration_code', $registrationCode)->first();
+                    $invitation = RdtInvitation::where('registration_code', $registrationCode)
+                        ->where('rdt_event_id', $rdtEvent->id)
+                        ->first();
                     $invitation->lab_result_type = $result;
 
                     if($notify === 'YES'){
