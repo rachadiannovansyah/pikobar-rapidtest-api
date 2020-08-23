@@ -50,6 +50,7 @@ class RdtInvitation extends Model
     protected $dates = [
         'attended_at',
         'notified_at',
+        'notified_result_at',
         'confirmed_at',
         'result_at',
     ];

@@ -4,31 +4,13 @@ namespace App\Http\Controllers\Rdt;
 
 use App\Entities\RdtEvent;
 use App\Http\Controllers\Controller;
-use App\Services\Rdt\InvitationMessage;
-use App\Services\Rdt\ReformatPhoneNumber;
-use App\Services\Rdt\SqsMessage;
+use App\Notifications\RdtEventInvitation;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
 class RdtEventNotifyParticipantController extends Controller
 {
-    private $sqsMessage;
-
-    private $reformatPhoneNumber;
-
-    private $invitationMessage;
-
-    public function __construct(
-        SqsMessage $sqsMessage,
-        ReformatPhoneNumber $reformatPhoneNumber,
-        InvitationMessage  $invitationMessage)
-    {
-        $this->sqsMessage          = $sqsMessage;
-        $this->reformatPhoneNumber = $reformatPhoneNumber;
-        $this->invitationMessage   = $invitationMessage;
-    }
-
 
     public function __invoke(Request $request, RdtEvent $rdtEvent)
     {
@@ -50,17 +32,7 @@ class RdtEventNotifyParticipantController extends Controller
 
             if ( $notifyMethod === 'BOTH') {
 
-                $phoneNumber    = $this->reformatPhoneNumber
-                                       ->reformat($applicant->phone_number);
-                $messageSms     = $this->invitationMessage
-                                       ->messageSms($rdtEvent->host_name, $applicant->registration_code);
-                $messageWa      = $this->invitationMessage
-                                       ->messageWa($applicant->name, $rdtEvent->host_name, $applicant->registration_code);
-
-                $this->sqsMessage
-                     ->sendMessageToQueue(SqsMessage::SMS_QUEUE_NAME, $phoneNumber, $messageSms);
-                $this->sqsMessage
-                     ->sendMessageToQueue(SqsMessage::WA_QUEUE_NAME, $phoneNumber, $messageWa);
+                $applicant->notify(new RdtEventInvitation($rdtEvent));
 
                 $invitation->notified_at = Carbon::now();
                 $invitation->save();
