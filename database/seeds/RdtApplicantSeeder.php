@@ -16,7 +16,7 @@ class RdtApplicantSeeder extends Seeder
      */
     public function run()
     {
-        factory(RdtApplicant::class, 500)->create()->each(function (RdtApplicant $rdtApplicant) {
+        factory(RdtApplicant::class, 500)->make()->each(function (RdtApplicant $rdtApplicant) {
             $randomCity     = Area::where('parent_code_kemendagri', '32')->inRandomOrder()->first();
             $randomDistrict = $randomCity->children()->inRandomOrder()->first();
             $randomVillage  = $randomDistrict->children()->inRandomOrder()->first();
@@ -31,15 +31,19 @@ class RdtApplicantSeeder extends Seeder
 
         $randomApplicants->each(function (RdtApplicant $applicant) {
             $event = RdtEvent::inRandomOrder()->first();
-
             $eventSchedule = $event->schedules()->inRandomOrder()->first();
 
-            $invitation                  = new RdtInvitation();
-            $invitation->test_type       = 'PCR';
-            $invitation->lab_result_type = 'NEGATIVE';
-            $invitation->result_at       = now();
+            $invitation = new RdtInvitation();
             $invitation->schedule()->associate($eventSchedule);
             $invitation->event()->associate($event);
+
+            $invitation->attend_location = 'PUSKESMAS';
+            $invitation->lab_code_sample = sprintf('%s%s', 'L', $applicant->registration_code);
+            $invitation->test_type       = 'PCR';
+            $invitation->lab_result_type = 'NEGATIVE';
+            $invitation->notified_at     = $invitation->event->start_at->subDay();
+            $invitation->attended_at     = $invitation->event->start_at;
+            $invitation->result_at       = now();
 
             $applicant->city_code = $event->city_code;
             $applicant->status    = RdtApplicantStatus::APPROVED();
