@@ -18,6 +18,7 @@ use UrlSigner;
  * @property string $province_code
  * @property int $status
  * @property string $name
+ * @property string $address
  * @property string $city_code
  * @property bool $is_pns
  * @property \Illuminate\Support\Carbon $birth_date
