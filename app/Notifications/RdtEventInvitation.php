@@ -36,7 +36,7 @@ class RdtEventInvitation extends Notification
         return [WhatsappChannel::class, SmsChannel::class];
     }
 
-    public function toSms($notifiable)
+    public function toWhatsapp($notifiable)
     {
         $message  = 'Yth. '.$notifiable->name.' Sampurasun, Anda diundang untuk melakukan Tes Masif COVID-19 oleh ';
         $message .= $this->rdtEvent->host_name.' Silakan buka tautan https://s.id/tesmasif2 dan masukkan Nomor Pendaftaran berikut: ';
@@ -45,7 +45,7 @@ class RdtEventInvitation extends Notification
         return $message;
     }
 
-    public function toWhatsapp($notifiable)
+    public function toSms($notifiable)
     {
         $message  = 'Sampurasun. Anda diundang Tes Masif COVID-19 ';
         $message .= $this->rdtEvent->host_name .'. Buka tautan s.id/tesmasif1 dan input nomor: ';
