@@ -8,8 +8,8 @@ use App\Events\Rdt\ApplicantEventCheckin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Rdt\RdtCheckinRequest;
 use App\Http\Resources\RdtApplicantResource;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Validation\ValidationException;
 
 class RdtCheckinController extends Controller
 {
@@ -17,7 +17,7 @@ class RdtCheckinController extends Controller
      * Handle the incoming request.
      *
      * @param \App\Http\Requests\Rdt\RdtCheckStatusRequest $request
-     * @return \App\Http\Resources\RdtApplicantResource
+     * @return \Illuminate\Http\JsonResponse
      * @throws \Illuminate\Validation\ValidationException
      */
     public function __invoke(RdtCheckinRequest $request)
@@ -37,9 +37,9 @@ class RdtCheckinController extends Controller
             ->firstOrFail();
 
         if ($invitation->attended_at !== null) {
-            throw ValidationException::withMessages([
-               'registration_code' => ['Already checkin.']
-            ]);
+            return response()->json([
+                'message' => 'Already checkin.',
+            ], Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
         // Make sure lab code sample doesn't duplicate
@@ -48,9 +48,9 @@ class RdtCheckinController extends Controller
             ->first();
 
         if ($labCodeSampleExisting !== null) {
-            throw ValidationException::withMessages([
-                'lab_code_sample' => ['Lab Code Sample already used.']
-            ]);
+            return response()->json([
+                'message' => 'Lab Code Sample already used.',
+            ], Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
         $invitation->lab_code_sample = $request->input('lab_code_sample');
