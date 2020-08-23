@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Rdt;
 use App\Entities\RdtEvent;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class RdtCheckEventController extends Controller
 {
@@ -16,6 +17,8 @@ class RdtCheckEventController extends Controller
      */
     public function __invoke(Request $request)
     {
+        Log::info('REGISTER_CHECK_EVENT_REQUEST', $request->all());
+
         $rdtEvent = RdtEvent::where('event_code', $request->input('event_code'))->firstOrFail();
 
         return response()->json([

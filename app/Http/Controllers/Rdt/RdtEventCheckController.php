@@ -6,6 +6,7 @@ use App\Entities\RdtEvent;
 use App\Entities\RdtInvitation;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Rdt\RdtEventCheckRequest;
+use Illuminate\Support\Facades\Log;
 
 class RdtEventCheckController extends Controller
 {
@@ -17,6 +18,8 @@ class RdtEventCheckController extends Controller
      */
     public function __invoke(RdtEventCheckRequest $request)
     {
+        Log::info('MOBILE_CHECK_EVENT_REQUEST', $request->all());
+
         $eventCode = $request->input('event_code');
 
         $event = RdtEvent::where('event_code', $eventCode)

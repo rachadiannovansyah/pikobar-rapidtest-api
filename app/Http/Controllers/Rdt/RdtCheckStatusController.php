@@ -18,6 +18,8 @@ class RdtCheckStatusController extends Controller
      */
     public function __invoke(RdtCheckStatusRequest $request)
     {
+        Log::info('APPLICANT_STATUS_CHECK_REQUEST', $request->all());
+
         $registrationCode = $request->input('registration_code');
 
         $applicant = RdtApplicant::where('registration_code', $registrationCode)

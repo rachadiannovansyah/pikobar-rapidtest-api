@@ -8,6 +8,7 @@ use App\Events\Rdt\ApplicantEventCheckin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Rdt\RdtCheckinRequest;
 use App\Http\Resources\RdtApplicantResource;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\ValidationException;
 
 class RdtCheckinController extends Controller
@@ -21,6 +22,8 @@ class RdtCheckinController extends Controller
      */
     public function __invoke(RdtCheckinRequest $request)
     {
+        Log::info('APPLICANT_EVENT_CHECKIN_REQUEST', $request->all());
+
         $registrationCode = $request->input('registration_code');
 
         $eventCode = $request->input('event_code');

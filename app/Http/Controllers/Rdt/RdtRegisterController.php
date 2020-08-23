@@ -22,14 +22,14 @@ class RdtRegisterController extends Controller
      */
     public function __invoke(RdtRegisterRequest $request)
     {
+        Log::info('APPLICANT_REGISTER_REQUEST', $request->all());
+
         $applicant         = new RdtApplicant();
         $applicant->status = RdtApplicantStatus::NEW();
         $applicant->fill($request->all());
         $applicant->save();
 
         event(new ApplicantRegistered($applicant));
-
-        Log::info('APPLICANT_REGISTER_REQUEST', $request->all());
 
         $url = URL::route(
             'registration.download',
