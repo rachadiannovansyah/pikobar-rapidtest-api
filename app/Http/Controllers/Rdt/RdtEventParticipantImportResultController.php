@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Rdt;
 
-use App\Entities\RdtApplicant;
 use App\Entities\RdtEvent;
 use App\Entities\RdtInvitation;
 use App\Http\Controllers\Controller;
@@ -10,6 +9,7 @@ use App\Http\Requests\Rdt\RdtInvitationImportRequest;
 use App\Notifications\TestResult;
 use Box\Spout\Reader\Common\Creator\ReaderEntityFactory;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Log;
 
 class RdtEventParticipantImportResultController extends Controller
 {
@@ -32,20 +32,33 @@ class RdtEventParticipantImportResultController extends Controller
                     $result           = $rowArray[1];
                     $notify           = $rowArray[2];
 
+                    /**
+                     * @var RdtInvitation $invitation
+                     */
                     $invitation = RdtInvitation::where('registration_code', $registrationCode)
                         ->where('rdt_event_id', $rdtEvent->id)
                         ->first();
-                    $invitation->lab_result_type = $result;
 
-                    if($notify === 'YES'){
-                        $applicant  = RdtApplicant::find($invitation->rdt_applicant_id);
+                    // Handling error, skip if not found
+                    if ($invitation === null) {
+                        continue;
+                    }
+
+                    $invitation->lab_result_type = $result;
+                    $invitation->save();
+
+                    if ($notify === 'YES') {
+                        $applicant = $invitation->applicant;
                         $applicant->notify(new TestResult());
 
                         $invitation->notified_result_at = Carbon::now();
+
+                        Log::info('NOTIFY_TEST_RESULT', [
+                            'applicant' => $applicant,
+                            'invitation' => $invitation,
+                            'result' => $invitation->lab_result_type
+                        ]);
                     }
-
-                    $invitation->save();
-
                 }
             }
         }

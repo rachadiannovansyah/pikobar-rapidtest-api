@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Notifications\RdtEventInvitation;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class RdtEventNotifyTestResultController extends Controller
 {
@@ -22,7 +23,13 @@ class RdtEventNotifyTestResultController extends Controller
 
         foreach ($invitations as $invitation){
             $invitation->applicant->notify(new RdtEventInvitation($rdtEvent));
-            $invitation->notified_result_at = Carbon::today();
+            $invitation->notified_result_at = Carbon::now();
+
+            Log::info('NOTIFY_TEST_RESULT', [
+                'applicant' => $invitation->applicant,
+                'invitation' => $invitation,
+                'result' => $invitation->lab_result_type
+            ]);
         }
 
         return response()->json(['message' => 'OK']);

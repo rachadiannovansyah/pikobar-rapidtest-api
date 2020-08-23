@@ -5,11 +5,14 @@ namespace App\Channels;
 use AsyncAws\Sqs\Input\SendMessageRequest;
 use Illuminate\Notifications\Notification;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
 class SmsChannel
 {
     protected $awsQueueName = 'smsblast-queue';
+
+    protected $loggingName = 'NOTIFICATION_SMS_SENT';
 
     /**
      * Send the given notification.
@@ -68,7 +71,12 @@ class SmsChannel
             'MessageBody' => $message,
         ]);
 
-        return $sqs->sendMessage($messageRequest);
+        $sqs->sendMessage($messageRequest);
+
+        Log::info($this->loggingName, [
+            'phone_number' => $phoneNumber,
+            'message' => $message
+        ]);
     }
 
     /**

@@ -8,6 +8,8 @@ class WhatsappChannel extends SmsChannel
 {
     protected $awsQueueName = 'wablast-queue';
 
+    protected $loggingName = 'NOTIFICATION_WA_SENT';
+
     /**
      * Send the given notification.
      *
