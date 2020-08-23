@@ -14,7 +14,7 @@ class AddNotifiedAtToRdtInvitation extends Migration
     public function up()
     {
         Schema::table('rdt_invitations', function (Blueprint $table) {
-            $table->timestamp('notified_result_at')->nullable();
+            $table->timestamp('notified_result_at')->after('notified_at')->nullable();
         });
     }
 
