@@ -8,6 +8,7 @@ use App\Enums\RdtApplicantStatus;
 use App\Events\Rdt\ApplicantRegistered;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Support\Facades\Log;
 
 class InviteToEventByCode
 {
@@ -71,5 +72,11 @@ class InviteToEventByCode
 
         $applicant->status = RdtApplicantStatus::APPROVED();
         $applicant->save();
+
+        Log::info('APPLICANT_REGISTER_INVITE_TO_EVENT', [
+            'applicant' => $applicant->toArray(),
+            'event' => $rdtEvent->toArray(),
+            'invitation' => $invitation->toArray(),
+        ]);
     }
 }
