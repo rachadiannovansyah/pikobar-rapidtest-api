@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\Rdt;
 
+use App\Entities\RdtApplicant;
 use App\Entities\RdtEvent;
 use App\Entities\RdtInvitation;
+use App\Enums\RdtApplicantStatus;
 use App\Events\Rdt\ApplicantEventCheckin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Rdt\RdtCheckinRequest;
@@ -34,7 +36,25 @@ class RdtCheckinController extends Controller
          */
         $invitation = RdtInvitation::where('registration_code', $registrationCode)
             ->where('rdt_event_id', $event->id)
-            ->firstOrFail();
+            ->first();
+
+        if ($invitation === null) {
+            $applicant = RdtApplicant::where('registration_code', $registrationCode)->firstOrFail();
+
+            $invitation = new RdtInvitation();
+            $invitation->applicant()->associate($applicant);
+            $invitation->event()->associate($event);
+
+            $invitation->registration_code = $registrationCode;
+            $invitation->save();
+
+            if ($applicant->pikobar_session_id === null) {
+                $applicant->pikobar_session_id = $event->event_code;
+            }
+
+            $applicant->status = RdtApplicantStatus::APPROVED();
+            $applicant->save();
+        }
 
         if ($invitation->attended_at !== null) {
             return response()->json([
