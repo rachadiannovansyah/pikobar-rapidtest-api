@@ -126,12 +126,14 @@ class RdtEventController extends Controller
         $rdtEvent->fill($request->all());
         $rdtEvent->save();
 
-        foreach ($request->input('schedules') as $schedule) {
-            RdtEventSchedule::find($schedule['id'])
-                ->update([
-                    'start_at' => $schedule['start_at'],
-                    'end_at'   => $schedule['end_at']
-                ]);
+        if ($request->has('schedules')) {
+            foreach ($request->input('schedules') as $schedule) {
+                RdtEventSchedule::find($schedule['id'])
+                    ->update([
+                        'start_at' => $schedule['start_at'],
+                        'end_at'   => $schedule['end_at']
+                    ]);
+            }
         }
 
         $rdtEvent->load('city');

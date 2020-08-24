@@ -14,19 +14,16 @@ class DeleteRdtEventTest extends TestCase
     /** @test */
     public function can_delete_rdt_event()
     {
-        $this->withoutExceptionHandling();
-
-        $user = factory(User::class)->create();
+        $user = new User();
 
         $rdtEvent = factory(RdtEvent::class)->create();
 
         $this->actingAs($user)
             ->deleteJson("api/rdt/events/{$rdtEvent->id}")
             ->assertSuccessful()
-            ->assertJsonStructure(['success']);
+            ->assertJsonStructure(['message'])
+            ->assertJsonFragment(['message' => 'DELETED']);
 
-        $this->assertEmpty(RdtEvent::find($rdtEvent->id));
-
+        $this->assertSoftDeleted('rdt_events', ['id' => $rdtEvent->id]);
     }
-
 }
