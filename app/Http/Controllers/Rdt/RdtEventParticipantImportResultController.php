@@ -18,11 +18,12 @@ class RdtEventParticipantImportResultController extends Controller
     {
         Log::info('IMPORT_TEST_RESULT_START', [
             'file_name' => $request->file('file')->getClientOriginalName(),
+            'user_id' => $request->user()->id,
         ]);
 
         $reader = ReaderEntityFactory::createXLSXReader();
 
-        $reader->open($request->file->path());
+        $reader->open($request->file('file')->path());
 
         $rowsCount = 0;
 
@@ -52,6 +53,7 @@ class RdtEventParticipantImportResultController extends Controller
                         'registration_code' => $registrationCode,
                         'result' => $result,
                         'notify' => $notify,
+                        'user_id' => $request->user()->id,
                     ]);
 
                     continue;
@@ -64,6 +66,7 @@ class RdtEventParticipantImportResultController extends Controller
                     'result' => $result,
                     'notify' => $notify,
                     'invitation' => $invitation,
+                    'user_id' => $request->user()->id,
                 ]);
 
                 $invitation->lab_result_type = $result;
@@ -78,7 +81,8 @@ class RdtEventParticipantImportResultController extends Controller
                     Log::info('NOTIFY_TEST_RESULT', [
                         'applicant' => $applicant,
                         'invitation' => $invitation,
-                        'result' => $invitation->lab_result_type
+                        'result' => $invitation->lab_result_type,
+                        'user_id' => $request->user()->id,
                     ]);
                 }
 
@@ -89,6 +93,7 @@ class RdtEventParticipantImportResultController extends Controller
         Log::info('IMPORT_TEST_RESULT_SUCCESS', [
             'file_name' => $request->file('file')->getClientOriginalName(),
             'rows_total' => $rowsCount,
+            'user_id' => $request->user()->id,
         ]);
 
         return response()->json(['message' => 'OK']);
