@@ -23,6 +23,7 @@ use Spatie\Enum\Laravel\HasEnums;
  * @property \Illuminate\Support\Carbon $attended_at
  * @property \Illuminate\Support\Carbon $result_at
  * @property \Illuminate\Support\Carbon $notified_at
+ * @property \Illuminate\Support\Carbon $notified_result_at
  */
 class RdtInvitation extends Model
 {
