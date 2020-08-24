@@ -54,6 +54,11 @@ class RdtCheckinController extends Controller
 
             $applicant->status = RdtApplicantStatus::APPROVED();
             $applicant->save();
+
+            Log::info('APPLICANT_EVENT_CHECKIN_NOT_INVITED', [
+                'applicant' => $applicant,
+                'invitation' => $invitation,
+            ]);
         }
 
         if ($invitation->attended_at !== null) {
