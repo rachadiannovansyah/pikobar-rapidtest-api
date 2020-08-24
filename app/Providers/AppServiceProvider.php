@@ -3,7 +3,6 @@
 namespace App\Providers;
 
 use App\Entities\RdtInvitation;
-use App\Oauth\CustomKeycloakProvider;
 use App\Observers\RdtApplicantObserver;
 use App\Observers\RdtEventObserver;
 use App\Entities\RdtApplicant;
