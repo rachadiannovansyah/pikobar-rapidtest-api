@@ -27,10 +27,9 @@ class RdtEventParticipantImportResultController extends Controller
                 $rowArray = $row->toArray();
 
                 if ($key > 1) {
-
                     $registrationCode = $rowArray[0];
-                    $result           = $rowArray[1];
-                    $notify           = $rowArray[2];
+                    $result           = strtoupper($rowArray[1]);
+                    $notify           = strtoupper($rowArray[2]);
 
                     /**
                      * @var RdtInvitation $invitation
@@ -41,8 +40,22 @@ class RdtEventParticipantImportResultController extends Controller
 
                     // Handling error, skip if not found
                     if ($invitation === null) {
+                        Log::info('IMPORT_TEST_RESULT_INVITATION_NOTFOUND', [
+                            'registration_code' => $registrationCode,
+                            'result' => $result,
+                            'notify' => $notify,
+                        ]);
+
                         continue;
                     }
+
+                    Log::info('IMPORT_TEST_RESULT', [
+                        'event' => $rdtEvent,
+                        'registration_code' => $registrationCode,
+                        'result' => $result,
+                        'notify' => $notify,
+                        'invitation' => $invitation,
+                    ]);
 
                     $invitation->lab_result_type = $result;
                     $invitation->save();
