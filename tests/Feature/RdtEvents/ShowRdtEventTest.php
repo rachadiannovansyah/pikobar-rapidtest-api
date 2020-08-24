@@ -13,17 +13,15 @@ class ShowRdtEventTest extends TestCase
     use RefreshDatabase;
 
     /** @test */
-    function can_show_events()
+    function can_show_event()
     {
-        $this->withoutExceptionHandling();
-
         $rdtEvent = factory(RdtEvent::class)->create();
 
-        $user = factory(User::class)->create();
+        $user = new User();
 
         $this->actingAs($user)
             ->getJson("/api/rdt/events/{$rdtEvent->id}")
             ->assertSuccessful()
-            ->assertJsonStructure(['data']);
+            ->assertJsonStructure(['data' => ['event_name', 'host_name']]);
     }
 }

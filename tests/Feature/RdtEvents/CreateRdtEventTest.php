@@ -2,9 +2,11 @@
 
 namespace Tests\Feature\RdtEvents;
 
+use App\Entities\RdtEvent;
 use App\Entities\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Support\Carbon;
 use Tests\TestCase;
 
 class CreateRdtEventTest extends TestCase
@@ -14,19 +16,34 @@ class CreateRdtEventTest extends TestCase
     /** @test */
     public function can_create_event()
     {
-        $this->withoutExceptionHandling();
+        $user = new User();
 
-        $user = factory(User::class)->create();
+        /**
+         * @var RdtEvent $rdtEvent
+         */
+        $rdtEvent = factory(RdtEvent::class)->make();
 
         $this->actingAs($user)
             ->postJson('/api/rdt/events',[
             'event_name'        => 'Event Name',
-            'event_location'    => 'Jl. Angrek No. 45',
-            'status'            => 'draft',
-            'start_at'          => '2020-01-01T00:00:00.000000Z',
-            'end_at'            => '2020-01-01T00:00:00.000000Z'
+            'host_name'         => $rdtEvent->host_name,
+            'event_location'    => $rdtEvent->event_location,
+            'city_code'         => '32.73',
+            'status'            => $rdtEvent->status,
+            'start_at'          => $startAt = new Carbon(),
+            'end_at'            => $endAt = new Carbon(),
+            'schedules'         => [
+                [
+                    'start_at' => $startAt,
+                    'end_at' => $endAt,
+                ]
+            ],
         ])
         ->assertSuccessful()
-        ->assertJsonStructure(['success']);
+        ->assertJsonStructure(['data' => ['event_name', 'event_code']])
+        ->assertJsonFragment([
+            'event_name' => 'Event Name',
+            'host_name' => 'Host Name',
+        ]);
     }
 }
