@@ -33,6 +33,16 @@ class RdtCheckinController extends Controller
         $eventCode = $request->input('event_code');
         $event     = RdtEvent::where('event_code', $eventCode)->firstOrFail();
 
+        // Pastikan tidak bisa checkin setelah tanggal selesai
+        if ($event->end_at->addHours(12)->isPast()) {
+            Log::info('APPLICANT_EVENT_CHECKIN_FAILED_PAST', ['event_code' => $eventCode]);
+
+            $endAt = $event->end_at->setTimezone('Asia/Jakarta');
+            return response()->json([
+                'message' => "Kode Event: {$eventCode} - {$event->event_name} sudah berakhir pada {$endAt}. Periksa kembali input Kode Event.",
+            ], Response::HTTP_UNPROCESSABLE_ENTITY);
+        }
+
         /**
          * @var RdtInvitation $invitation
          */
@@ -59,7 +69,6 @@ class RdtCheckinController extends Controller
 
             Log::info('APPLICANT_EVENT_CHECKIN_NOT_INVITED', [
                 'event_code' => $eventCode,
-                'event' => $event,
                 'applicant' => $applicant,
                 'invitation' => $invitation,
             ]);
@@ -68,7 +77,6 @@ class RdtCheckinController extends Controller
         if ($invitation->attended_at !== null) {
             Log::info('APPLICANT_EVENT_CANNOT_CHECKIN_ALREADY', [
                 'event_code' => $eventCode,
-                'event' => $event,
                 'registration_code' => $registrationCode,
                 'invitation' => $invitation,
             ]);
@@ -86,7 +94,6 @@ class RdtCheckinController extends Controller
         if ($labCodeSampleExisting !== null) {
             Log::info('APPLICANT_EVENT_CANNOT_CHECKIN_ALREADY_LAB_CODE_SAMPLE', [
                 'event_code' => $eventCode,
-                'event' => $event,
                 'registration_code' => $registrationCode,
                 'lab_code_sample' => $request->input('lab_code_sample'),
                 'invitation' => $invitation,
