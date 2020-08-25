@@ -27,27 +27,25 @@ class RdtEventParticipantListController extends Controller
         $records->select('rdt_invitations.*');
         $records->join('rdt_applicants', 'rdt_invitations.rdt_applicant_id', '=', 'rdt_applicants.id');
 
-        if ($search) {
-            $records->whereHas('applicant', function ($query) use ($search) {
-                $query->where('name', 'like', '%'.$search.'%')
-                    ->orWhere('registration_code', 'like', '%'.$search.'%');
-            });
+        $records->where('rdt_invitations.rdt_event_id', $rdtEvent->id);
 
-            $records->orWhere('lab_code_sample', 'like', '%'.$search.'%');
+        if ($search) {
+            $records->where(function ($query) use ($search) {
+                $query->where('rdt_applicants.name', 'like', '%'.$search.'%');
+                $query->orWhere('rdt_invitations.registration_code', 'like', '%'.$search.'%');
+                $query->orWhere('lab_code_sample', 'like', '%'.$search.'%');
+            });
         }
 
         $sortBy = str_replace('applicant.', 'rdt_applicants.', $sortBy);
 
         $records->orderBy($sortBy, $sortOrder);
-
         $records->with(['applicant', 'schedule']);
 
         if ($perPage === 'ALL') {
-            $records = $records->get();
-        } else {
-            $records = $records->paginate($perPage);
+            return RdtInvitationResource::collection($records->get());
         }
 
-        return RdtInvitationResource::collection($records);
+        return RdtInvitationResource::collection($records->paginate($perPage));
     }
 }
