@@ -18,9 +18,8 @@ class RdtCheckinController extends Controller
     /**
      * Handle the incoming request.
      *
-     * @param \App\Http\Requests\Rdt\RdtCheckStatusRequest $request
+     * @param \App\Http\Requests\Rdt\RdtCheckinRequest $request
      * @return \Illuminate\Http\JsonResponse
-     * @throws \Illuminate\Validation\ValidationException
      */
     public function __invoke(RdtCheckinRequest $request)
     {
@@ -28,6 +27,9 @@ class RdtCheckinController extends Controller
 
         $registrationCode = $request->input('registration_code');
 
+        /**
+         * @var RdtEvent $event
+         */
         $eventCode = $request->input('event_code');
         $event     = RdtEvent::where('event_code', $eventCode)->firstOrFail();
 
@@ -56,14 +58,23 @@ class RdtCheckinController extends Controller
             $applicant->save();
 
             Log::info('APPLICANT_EVENT_CHECKIN_NOT_INVITED', [
+                'event_code' => $eventCode,
+                'event' => $event,
                 'applicant' => $applicant,
                 'invitation' => $invitation,
             ]);
         }
 
         if ($invitation->attended_at !== null) {
+            Log::info('APPLICANT_EVENT_CANNOT_CHECKIN_ALREADY', [
+                'event_code' => $eventCode,
+                'event' => $event,
+                'registration_code' => $registrationCode,
+                'invitation' => $invitation,
+            ]);
+
             return response()->json([
-                'message' => 'Already checkin.',
+                'message' => 'Nomor Pendaftar sudah digunakan untuk checkin pada event ini.',
             ], Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
@@ -73,8 +84,16 @@ class RdtCheckinController extends Controller
             ->first();
 
         if ($labCodeSampleExisting !== null) {
+            Log::info('APPLICANT_EVENT_CANNOT_CHECKIN_ALREADY_LAB_CODE_SAMPLE', [
+                'event_code' => $eventCode,
+                'event' => $event,
+                'registration_code' => $registrationCode,
+                'lab_code_sample' => $request->input('lab_code_sample'),
+                'invitation' => $invitation,
+            ]);
+
             return response()->json([
-                'message' => 'Lab Code Sample already used.',
+                'message' => 'Kode Sampel Lab sudah digunakan untuk checkin pada event ini.',
             ], Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
