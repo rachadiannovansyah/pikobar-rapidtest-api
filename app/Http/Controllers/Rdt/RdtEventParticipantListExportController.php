@@ -40,6 +40,8 @@ class RdtEventParticipantListExportController extends Controller
             WriterEntityFactory::createCell('NOMOR PENDAFTARAN'),
             WriterEntityFactory::createCell('ID EVENT'),
             WriterEntityFactory::createCell('ID KLOTER'),
+            WriterEntityFactory::createCell('NAMA KEGIATAN'),
+            WriterEntityFactory::createCell('PENYELENGGARA KEGIATAN'),
             WriterEntityFactory::createCell('NIK'),
             WriterEntityFactory::createCell('NAMA PESERTA'),
             WriterEntityFactory::createCell('NOMOR TELEPON'),
@@ -63,11 +65,13 @@ class RdtEventParticipantListExportController extends Controller
             WriterEntityFactory::createCell('RIWAYAT KEGIATAN'),
             WriterEntityFactory::createCell('STATUS KESEHATAN'),
             WriterEntityFactory::createCell('TANGGAL PENDAFTARAN'),
+            WriterEntityFactory::createCell('KIRIM UNDANGAN'),
             WriterEntityFactory::createCell('LOKASI CHECKIN'),
             WriterEntityFactory::createCell('CHECKIN KEHADIRAN'),
             WriterEntityFactory::createCell('TANGGAL HASIL LAB'),
             WriterEntityFactory::createCell('KODE SAMPEL LAB'),
             WriterEntityFactory::createCell('HASIL TEST'),
+            WriterEntityFactory::createCell('KIRIM HASIL TEST'),
         ];
 
         $singleRow = WriterEntityFactory::createRow($cells);
@@ -102,6 +106,8 @@ class RdtEventParticipantListExportController extends Controller
                     WriterEntityFactory::createCell($invitation->applicant->registration_code),
                     WriterEntityFactory::createCell($invitation->rdt_event_id),
                     WriterEntityFactory::createCell($invitation->rdt_event_schedule_id),
+                    WriterEntityFactory::createCell(strtoupper($invitation->event->event_name)),
+                    WriterEntityFactory::createCell(strtoupper($invitation->event->host_name)),
                     WriterEntityFactory::createCell($invitation->applicant->nik),
                     WriterEntityFactory::createCell($invitation->applicant->name),
                     WriterEntityFactory::createCell($invitation->applicant->phone_number),
@@ -125,11 +131,13 @@ class RdtEventParticipantListExportController extends Controller
                     WriterEntityFactory::createCell($symptomsActivity),
                     WriterEntityFactory::createCell($invitation->applicant->person_status ? $invitation->applicant->person_status->getName() : null),
                     WriterEntityFactory::createCell($invitation->applicant->created_at->setTimezone('Asia/Jakarta')->toDateTimeString()),
+                    WriterEntityFactory::createCell($invitation->notified_at ? $invitation->notified_at->setTimezone('Asia/Jakarta')->toDateTimeString() : null),
                     WriterEntityFactory::createCell($invitation->attend_location),
                     WriterEntityFactory::createCell($invitation->attended_at ? $invitation->attended_at->setTimezone('Asia/Jakarta')->toDateTimeString() : null),
                     WriterEntityFactory::createCell($invitation->result_at ? $invitation->result_at->setTimezone('Asia/Jakarta')->toDateTimeString() : null),
                     WriterEntityFactory::createCell($invitation->lab_code_sample),
                     WriterEntityFactory::createCell($invitation->lab_result_type ? $invitation->lab_result_type->getName() : null),
+                    WriterEntityFactory::createCell($invitation->notified_result_at ? $invitation->notified_result_at->setTimezone('Asia/Jakarta')->toDateTimeString() : null),
                 ];
 
                 $singleRow = WriterEntityFactory::createRow($cells);
