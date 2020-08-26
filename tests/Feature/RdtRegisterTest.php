@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Enums\PersonCaseStatusEnum;
 use Tests\TestCase;
 
 class RdtRegisterTest extends TestCase
@@ -27,11 +28,10 @@ class RdtRegisterTest extends TestCase
             'workplace_name'       => 'Tempat Kerja',
             'symptoms'             => [1, 2, 3],
             'symptoms_notes'       => 'Notes',
-            'symptoms_interaction' => 1,
-            'symptoms_activity'    => [1, 2],
+            'person_status'        => PersonCaseStatusEnum::CLOSE_CONTACT(),
         ])
             ->assertSuccessful()
-            ->assertJsonStructure(['data' => ['name', 'registration_code', 'status']]);
+            ->assertJsonStructure(['registration_code', 'download_url']);
     }
 
     /** @test */
@@ -50,9 +50,8 @@ class RdtRegisterTest extends TestCase
         $this->postJson('/api/rdt/register')
             ->assertStatus(422)
             ->assertJsonValidationErrors([
-                'nik', 'name', 'address', 'city_code', 'district_code', 'village_code', 'email', 'phone_number',
-                'gender', 'birth_date', 'occupation_type', 'symptoms', 'symptoms_notes', 'symptoms_interaction',
-                'symptoms_activity',
+                'g-recaptcha-response', 'nik', 'name', 'address', 'city_code', 'district_code', 'village_code', 'phone_number',
+                'gender', 'birth_date', 'occupation_type', 'symptoms', 'symptoms_notes'
             ]);
     }
 }
