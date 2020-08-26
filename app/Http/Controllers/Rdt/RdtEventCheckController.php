@@ -34,13 +34,7 @@ class RdtEventCheckController extends Controller
         // Pastikan tidak bisa checkin setelah tanggal selesai
         // Beri tambahan extra 12 jam
         if ($event->end_at->addHours(12)->isPast()) {
-            Log::info('MOBILE_CHECK_EVENT_REQUEST_FAILED_PAST', ['event_code' => $eventCode]);
-
-            $endAt = $event->end_at->setTimezone('Asia/Jakarta');
-            return response()->json([
-                'error'   => 'event_past',
-                'message' => "Kode Event: {$eventCode} - {$event->event_name} sudah berakhir pada {$endAt}. Periksa kembali input Kode Event.",
-            ], Response::HTTP_UNPROCESSABLE_ENTITY);
+            return $this->responseFailedEventPast($event);
         }
 
         $record = [
@@ -64,5 +58,21 @@ class RdtEventCheckController extends Controller
         ];
 
         return response()->json(['data' => $record]);
+    }
+
+    /**
+     * @param \App\Entities\RdtEvent $event
+     * @return \Illuminate\Http\JsonResponse
+     */
+    protected function responseFailedEventPast(RdtEvent $event)
+    {
+        Log::info('MOBILE_CHECK_EVENT_REQUEST_FAILED_PAST', ['event_code' => $event->event_code]);
+
+        $endAt = $event->end_at->setTimezone('Asia/Jakarta');
+        return response()->json([
+            'error' => 'EVENT_PAST',
+            'message' => "Kode Event: {$event->event_code} - {$event->event_name} sudah berakhir pada {$endAt}.
+            Periksa kembali input Kode Event.",
+        ], Response::HTTP_UNPROCESSABLE_ENTITY);
     }
 }

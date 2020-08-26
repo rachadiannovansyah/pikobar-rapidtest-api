@@ -104,7 +104,7 @@ class RdtCheckinController extends Controller
 
         $endAt = $event->end_at->setTimezone('Asia/Jakarta');
         return response()->json([
-            'error' => 'event_past',
+            'error' => 'EVENT_PAST',
             'message' => "Kode Event: {$event->event_code} - {$event->event_name} sudah berakhir pada {$endAt}.
             Periksa kembali input Kode Event.",
         ], Response::HTTP_UNPROCESSABLE_ENTITY);
@@ -124,7 +124,7 @@ class RdtCheckinController extends Controller
         ]);
 
         return response()->json([
-            'error' => 'already_checkin',
+            'error' => 'ALREADY_CHECKIN',
             'message' => 'Nomor Pendaftar sudah digunakan untuk checkin pada event ini.',
         ], Response::HTTP_UNPROCESSABLE_ENTITY);
     }
@@ -145,7 +145,7 @@ class RdtCheckinController extends Controller
         ]);
 
         return response()->json([
-            'error' => 'already_used_lab_code_sample',
+            'error' => 'ALREADY_USED_LAB_CODE_SAMPLE',
             'message' => 'Kode Sampel Lab sudah digunakan untuk checkin pada event ini.',
         ], Response::HTTP_UNPROCESSABLE_ENTITY);
     }
