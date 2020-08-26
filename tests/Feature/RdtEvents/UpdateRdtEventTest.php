@@ -5,15 +5,11 @@ namespace Tests\Feature\RdtEvents;
 use App\Entities\RdtEvent;
 use App\Entities\User;
 use App\Enums\RdtEventStatus;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Carbon;
 use Tests\TestCase;
 
 class UpdateRdtEventTest extends TestCase
 {
-    use RefreshDatabase;
-
     /** @test */
     public function can_update_rdt_event()
     {

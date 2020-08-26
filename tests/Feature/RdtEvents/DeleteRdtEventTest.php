@@ -4,13 +4,10 @@ namespace Tests\Feature\RdtEvents;
 
 use App\Entities\RdtEvent;
 use App\Entities\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class DeleteRdtEventTest extends TestCase
 {
-    use RefreshDatabase;
-
     /** @test */
     public function can_delete_rdt_event()
     {

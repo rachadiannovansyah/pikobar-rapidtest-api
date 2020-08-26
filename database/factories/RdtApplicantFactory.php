@@ -24,8 +24,8 @@ $factory->define(RdtApplicant::class, function (Faker $faker) {
         'phone_number'         => $faker->phoneNumber,
         'symptoms_interaction' => Arr::random([0, 1, 2]),
         'symptoms_notes'       => $faker->text,
-        'occupation_name'      => $faker->text,
-        'workplace_name'       => $faker->text,
+        'occupation_name'      => $faker->jobTitle,
+        'workplace_name'       => $faker->company,
         'status'               => RdtApplicantStatus::NEW(),
     ];
 });

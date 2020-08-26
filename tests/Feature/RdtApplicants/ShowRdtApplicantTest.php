@@ -4,30 +4,57 @@ namespace Tests\Feature\RdtApplicants;
 
 use App\Entities\RdtApplicant;
 use App\Entities\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class ShowRdtApplicantTest extends TestCase
 {
-    use RefreshDatabase;
-
     /** @test */
     public function can_show_applicant()
     {
-        $this->withoutExceptionHandling();
+        $user = new User();
+        $user->assignPermissions(['view-applicants']);
 
-        $this->artisan('db:seed', ['--class' => 'AreasTestSeeder']);
-
-        $user = factory(User::class)->create();
-
+        /**
+         * @var RdtApplicant $rdtApplicant
+         */
         $rdtApplicant = factory(RdtApplicant::class)->create();
 
         $this->actingAs($user)
             ->getJson("/api/rdt/applicants/{$rdtApplicant->id}")
             ->assertSuccessful()
             ->assertJsonStructure([
-                'data' => ['name','nik','address']
+                'data' => ['name', 'nik', 'address']
+            ])
+            ->assertJsonFragment([
+                'name'    => $rdtApplicant->name,
+                'nik'     => $rdtApplicant->nik,
+                'address' => $rdtApplicant->address,
             ]);
+    }
 
+    /** @test */
+    public function cannot_show_applicant_unauthenticated()
+    {
+        /**
+         * @var RdtApplicant $rdtApplicant
+         */
+        $rdtApplicant = factory(RdtApplicant::class)->create();
+
+        $this->getJson("/api/rdt/applicants/{$rdtApplicant->id}")->assertUnauthorized();
+    }
+
+    /** @test */
+    public function cannot_show_applicant_no_permission()
+    {
+        $user = new User();
+
+        /**
+         * @var RdtApplicant $rdtApplicant
+         */
+        $rdtApplicant = factory(RdtApplicant::class)->create();
+
+        $this->actingAs($user)
+            ->getJson("/api/rdt/applicants/{$rdtApplicant->id}")
+            ->assertForbidden();
     }
 }

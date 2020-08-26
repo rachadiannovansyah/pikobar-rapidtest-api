@@ -4,15 +4,11 @@ namespace Tests\Feature\RdtEvents;
 
 use App\Entities\RdtEvent;
 use App\Entities\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Carbon;
 use Tests\TestCase;
 
 class CreateRdtEventTest extends TestCase
 {
-    use RefreshDatabase;
-
     /** @test */
     public function can_create_event()
     {

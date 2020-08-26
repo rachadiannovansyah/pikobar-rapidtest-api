@@ -16,12 +16,6 @@ class RdtApplicantObserver
      */
     public function creating(RdtApplicant $rdtApplicant)
     {
-        $rdtApplicant->name            = strtoupper($rdtApplicant->name);
-        $rdtApplicant->address         = strtoupper($rdtApplicant->address);
-        $rdtApplicant->occupation_name = strtoupper($rdtApplicant->occupation_name);
-        $rdtApplicant->workplace_name  = strtoupper($rdtApplicant->workplace_name);
-        $rdtApplicant->province_code   = '32';
-
         $prefixAreaCode = str_replace('.', '', $rdtApplicant->city_code);
 
         $rdtApplicant->registration_code = $this->generateUniqueCode($prefixAreaCode);

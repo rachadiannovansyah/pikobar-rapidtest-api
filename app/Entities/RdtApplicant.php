@@ -13,6 +13,7 @@ use Spatie\Enum\Laravel\HasEnums;
 use UrlSigner;
 
 /**
+ * @property int $id
  * @property string $registration_code
  * @property string $pikobar_session_id
  * @property string $province_code
@@ -86,6 +87,31 @@ class RdtApplicant extends Model
     public function invitations()
     {
         return $this->hasMany(RdtInvitation::class, 'rdt_applicant_id');
+    }
+
+    public function setNameAttribute($value)
+    {
+        $this->attributes['name'] = strtoupper($value);
+    }
+
+    public function setProvinceCodeAttribute($value)
+    {
+        $this->attributes['province_code'] = '32';
+    }
+
+    public function setAddressAttribute($value)
+    {
+        $this->attributes['address'] = strtoupper($value);
+    }
+
+    public function setOccupationNameAttribute($value)
+    {
+        $this->attributes['occupation_name'] = strtoupper($value);
+    }
+
+    public function setWorkplaceNameAttribute($value)
+    {
+        $this->attributes['workplace_name'] = strtoupper($value);
     }
 
     public function getQrCodeUrlAttribute()

@@ -4,8 +4,6 @@ namespace Tests\Feature\RdtEvents;
 
 use App\Entities\RdtEvent;
 use App\Entities\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
 class ListRdtEvent extends TestCase

@@ -41,7 +41,7 @@ class RdtApplicantPolicy
      */
     public function create(User $user)
     {
-        return $user->hasPermission('manage-applicants');
+        return $user->hasPermission('create-applicants');
     }
 
     /**
@@ -53,7 +53,7 @@ class RdtApplicantPolicy
      */
     public function update(User $user, RdtApplicant $rdtApplicant)
     {
-        return $user->hasPermission('manage-applicants');
+        return $user->hasPermission('edit-applicants');
     }
 
     /**
@@ -65,7 +65,7 @@ class RdtApplicantPolicy
      */
     public function delete(User $user, RdtApplicant $rdtApplicant)
     {
-        return $user->hasPermission('manage-applicants');
+        return $user->hasPermission('delete-applicants');
     }
 
     /**

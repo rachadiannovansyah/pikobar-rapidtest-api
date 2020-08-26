@@ -74,6 +74,17 @@ class User extends Authenticatable
 
     public function hasPermission($permissionName): bool
     {
-        return in_array($permissionName, $this->permissions);
+        $permissions = $this->getAttribute('permissions');
+
+        if ($permissions === null) {
+            return false;
+        }
+
+        return in_array($permissionName, $permissions);
+    }
+
+    public function assignPermissions(array $permissions)
+    {
+        $this->setAttribute('permissions', $permissions);
     }
 }
