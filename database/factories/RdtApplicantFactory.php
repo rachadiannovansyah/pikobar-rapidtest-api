@@ -18,11 +18,14 @@ $factory->define(RdtApplicant::class, function (Faker $faker) {
         'gender'               => Arr::random(Gender::toArray()),
         'person_status'        => Arr::random(PersonCaseStatusEnum::toArray()),
         'birth_date'           => $faker->dateTimeThisCentury,
+        'city_code'            => '32.73',
         'address'              => $faker->address,
         'email'                => $faker->email,
         'phone_number'         => $faker->phoneNumber,
         'symptoms_interaction' => Arr::random([0, 1, 2]),
         'symptoms_notes'       => $faker->text,
+        'occupation_name'      => $faker->text,
+        'workplace_name'       => $faker->text,
         'status'               => RdtApplicantStatus::NEW(),
     ];
 });

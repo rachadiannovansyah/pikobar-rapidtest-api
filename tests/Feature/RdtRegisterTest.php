@@ -10,8 +10,6 @@ class RdtRegisterTest extends TestCase
     /** @test */
     public function can_register()
     {
-        $this->artisan('db:seed', ['--class' => 'AreasTestSeeder']);
-
         $this->postJson('/api/rdt/register', [
             'g-recaptcha-response' => 'X',
             'name'                 => 'Test User',

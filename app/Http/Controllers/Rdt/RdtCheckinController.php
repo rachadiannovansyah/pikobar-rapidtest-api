@@ -53,8 +53,6 @@ class RdtCheckinController extends Controller
             $invitation = new RdtInvitation();
             $invitation->applicant()->associate($applicant);
             $invitation->event()->associate($event);
-
-            $invitation->registration_code = $registrationCode;
             $invitation->save();
 
             if ($applicant->pikobar_session_id === null) {
