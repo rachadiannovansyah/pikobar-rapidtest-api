@@ -46,6 +46,10 @@ class RdtEventParticipantListController extends Controller
             return RdtInvitationResource::collection($records->get());
         }
 
+        if ($perPage <= 0) {
+            $perPage = 15;
+        }
+
         return RdtInvitationResource::collection($records->paginate($perPage));
     }
 }
