@@ -26,6 +26,10 @@ class RecaptchaRule implements Rule
      */
     public function passes($attribute, $value)
     {
+        if (config('app.env') !== 'production') {
+            return true;
+        }
+
         // Validate ReCaptcha
         $client = new Client([
             'base_uri' => 'https://google.com/recaptcha/api/',
