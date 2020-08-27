@@ -52,5 +52,4 @@ class AreaController extends ApiController
     {
         return new AreaResource($area);
     }
-
 }

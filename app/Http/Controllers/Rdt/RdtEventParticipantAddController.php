@@ -42,8 +42,7 @@ class RdtEventParticipantAddController extends Controller
             // Jika belum terdaftar, insert baru.
             $invitation = RdtInvitation::firstOrNew([
                 'rdt_event_id' => $rdtEvent->id,
-                'rdt_applicant_id' => $applicantId['rdt_applicant_id']]
-            );
+                'rdt_applicant_id' => $applicantId['rdt_applicant_id']]);
 
             $invitation->rdt_event_schedule_id = $applicantId['rdt_event_schedule_id'];
             $invitation->save();

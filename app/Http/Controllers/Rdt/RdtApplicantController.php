@@ -51,9 +51,9 @@ class RdtApplicantController extends Controller
 
         if ($search) {
             $records->where(function ($query) use ($search) {
-                $query->where('name', 'like', '%'.$search.'%')
-                    ->orWhere('registration_code', 'like', '%'.$search.'%')
-                    ->orWhere('phone_number', 'like', '%'.$search.'%');
+                $query->where('name', 'like', '%' . $search . '%')
+                    ->orWhere('registration_code', 'like', '%' . $search . '%')
+                    ->orWhere('phone_number', 'like', '%' . $search . '%');
             });
         }
 
@@ -145,5 +145,7 @@ class RdtApplicantController extends Controller
         if ($perPage <= 0 || $perPage > 20) {
             return 15;
         }
+
+        return $perPage;
     }
 }

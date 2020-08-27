@@ -17,7 +17,7 @@ class RdtEventNotifyTestResultController extends Controller
         $invitationIds = $request->input('invitations_ids');
         $invitations   = $rdtEvent->invitations;
 
-        if($target === 'SELECTED'){
+        if ($target === 'SELECTED') {
             $invitations = $rdtEvent->invitations()->whereIn('id', $invitationIds)->get();
         }
 

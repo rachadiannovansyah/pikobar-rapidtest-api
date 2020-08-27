@@ -25,5 +25,4 @@ trait HasArea
     {
         return $this->belongsTo(Area::class, 'village_code', 'code_kemendagri');
     }
-
 }

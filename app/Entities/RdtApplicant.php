@@ -30,7 +30,9 @@ use UrlSigner;
  */
 class RdtApplicant extends Model
 {
-    use Notifiable, HasEnums, SoftDeletes;
+    use Notifiable;
+    use HasEnums;
+    use SoftDeletes;
 
     protected $fillable = [
         'nik', 'name', 'address', 'province_code', 'city_code', 'district_code', 'village_code',
@@ -64,8 +66,8 @@ class RdtApplicant extends Model
     ];
 
     protected $enums = [
-        'symptoms_interaction' => SymptomsInteraction::class.':nullable',
-        'person_status'        => PersonCaseStatusEnum::class.':nullable',
+        'symptoms_interaction' => SymptomsInteraction::class . ':nullable',
+        'person_status'        => PersonCaseStatusEnum::class . ':nullable',
         'status'               => RdtApplicantStatus::class,
     ];
 

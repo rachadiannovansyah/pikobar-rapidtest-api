@@ -27,16 +27,13 @@ class RdtEventNotifyParticipantController extends Controller
         $invitations->load(['applicant']);
 
         foreach ($invitations as $invitation) {
-
             $applicant = $invitation->applicant;
 
-            if ( $notifyMethod === 'BOTH') {
-
+            if ($notifyMethod === 'BOTH') {
                 $applicant->notify(new RdtEventInvitation($rdtEvent));
 
                 $invitation->notified_at = Carbon::now();
                 $invitation->save();
-
             }
 
             Log::info('EVENT_NOTIFY_PARTICIPANT', [

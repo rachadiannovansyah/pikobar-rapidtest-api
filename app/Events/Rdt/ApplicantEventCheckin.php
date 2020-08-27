@@ -17,7 +17,9 @@ use Illuminate\Support\Facades\Log;
 
 class ApplicantEventCheckin
 {
-    use Dispatchable, InteractsWithSockets, SerializesModels;
+    use Dispatchable;
+    use InteractsWithSockets;
+    use SerializesModels;
 
     /**
      * @var RdtInvitation

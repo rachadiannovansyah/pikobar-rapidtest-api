@@ -57,7 +57,7 @@ class RdtEventController extends Controller
 
         if ($search) {
             $records->where(function ($query) use ($search) {
-                $query->where('event_name', 'like', '%'.$search.'%');
+                $query->where('event_name', 'like', '%' . $search . '%');
             });
         }
 
@@ -158,5 +158,7 @@ class RdtEventController extends Controller
         if ($perPage <= 0 || $perPage > 20) {
             return 15;
         }
+
+        return $perPage;
     }
 }

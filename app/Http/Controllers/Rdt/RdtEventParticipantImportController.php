@@ -15,7 +15,6 @@ use AsyncAws\Sqs\Input\SendMessageRequest;
 use Box\Spout\Reader\Common\Creator\ReaderEntityFactory;
 use Carbon\Carbon;
 
-
 class RdtEventParticipantImportController extends Controller
 {
 
@@ -42,7 +41,6 @@ class RdtEventParticipantImportController extends Controller
         ]);
 
         $this->sqs = $factory->sqs();
-
     }
 
     public function __invoke(RdtInvitationImportRequest $request, RdtEvent $rdtEvent)
@@ -57,13 +55,10 @@ class RdtEventParticipantImportController extends Controller
         $rdtEvent->save();
 
         foreach ($reader->getSheetIterator() as $sheet) {
-
             foreach ($sheet->getRowIterator() as $key => $row) {
-
                 $rowArray = $row->toArray();
 
-                if ($key > 1 ) {
-
+                if ($key > 1) {
                     $count++;
 
                     $participant = [
@@ -83,23 +78,18 @@ class RdtEventParticipantImportController extends Controller
 
                     $invitation = $this->fillInvitation($applicant, $participant);
 
-                    if ( strtolower($participant['notify']) === 'yes' ) {
-
+                    if (strtolower($participant['notify']) === 'yes') {
                         $this->pushNotification($participant, $rdtEvent, $applicant);
                         $invitation->notified_at = Carbon::now();
                         $invitation->save();
-
                     }
-
                 }
-
             }
         }
 
         $reader->close();
 
-        return response()->json(['message' => 'import success, '. $count .' rows']);
-
+        return response()->json(['message' => 'import success, ' . $count . ' rows']);
     }
 
     private function fillApplicant(array $participant)
@@ -112,7 +102,8 @@ class RdtEventParticipantImportController extends Controller
               'name'              => $participant['name'],
               'city_code'         => $participant['city_code'],
               'phone_number'      => $participant['phone_number']
-            ]);
+            ]
+        );
 
         $applicant->rdt_event_id = $participant['rdt_event_id'];
         $applicant->status       = RdtApplicantStatus::APPROVED();
@@ -133,14 +124,16 @@ class RdtEventParticipantImportController extends Controller
         return $rdtInvitation;
     }
 
-    private function getQueueUrl($queueName) {
+    private function getQueueUrl($queueName)
+    {
 
         return $this->sqs->getQueueUrl(new GetQueueUrlRequest([
             'QueueName' => $queueName
         ]))->getQueueUrl();
     }
 
-    private function sendMessageToQueue($queueName, $phoneNumber, $message) {
+    private function sendMessageToQueue($queueName, $phoneNumber, $message)
+    {
 
         $messageRequest = new SendMessageRequest([
             'QueueUrl'          => $this->getQueueUrl($queueName),
@@ -156,30 +149,26 @@ class RdtEventParticipantImportController extends Controller
 
 
         $this->sqs->sendMessage($messageRequest);
-
     }
 
     private function reformatPhoneNumber($phoneNumber, $format = 'sms')
     {
 
         if ($format === 'wa') {
-
             return $this->reformatWa($phoneNumber);
-
         }
 
         return $this->reformatSms($phoneNumber);
-
     }
 
     private function reformatSms($phoneNumber)
     {
         if ($phoneNumber[0] == '6') {
-            return substr_replace($phoneNumber,'0',0, 2);
+            return substr_replace($phoneNumber, '0', 0, 2);
         }
 
         if ($phoneNumber[0] == '+') {
-            return substr_replace($phoneNumber,'0',0, 3);
+            return substr_replace($phoneNumber, '0', 0, 3);
         }
 
         return $phoneNumber;
@@ -188,30 +177,32 @@ class RdtEventParticipantImportController extends Controller
     private function reformatWa($phoneNumber)
     {
         if ($phoneNumber[0] == '0') {
-            return substr_replace($phoneNumber,'62',0, 1);
+            return substr_replace($phoneNumber, '62', 0, 1);
         }
 
         if ($phoneNumber[0] == '+') {
-            return substr_replace($phoneNumber,'',0, 1);
+            return substr_replace($phoneNumber, '', 0, 1);
         }
 
         return $phoneNumber;
     }
 
-    private function messageWa($name, $hostName, $registrationCode){
+    private function messageWa($name, $hostName, $registrationCode)
+    {
 
-        $message  = 'Yth. '.$name.' Sampurasun, Anda diundang untuk melakukan Tes Masif COVID-19 oleh '.$hostName;
+        $message  = 'Yth. ' . $name . ' Sampurasun, Anda diundang untuk melakukan Tes Masif COVID-19 oleh ' . $hostName;
         $message .= ' Silakan buka tautan https://s.id/tesmasif2 dan masukkan Nomor Pendaftaran berikut: ';
-        $message .= $registrationCode.' untuk melihat undangan. Hatur nuhun';
+        $message .= $registrationCode . ' untuk melihat undangan. Hatur nuhun';
 
         return $message;
     }
 
-    private function messageSms($hostName, $registrationCode){
+    private function messageSms($hostName, $registrationCode)
+    {
 
         $message  = 'Sampurasun. Anda diundang Tes Masif COVID-19 ';
-        $message .= $hostName .'. Buka tautan s.id/tesmasif1 dan input nomor: ';
-        $message .= $registrationCode.' untuk melihat undangan.';
+        $message .= $hostName . '. Buka tautan s.id/tesmasif1 dan input nomor: ';
+        $message .= $registrationCode . ' untuk melihat undangan.';
 
         return $message;
     }
@@ -223,7 +214,7 @@ class RdtEventParticipantImportController extends Controller
         $messageWa      = $this->messageWa($applicant->name, $event->host_name, $applicant->registration_code);
         $messageSms     = $this->messageSms($event->host_name, $applicant->registration_code);
 
-        if (strtolower($participant['notify_method']) === self::NOTIFY_WA ) {
+        if (strtolower($participant['notify_method']) === self::NOTIFY_WA) {
             $this->sendMessageToQueue(self::WA_QUEUE_NAME, $phoneNumberWa, $messageWa);
         }
 

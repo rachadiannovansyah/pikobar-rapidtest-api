@@ -6,16 +6,16 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * @property              $id
- * @property integer      $parent_id	      nullable
- * @property integer      $depth	          nullable
- * @property string       $name	            nullable,index
- * @property string       $code_bps	        nullable,unique
- * @property string       $code_kemendagri	nullable,unique
- * @property string       $code_dinkes	    nullable,unique
- * @property string       $longitude	      nullable
- * @property string       $latitude	        nullable
- * @property string       $meta	            nullable
- * @property tinyInteger  $status	          nullable
+ * @property integer      $parent_id          nullable
+ * @property integer      $depth              nullable
+ * @property string       $name             nullable,index
+ * @property string       $code_bps         nullable,unique
+ * @property string       $code_kemendagri  nullable,unique
+ * @property string       $code_dinkes      nullable,unique
+ * @property string       $longitude          nullable
+ * @property string       $latitude         nullable
+ * @property string       $meta             nullable
+ * @property tinyInteger  $status             nullable
  * @property timestamp    $created_at
  * @property timestamp    $updated_at
  */

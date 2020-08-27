@@ -64,9 +64,9 @@ class RdtApplicantResource extends JsonResource
         $nameMasking = '';
         foreach ($explodeWords as $key => $word) {
             if (strlen($word) <= 2) {
-                $nameMasking .= $word.' ';
+                $nameMasking .= $word . ' ';
             } else {
-                $nameMasking .= substr($word, 0, 3).str_repeat('*', strlen($word) - 3).' ';
+                $nameMasking .= substr($word, 0, 3) . str_repeat('*', strlen($word) - 3) . ' ';
             }
         }
 

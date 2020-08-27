@@ -11,7 +11,10 @@ use Spatie\Enum\Laravel\HasEnums;
 
 class User extends Authenticatable
 {
-    use HasEnums, SoftDeletes, HasArea, Notifiable;
+    use HasEnums;
+    use SoftDeletes;
+    use HasArea;
+    use Notifiable;
 
     public $incrementing = false;
 
@@ -64,7 +67,7 @@ class User extends Authenticatable
      */
     public function getPhotoUrlAttribute()
     {
-        return 'https://www.gravatar.com/avatar/'.md5(strtolower($this->email)).'.jpg?s=200&d=mm';
+        return 'https://www.gravatar.com/avatar/' . md5(strtolower($this->email)) . '.jpg?s=200&d=mm';
     }
 
     public function hasRole($roleName): bool

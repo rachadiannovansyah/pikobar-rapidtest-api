@@ -21,7 +21,8 @@ use Spatie\Enum\Laravel\HasEnums;
  */
 class RdtEvent extends Model
 {
-    use HasEnums, SoftDeletes;
+    use HasEnums;
+    use SoftDeletes;
 
     protected $enums = [
         'status' => RdtEventStatus::class,

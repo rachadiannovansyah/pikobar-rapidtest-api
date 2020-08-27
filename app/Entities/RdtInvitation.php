@@ -39,8 +39,8 @@ class RdtInvitation extends Model
     ];
 
     protected $enums = [
-        'lab_result_type' => LabResultType::class.':nullable',
-        'test_type' => TestType::class.':nullable',
+        'lab_result_type' => LabResultType::class . ':nullable',
+        'test_type' => TestType::class . ':nullable',
     ];
 
     /**

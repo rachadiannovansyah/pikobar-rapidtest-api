@@ -8,7 +8,7 @@ class SymptomsInteraction extends Enum
 {
     public static function YES(): SymptomsInteraction
     {
-        return new class() extends SymptomsInteraction {
+        return new class () extends SymptomsInteraction {
             public function getValue(): string
             {
                 return 0;
@@ -18,7 +18,7 @@ class SymptomsInteraction extends Enum
 
     public static function NO(): SymptomsInteraction
     {
-        return new class() extends SymptomsInteraction {
+        return new class () extends SymptomsInteraction {
             public function getValue(): string
             {
                 return 1;
@@ -28,7 +28,7 @@ class SymptomsInteraction extends Enum
 
     public static function UNKNOWN(): SymptomsInteraction
     {
-        return new class() extends SymptomsInteraction {
+        return new class () extends SymptomsInteraction {
             public function getValue(): string
             {
                 return 2;

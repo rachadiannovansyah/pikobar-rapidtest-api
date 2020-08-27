@@ -22,7 +22,7 @@ class RdtEventObserver
 
     protected function generateUniqueEventCode()
     {
-        while(true) {
+        while (true) {
             $code = $this->generateCode();
 
             $doesCodeExist = DB::table('rdt_events')

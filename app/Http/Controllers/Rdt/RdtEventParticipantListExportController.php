@@ -84,25 +84,25 @@ class RdtEventParticipantListExportController extends Controller
             /**
              * @var \App\Entities\RdtInvitation[] $invitations
              */
-            foreach ($invitations as $invitation) {
-                $age = $invitation->applicant->birth_date ? $invitation->applicant->birth_date->age : null;
+                foreach ($invitations as $invitation) {
+                    $age = $invitation->applicant->birth_date ? $invitation->applicant->birth_date->age : null;
 
-                $address = strtoupper($invitation->applicant->address);
-                $address = preg_replace("/[\r\n]*/","", $address);
+                    $address = strtoupper($invitation->applicant->address);
+                    $address = preg_replace("/[\r\n]*/", "", $address);
 
-                $symptoms = null;
-                if ($invitation->applicant->symptoms) {
-                    $symptoms = implode(', ', $invitation->applicant->symptoms);
-                }
+                    $symptoms = null;
+                    if ($invitation->applicant->symptoms) {
+                        $symptoms = implode(', ', $invitation->applicant->symptoms);
+                    }
 
-                $symptomsActivity = null;
-                if ($invitation->applicant->symptoms_activity) {
-                    $symptomsActivity= implode(', ', $invitation->applicant->symptoms_activity);
-                }
+                    $symptomsActivity = null;
+                    if ($invitation->applicant->symptoms_activity) {
+                        $symptomsActivity = implode(', ', $invitation->applicant->symptoms_activity);
+                    }
 
-                $symptomsNotes = preg_replace("/[\r\n]*/","", $invitation->applicant->symptoms_notes);
+                    $symptomsNotes = preg_replace("/[\r\n]*/", "", $invitation->applicant->symptoms_notes);
 
-                $cells = [
+                    $cells = [
                     WriterEntityFactory::createCell($invitation->applicant->registration_code),
                     WriterEntityFactory::createCell($invitation->rdt_event_id),
                     WriterEntityFactory::createCell($invitation->rdt_event_schedule_id),
@@ -138,12 +138,12 @@ class RdtEventParticipantListExportController extends Controller
                     WriterEntityFactory::createCell($invitation->lab_code_sample),
                     WriterEntityFactory::createCell($invitation->lab_result_type ? $invitation->lab_result_type->getName() : null),
                     WriterEntityFactory::createCell($invitation->notified_result_at ? $invitation->notified_result_at->setTimezone('Asia/Jakarta')->toDateTimeString() : null),
-                ];
+                    ];
 
-                $singleRow = WriterEntityFactory::createRow($cells);
-                $writer->addRow($singleRow);
-            }
-        });
+                    $singleRow = WriterEntityFactory::createRow($cells);
+                    $writer->addRow($singleRow);
+                }
+            });
 
         $writer->close();
     }

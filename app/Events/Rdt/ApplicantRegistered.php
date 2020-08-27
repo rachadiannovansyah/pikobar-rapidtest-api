@@ -15,7 +15,9 @@ use Illuminate\Support\Facades\Log;
 
 class ApplicantRegistered
 {
-    use Dispatchable, InteractsWithSockets, SerializesModels;
+    use Dispatchable;
+    use InteractsWithSockets;
+    use SerializesModels;
 
     /**
      * @var RdtApplicant

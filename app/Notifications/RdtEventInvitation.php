@@ -38,9 +38,9 @@ class RdtEventInvitation extends Notification
 
     public function toWhatsapp($notifiable)
     {
-        $message  = 'Yth. '.$notifiable->name.' Sampurasun, Anda diundang untuk melakukan Tes Masif COVID-19 oleh ';
-        $message .= $this->rdtEvent->host_name.' Silakan buka tautan https://s.id/tesmasif2 dan masukkan Nomor Pendaftaran berikut: ';
-        $message .= $notifiable->registration_code.' untuk melihat undangan. Hatur nuhun';
+        $message  = 'Yth. ' . $notifiable->name . ' Sampurasun, Anda diundang untuk melakukan Tes Masif COVID-19 oleh ';
+        $message .= $this->rdtEvent->host_name . ' Silakan buka tautan https://s.id/tesmasif2 dan masukkan Nomor Pendaftaran berikut: ';
+        $message .= $notifiable->registration_code . ' untuk melihat undangan. Hatur nuhun';
 
         return $message;
     }
@@ -48,8 +48,8 @@ class RdtEventInvitation extends Notification
     public function toSms($notifiable)
     {
         $message  = 'Sampurasun. Anda diundang Tes Masif COVID-19 ';
-        $message .= $this->rdtEvent->host_name .'. Buka tautan s.id/tesmasif1 dan input nomor: ';
-        $message .= $notifiable->registration_code.' untuk melihat undangan.';
+        $message .= $this->rdtEvent->host_name . '. Buka tautan s.id/tesmasif1 dan input nomor: ';
+        $message .= $notifiable->registration_code . ' untuk melihat undangan.';
 
         return $message;
     }
@@ -62,7 +62,7 @@ class RdtEventInvitation extends Notification
      */
     public function toMail($notifiable)
     {
-        return (new MailMessage)
+        return (new MailMessage())
                     ->line('The introduction to the notification.')
                     ->action('Notification Action', url('/'))
                     ->line('Thank you for using our application!');

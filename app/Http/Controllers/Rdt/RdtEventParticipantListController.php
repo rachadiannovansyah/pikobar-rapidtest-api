@@ -33,9 +33,9 @@ class RdtEventParticipantListController extends Controller
 
         if ($search) {
             $records->where(function ($query) use ($search) {
-                $query->where('rdt_applicants.name', 'like', '%'.$search.'%');
-                $query->orWhere('rdt_invitations.registration_code', 'like', '%'.$search.'%');
-                $query->orWhere('lab_code_sample', 'like', '%'.$search.'%');
+                $query->where('rdt_applicants.name', 'like', '%' . $search . '%');
+                $query->orWhere('rdt_invitations.registration_code', 'like', '%' . $search . '%');
+                $query->orWhere('lab_code_sample', 'like', '%' . $search . '%');
             });
         }
 
@@ -56,5 +56,7 @@ class RdtEventParticipantListController extends Controller
         if ($perPage <= 0 || $perPage > 20) {
             return 15;
         }
+
+        return $perPage;
     }
 }

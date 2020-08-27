@@ -23,7 +23,7 @@ class RdtApplicantObserver
 
     protected function generateUniqueCode($prefixAreaCode)
     {
-        while(true) {
+        while (true) {
             $code = $prefixAreaCode . $this->generateCode();
 
             $doesCodeExist = DB::table('rdt_applicants')

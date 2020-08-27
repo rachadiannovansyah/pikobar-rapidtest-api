@@ -15,8 +15,8 @@ class DefaultAcceptJson
      */
     public function handle($request, Closure $next)
     {
-        if ($request->header('Accept','*/*') == '*/*') {
-            $request->headers->set('Accept','application/json');
+        if ($request->header('Accept', '*/*') == '*/*') {
+            $request->headers->set('Accept', 'application/json');
         }
 
         return $next($request);

@@ -8,7 +8,7 @@ class Gender extends Enum
 {
     public static function MALE(): Gender
     {
-        return new class() extends Gender {
+        return new class () extends Gender {
             public function getValue(): string
             {
                 return 'M';
@@ -18,7 +18,7 @@ class Gender extends Enum
 
     public static function FEMALE(): Gender
     {
-        return new class() extends Gender {
+        return new class () extends Gender {
             public function getValue(): string
             {
                 return 'F';

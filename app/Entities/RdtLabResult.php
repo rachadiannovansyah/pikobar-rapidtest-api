@@ -9,7 +9,8 @@ use Spatie\Enum\Laravel\HasEnums;
 
 class RdtLabResult extends Model
 {
-    use HasEnums, SoftDeletes;
+    use HasEnums;
+    use SoftDeletes;
 
     protected $enums = [
         'lab_result_type' => LabResultType::class,
