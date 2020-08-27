@@ -55,4 +55,30 @@ class UpdateRdtApplicantTest extends TestCase
             'workplace_name'  => 'TEMPAT KERJA BARU'
         ]);
     }
+
+    /** @test */
+    public function cannot_update_applicant_unauthenticated()
+    {
+        /**
+         * @var RdtApplicant $rdtApplicant
+         */
+        $rdtApplicant = factory(RdtApplicant::class)->create();
+
+        $this->putJson("/api/rdt/applicants/{$rdtApplicant->id}")->assertUnauthorized();
+    }
+
+    /** @test */
+    public function cannot_update_applicant_no_permission()
+    {
+        $user = new User();
+
+        /**
+         * @var RdtApplicant $rdtApplicant
+         */
+        $rdtApplicant = factory(RdtApplicant::class)->create();
+
+        $this->actingAs($user)
+            ->putJson("/api/rdt/applicants/{$rdtApplicant->id}")
+            ->assertForbidden();
+    }
 }

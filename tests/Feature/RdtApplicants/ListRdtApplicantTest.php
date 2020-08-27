@@ -22,4 +22,19 @@ class ListRdtApplicantTest extends TestCase
             ->assertJsonStructure(['data', 'meta'])
             ->assertJsonFragment(['total' => 30]);
     }
+
+    /** @test */
+    public function cannot_list_applicants_unauthenticated()
+    {
+        $this->getJson("/api/rdt/applicants")->assertUnauthorized();
+    }
+
+    /** @test */
+    public function cannot_list_applicants_no_permission()
+    {
+        $user = new User();
+
+        $this->actingAs($user)
+            ->getJson("/api/rdt/applicants")->assertForbidden();
+    }
 }
