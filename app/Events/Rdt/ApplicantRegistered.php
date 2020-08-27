@@ -33,12 +33,10 @@ class ApplicantRegistered
 
         Log::info('APPLICANT_REGISTER', $applicant->toArray());
 
-        $currentEnvironment = config('app.env');
+        $notify = config('notifications.messages.registered_thankyou');
 
-        if ($currentEnvironment !== 'production') {
-            return;
+        if ($notify) {
+            $applicant->notify(new RegisterThankYou());
         }
-
-        // $applicant->notify(new RegisterThankYou());
     }
 }

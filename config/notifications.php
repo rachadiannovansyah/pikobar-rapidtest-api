@@ -6,4 +6,9 @@ return [
      * Redirect/send to developer instead to real numbers
      */
     'notify_to' => env('NOTIFY_TO'),
+
+    'messages' => [
+        'registered_thankyou' => env('NOTIFY_MESSAGES_REGISTERED_THANKYOU', false),
+        'checkin_thankyou'    => env('NOTIFY_MESSAGES_CHECKIN_THANKYOU', false)
+    ],
 ];

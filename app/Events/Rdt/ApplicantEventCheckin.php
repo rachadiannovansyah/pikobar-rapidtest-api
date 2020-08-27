@@ -49,12 +49,10 @@ class ApplicantEventCheckin
             'attended_at'       => $rdtInvitation->attended_at,
         ]);
 
-        $currentEnvironment = config('app.env');
+        $notify = config('notifications.messages.checkin_thankyou');
 
-        if ($currentEnvironment !== 'production') {
-            return;
+        if ($notify) {
+            $rdtApplicant->notifyNow(new CheckinThankYou($rdtInvitation->event, $rdtInvitation), [WhatsappChannel::class]);
         }
-
-        $rdtApplicant->notifyNow(new CheckinThankYou($rdtInvitation->event, $rdtInvitation), [WhatsappChannel::class]);
     }
 }
