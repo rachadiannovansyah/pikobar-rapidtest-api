@@ -1,6 +1,4 @@
-sudo: required
 language: php
-dist: trusty
 
 # Keep the cache between builds to speed up installs
 cache:
