@@ -3,73 +3,69 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\URL;
+use Spatie\UrlSigner\Laravel\UrlSignerFacade as UrlSigner;
 
 class RdtApplicantResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return array
      */
     public function toArray($request)
     {
         return [
-            $this->mergeWhen($request->user(), [
-                'id' => $this->id,
-            ]),
             'registration_code' => $this->registration_code,
             'name'              => $this->name,
             'qrcode'            => $this->qrCodeUrl,
+            'registration_pdf'  => $this->getRegistrationAttachmentPdf(),
             'approved_at'       => $this->approved_at,
             'invitations'       => RdtInvitationResource::collection($this->whenLoaded('invitations')),
             'status'            => $this->status,
-            $this->mergeWhen($request->user(), [
-                'nik'                  => $this->nik,
-                'gender'               => $this->gender,
-                'birth_date'           => optional($this->birth_date)->toDateString(),
-                'age'                  => optional($this->birth_date)->age,
-                'city'                 => new AreaResource($this->whenLoaded('city')),
-                'district'             => new AreaResource($this->whenLoaded('district')),
-                'village'              => new AreaResource($this->whenLoaded('village')),
-                'city_code'            => $this->city_code,
-                'district_code'        => $this->district_code,
-                'village_code'         => $this->village_code,
-                'address'              => $this->address,
-                'phone_number'         => $this->phone_number,
-                'workplace_name'       => $this->workplace_name,
-                'occupation_type'      => $this->occupation_type,
-                'occupation_name'      => $this->occupation_name,
-                'is_pns'               => $this->is_pns,
-                'symptoms'             => $this->symptoms,
-                'symptoms_interaction' => $this->symptoms_interaction,
-                'symptoms_notes'       => $this->symptoms_notes,
-                'symptoms_activity'    => $this->symptoms_activity,
-                'person_status'        => $this->person_status,
-                'pikobar_session_id'   => $this->pikobar_session_id,
-                'created_at'           => $this->created_at,
-                'updated_at'           => $this->updated_at,
-            ]),
+            $this->mergeWhen($request->user(), $this->getProtectedAttributes()),
         ];
     }
 
-    protected function stringToSecret(string $string)
+    protected function getProtectedAttributes()
     {
-        if (strlen($string) <= 1) {
-            return $string;
-        }
+        return [
+            'id'                   => $this->id,
+            'nik'                  => $this->nik,
+            'gender'               => $this->gender,
+            'birth_date'           => optional($this->birth_date)->toDateString(),
+            'age'                  => optional($this->birth_date)->age,
+            'city'                 => new AreaResource($this->whenLoaded('city')),
+            'district'             => new AreaResource($this->whenLoaded('district')),
+            'village'              => new AreaResource($this->whenLoaded('village')),
+            'city_code'            => $this->city_code,
+            'district_code'        => $this->district_code,
+            'village_code'         => $this->village_code,
+            'address'              => $this->address,
+            'phone_number'         => $this->phone_number,
+            'workplace_name'       => $this->workplace_name,
+            'occupation_type'      => $this->occupation_type,
+            'occupation_name'      => $this->occupation_name,
+            'is_pns'               => $this->is_pns,
+            'symptoms'             => $this->symptoms,
+            'symptoms_interaction' => $this->symptoms_interaction,
+            'symptoms_notes'       => $this->symptoms_notes,
+            'symptoms_activity'    => $this->symptoms_activity,
+            'person_status'        => $this->person_status,
+            'pikobar_session_id'   => $this->pikobar_session_id,
+            'created_at'           => $this->created_at,
+            'updated_at'           => $this->updated_at,
+        ];
+    }
 
-        $explodeWords = explode(' ', $string);
+    protected function getRegistrationAttachmentPdf()
+    {
+        $url = URL::route(
+            'registration.download',
+            ['registration_code' => $this->registration_code]
+        );
 
-        $nameMasking = '';
-        foreach ($explodeWords as $key => $word) {
-            if (strlen($word) <= 2) {
-                $nameMasking .= $word . ' ';
-            } else {
-                $nameMasking .= substr($word, 0, 3) . str_repeat('*', strlen($word) - 3) . ' ';
-            }
-        }
-
-        return rtrim($nameMasking);
+        return UrlSigner::sign($url);
     }
 }

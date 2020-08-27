@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Rdt;
 
 use Illuminate\Support\Facades\Log;
-use PDF;
-use UrlSigner;
+use Barryvdh\DomPDF\Facade as PDF;
+use Spatie\UrlSigner\Laravel\UrlSignerFacade as UrlSigner;
 use App\Entities\RdtApplicant;
 use Illuminate\Support\Facades\URL;
 use App\Http\Controllers\Controller;
