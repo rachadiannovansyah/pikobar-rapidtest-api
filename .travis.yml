@@ -10,17 +10,10 @@ cache:
 php:
     - 7.4
 
-services:
-    - mysql
-
 install:
     - cp .env-example .env
     - travis_retry composer install --no-interaction --prefer-dist --no-suggest
     - php artisan key:generate --ansi
-    - php artisan jwt:secret --force --ansi
 
 script:
     - vendor/bin/phpunit
-
-notifications:
-    email: false
