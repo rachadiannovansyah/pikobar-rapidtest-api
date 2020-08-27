@@ -27,9 +27,7 @@ class RdtApplicantController extends Controller
         $search            = $request->input('search');
         $sessionId         = $request->input('session_id');
 
-        if ($perPage > 20) {
-            $perPage = 15;
-        }
+        $perPage = $this->getPaginationSize($perPage);
 
         if (in_array($sortBy, ['id', 'name', 'gender', 'age', 'person_status', 'created_at']) === false) {
             $sortBy = 'name';
@@ -74,14 +72,15 @@ class RdtApplicantController extends Controller
         $records->orderBy($sortBy, $sortOrder);
         $records->with(['invitations', 'invitations.event', 'city', 'district', 'village']);
 
-        if ($request->has('session_id') === true &&  strtolower($perPage) === 'all') {
+        if ($request->has('session_id')) {
             $records->where('pikobar_session_id', '=', $sessionId);
-            $records = $records->get();
-        }else{
-            $records = $records->paginate($perPage);
         }
 
-        return RdtApplicantResource::collection($records);
+        if (strtoupper($perPage) === 'ALL') {
+            return RdtApplicantResource::collection($records->get());
+        }
+
+        return RdtApplicantResource::collection($records->paginate($perPage));
     }
 
     /**
@@ -139,5 +138,12 @@ class RdtApplicantController extends Controller
         $rdtApplicant->delete();
 
         return response()->json(['message' => 'DELETED']);
+    }
+
+    protected function getPaginationSize($perPage)
+    {
+        if ($perPage <= 0 || $perPage > 20) {
+            return 15;
+        }
     }
 }
