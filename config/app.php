@@ -71,6 +71,8 @@ return [
 
     'timezone' => 'UTC',
 
+    'timezone_frontend' => 'Asia/Jakarta',
+
     /*
     |--------------------------------------------------------------------------
     | Application Locale Configuration

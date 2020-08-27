@@ -28,6 +28,7 @@ class RdtCheckinController extends Controller
         $eventCode        = $request->input('event_code');
         $registrationCode = $request->input('registration_code');
         $labCodeSample    = $request->input('lab_code_sample');
+        $attendLocation   = $request->input('location');
 
         /**
          * @var RdtEvent $event
@@ -64,7 +65,7 @@ class RdtCheckinController extends Controller
 
             Log::info('APPLICANT_EVENT_CHECKIN_NOT_INVITED', [
                 'event_code' => $eventCode,
-                'applicant' => $applicant,
+                'applicant'  => $applicant,
                 'invitation' => $invitation,
             ]);
         }
@@ -82,8 +83,8 @@ class RdtCheckinController extends Controller
             return $this->responseFailedDuplicateLabCode($event, $invitation, $labCodeSample);
         }
 
-        $invitation->lab_code_sample = $request->input('lab_code_sample');
-        $invitation->attend_location = $request->input('location');
+        $invitation->lab_code_sample = $labCodeSample;
+        $invitation->attend_location = $attendLocation;
         $invitation->attended_at     = now();
         $invitation->save();
 
@@ -102,9 +103,12 @@ class RdtCheckinController extends Controller
     {
         Log::info('APPLICANT_EVENT_CHECKIN_FAILED_PAST', ['event_code' => $event->event_code]);
 
-        $endAt = $event->end_at->setTimezone('Asia/Jakarta');
+        $frontendTimezone = config('app.timezone_frontend');
+
+        $endAt = $event->end_at->setTimezone($frontendTimezone);
+
         return response()->json([
-            'error' => 'EVENT_PAST',
+            'error'   => 'EVENT_PAST',
             'message' => "Kode Event: {$event->event_code} - {$event->event_name} sudah berakhir pada {$endAt}.
             Periksa kembali input Kode Event.",
         ], Response::HTTP_UNPROCESSABLE_ENTITY);
@@ -118,13 +122,13 @@ class RdtCheckinController extends Controller
     protected function responseFailedAlreadyCheckin(RdtEvent $event, RdtInvitation $invitation)
     {
         Log::info('APPLICANT_EVENT_CANNOT_CHECKIN_ALREADY', [
-            'event_code' => $event->event_code,
+            'event_code'        => $event->event_code,
             'registration_code' => $invitation->registration_code,
-            'invitation' => $invitation,
+            'invitation'        => $invitation,
         ]);
 
         return response()->json([
-            'error' => 'ALREADY_CHECKIN',
+            'error'   => 'ALREADY_CHECKIN',
             'message' => 'Nomor Pendaftar sudah digunakan untuk checkin pada event ini.',
         ], Response::HTTP_UNPROCESSABLE_ENTITY);
     }
@@ -138,14 +142,14 @@ class RdtCheckinController extends Controller
     protected function responseFailedDuplicateLabCode(RdtEvent $event, RdtInvitation $invitation, $labCodeSample)
     {
         Log::info('APPLICANT_EVENT_CANNOT_CHECKIN_ALREADY_LAB_CODE_SAMPLE', [
-            'event_code' => $event->event_code,
+            'event_code'        => $event->event_code,
             'registration_code' => $invitation->registration_code,
-            'lab_code_sample' => $labCodeSample,
-            'invitation' => $invitation,
+            'lab_code_sample'   => $labCodeSample,
+            'invitation'        => $invitation,
         ]);
 
         return response()->json([
-            'error' => 'ALREADY_USED_LAB_CODE_SAMPLE',
+            'error'   => 'ALREADY_USED_LAB_CODE_SAMPLE',
             'message' => 'Kode Sampel Lab sudah digunakan untuk checkin pada event ini.',
         ], Response::HTTP_UNPROCESSABLE_ENTITY);
     }
