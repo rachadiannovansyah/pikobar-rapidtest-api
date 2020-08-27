@@ -13,6 +13,7 @@ class CreateRdtEventTest extends TestCase
     public function can_create_event()
     {
         $user = new User();
+        $user->assignPermissions(['create-events']);
 
         /**
          * @var RdtEvent $rdtEvent

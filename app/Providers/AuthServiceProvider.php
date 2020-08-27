@@ -3,7 +3,9 @@
 namespace App\Providers;
 
 use App\Entities\RdtApplicant;
+use App\Entities\RdtEvent;
 use App\Policies\RdtApplicantPolicy;
+use App\Policies\RdtEventPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
 class AuthServiceProvider extends ServiceProvider
@@ -15,6 +17,7 @@ class AuthServiceProvider extends ServiceProvider
      */
     protected $policies = [
         RdtApplicant::class => RdtApplicantPolicy::class,
+        RdtEvent::class => RdtEventPolicy::class,
     ];
 
     /**

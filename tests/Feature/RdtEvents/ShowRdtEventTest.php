@@ -14,6 +14,7 @@ class ShowRdtEventTest extends TestCase
         $rdtEvent = factory(RdtEvent::class)->create();
 
         $user = new User();
+        $user->assignPermissions(['view-events']);
 
         $this->actingAs($user)
             ->getJson("/api/rdt/events/{$rdtEvent->id}")

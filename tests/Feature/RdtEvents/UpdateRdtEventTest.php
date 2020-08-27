@@ -14,6 +14,7 @@ class UpdateRdtEventTest extends TestCase
     public function can_update_rdt_event()
     {
         $user = new User();
+        $user->assignPermissions(['edit-events']);
 
         /**
          * @var RdtEvent $rdtEvent

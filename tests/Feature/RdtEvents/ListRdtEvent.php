@@ -17,6 +17,7 @@ class ListRdtEvent extends TestCase
         });
 
         $user = new User();
+        $user->assignPermissions(['list-events']);
 
         $this->actingAs($user)
             ->getJson("/api/rdt/events?status=published")

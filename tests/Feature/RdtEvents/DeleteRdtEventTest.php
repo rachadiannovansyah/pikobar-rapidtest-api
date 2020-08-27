@@ -12,6 +12,7 @@ class DeleteRdtEventTest extends TestCase
     public function can_delete_rdt_event()
     {
         $user = new User();
+        $user->assignPermissions(['delete-events']);
 
         $rdtEvent = factory(RdtEvent::class)->create();
 
