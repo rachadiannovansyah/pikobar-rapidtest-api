@@ -28,7 +28,6 @@ class RdtRegisterTest extends TestCase
             'symptoms_notes'       => 'Notes',
             'person_status'        => PersonCaseStatusEnum::CLOSE_CONTACT(),
         ])
-            ->dump()
             ->assertSuccessful()
             ->assertJsonStructure(['registration_code', 'download_url']);
     }

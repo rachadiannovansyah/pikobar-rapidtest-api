@@ -27,6 +27,10 @@ class SendRegisteredTopic
      */
     public function handle(ApplicantRegistered $event)
     {
+        if (config('app.env') !== 'production') {
+            return;
+        }
+
         $aws = app('aws');
 
         $sns = $aws->sns();
