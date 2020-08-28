@@ -1,7 +1,7 @@
 {
-    "name": "cretueusebiu/laravel-nuxt",
-    "description": "A Laravel-Nuxt starter project template.",
-    "keywords": ["laravel", "nuxt", "vue", "spa"],
+    "name": "jabardigitalservice/pikobar-rapidtest-api",
+    "description": "Backend Aplikasi Pendaftaran Tes Masif COVID-19. PIKOBAR Jawa Barat.",
+    "keywords": ["laravel", "pikobar", "covid-19"],
     "license": "MIT",
     "type": "project",
     "require": {
