@@ -8,6 +8,7 @@ return [
     'secret' => env('AWS_SECRET_ACCESS_KEY'),
 
     'sns' => [
+        'enable' => env('AWS_SNS_TOPIC', false),
         'topics' => [
             'applicant_registered' => env('AWS_SNS_TOPIC_APPLICANT_REGISTERED'),
             'applicant_invited' => env('AWS_SNS_TOPIC_APPLICANT_INVITED'),
