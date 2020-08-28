@@ -26,7 +26,7 @@ class RecaptchaRule implements Rule
      */
     public function passes($attribute, $value)
     {
-        if (config('app.env') !== 'production') {
+        if (config('recaptcha.enable') === false) {
             return true;
         }
 
@@ -37,7 +37,7 @@ class RecaptchaRule implements Rule
 
         $response = $client->post('siteverify', [
             'query' => [
-                'secret'   => env('GOOGLE_RECAPTCHA_SECRET'),
+                'secret'   => config('recaptcha.secret'),
                 'response' => $value,
             ],
         ]);

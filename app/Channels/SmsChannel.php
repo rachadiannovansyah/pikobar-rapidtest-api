@@ -88,16 +88,10 @@ class SmsChannel
      */
     protected function getPhoneNumber($notifiable)
     {
-        $currentEnvironment = config('app.env');
-
-        if ($currentEnvironment === 'production') {
-            return $this->cleanPhoneNumber($notifiable->phone_number);
-        }
-
         $configPhoneNumbers = config('notifications.notify_to');
 
-        if (empty($configPhoneNumbers)) {
-            throw new \Exception("Please update config 'notifications.notify_to'");
+        if ($configPhoneNumbers === null) {
+            return $this->cleanPhoneNumber($notifiable->phone_number);
         }
 
         return Str::of($configPhoneNumbers)->explode(',')->map(function ($phoneNumber) {
