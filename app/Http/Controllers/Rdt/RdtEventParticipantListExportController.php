@@ -46,7 +46,7 @@ class RdtEventParticipantListExportController extends Controller
         }
 
         $fileName           = $this->getFileName($rdtEvent);
-        $contentDisposition = str_replace('export.xlsx', $fileName, $response->header('Content-Disposition'));
+        $contentDisposition = $response->header('Content-Disposition');
 
         return response($response->body(), 200, [
             'Content-Length'      => $response->header('Content-Length'),
