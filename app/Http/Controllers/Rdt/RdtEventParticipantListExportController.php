@@ -46,7 +46,7 @@ class RdtEventParticipantListExportController extends Controller
         }
 
         $fileName           = $this->getFileName($rdtEvent);
-        $contentDisposition = $response->header('Content-Disposition');
+        $contentDisposition = "attachment; filename={$fileName};";
 
         return response($response->body(), 200, [
             'Content-Length'      => $response->header('Content-Length'),
