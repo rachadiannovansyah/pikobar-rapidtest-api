@@ -2,6 +2,11 @@
 
 return [
 
+
+    'internal' => [
+        'participant_export' => env('SERVICE_PARTICIPANT_EXPORT')
+    ],
+
     /*
     |--------------------------------------------------------------------------
     | Third Party Services
