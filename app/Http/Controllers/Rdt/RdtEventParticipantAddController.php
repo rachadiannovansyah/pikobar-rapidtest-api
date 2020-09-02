@@ -24,7 +24,7 @@ class RdtEventParticipantAddController extends Controller
     {
         $applicantIds = $request->input('applicants');
 
-        if ($rdtEvent->status === RdtEventStatus::DRAFT()) {
+        if (RdtEventStatus::DRAFT()->isEqual($rdtEvent->status)) {
             $rdtEvent->status = RdtEventStatus::PUBLISHED();
             $rdtEvent->save();
         }
