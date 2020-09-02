@@ -7,12 +7,15 @@ use App\Http\Controllers\Controller;
 use App\Notifications\TestResult;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Log;
 
 class RdtEventNotifyTestResultController extends Controller
 {
     public function __invoke(Request $request, RdtEvent $rdtEvent)
     {
+        Gate::authorize('notify-participants');
+
         $target        = $request->input('target');
         $invitationIds = $request->input('invitations_ids');
         $invitations   = $rdtEvent->invitations;

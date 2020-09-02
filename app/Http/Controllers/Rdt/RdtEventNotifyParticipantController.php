@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Notifications\RdtEventInvitation;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Log;
 
 class RdtEventNotifyParticipantController extends Controller
@@ -14,6 +15,8 @@ class RdtEventNotifyParticipantController extends Controller
 
     public function __invoke(Request $request, RdtEvent $rdtEvent)
     {
+        Gate::authorize('notify-participants');
+
         $notifyTarget  = $request->input('target', 'ALL');
         $notifyMethod  = $request->input('method', 'BOTH');
         $invitationIds = $request->input('invitations_ids');
