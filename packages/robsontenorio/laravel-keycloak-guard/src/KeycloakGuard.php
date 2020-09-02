@@ -222,7 +222,7 @@ class KeycloakGuard implements Guard
 
   public function getRealmRoles()
   {
-      if (! $this->decodedToken->realm_access) {
+      if (isset($this->decodedToken->realm_access) === false) {
           return false;
       }
 
