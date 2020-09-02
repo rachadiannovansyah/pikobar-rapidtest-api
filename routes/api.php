@@ -29,6 +29,8 @@ if (!empty($proxyScheme)) {
 
 Route::get('/', 'HomeController');
 
+Route::post('applicants/check-profile', 'Rdt\ApplicantsCekProfileController');
+
 // RDT Registration
 Route::post('rdt/register', 'Rdt\RdtRegisterController');
 Route::get('rdt/check-event', 'Rdt\RdtCheckEventController');
