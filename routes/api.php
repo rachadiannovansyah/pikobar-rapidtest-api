@@ -41,7 +41,7 @@ Route::post('rdt/survey', 'Rdt\RdtSurveyStoreController');
 // Checkin App
 Route::post('rdt/checkin', 'Rdt\RdtCheckinController');
 Route::post('rdt/event-check', 'Rdt\RdtEventCheckController');
-Route::post('v2/rdt/event-check', 'V2\RdtEventCheckController');
+Route::get('/rdt/events/{id}/participants', 'Rdt\RdtEventParticipantsController');
 
 Route::group(['middleware' => 'auth:api'], function () {
     Route::get('/user', 'Settings\ProfileController@index');
