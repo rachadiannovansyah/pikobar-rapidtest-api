@@ -12,7 +12,7 @@ class RdtEventParticipantsController extends Controller
 {
     public function __invoke($eventCode, Request $request)
     {
-        $per_page  = $request->input('per_page', 50);
+        $perPage   = $request->input('per_page', 50);
         $keyword   = $request->input('keyword');
 
         $event = RdtEvent::where('event_code', $eventCode)->firstOrFail();
@@ -24,6 +24,6 @@ class RdtEventParticipantsController extends Controller
             $invitations->where('rdt_applicants.name', 'like', "%$keyword%");
         }
 
-        return response()->json(['data' => $invitations->paginate($per_page)]);
+        return response()->json(['data' => $invitations->paginate($perPage)]);
     }
 }
