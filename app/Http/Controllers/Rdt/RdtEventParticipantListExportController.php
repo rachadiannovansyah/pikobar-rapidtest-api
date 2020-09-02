@@ -20,7 +20,7 @@ class RdtEventParticipantListExportController extends Controller
      */
     public function __invoke(Request $request, RdtEvent $rdtEvent)
     {
-        header('Access-Control-Allow-Origin: *');
+        // header('Access-Control-Allow-Origin: *');
         header('Access-Control-Allow-Methods: *');
         header('Access-Control-Allow-Headers: *');
         header('Access-Control-Expose-Headers: *');
@@ -46,7 +46,7 @@ class RdtEventParticipantListExportController extends Controller
         }
 
         $fileName           = $this->getFileName($rdtEvent);
-        $contentDisposition = "attachment; filename={$fileName};";
+        $contentDisposition = "attachment; filename=\"{$fileName}\";";
 
         return response($response->body(), 200, [
             'Content-Length'      => $response->header('Content-Length'),
