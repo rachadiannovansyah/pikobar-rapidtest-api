@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Rdt;
 
 use App\Entities\RdtEvent;
+use App\Entities\RdtInvitation;
 use App\Http\Controllers\Controller;
 use App\Notifications\RdtEventInvitation;
 use Carbon\Carbon;
@@ -30,22 +31,27 @@ class RdtEventNotifyParticipantController extends Controller
         $invitations->load(['applicant']);
 
         foreach ($invitations as $invitation) {
-            $applicant = $invitation->applicant;
-
-            if ($notifyMethod === 'BOTH') {
-                $applicant->notify(new RdtEventInvitation($rdtEvent));
-
-                $invitation->notified_at = Carbon::now();
-                $invitation->save();
-            }
-
-            Log::info('EVENT_NOTIFY_PARTICIPANT', [
-                'event_id'                    => $rdtEvent->id, 'invitation_id' => $invitation->id,
-                'applicant_id'                => $applicant->id,
-                'applicant_registration_code' => $applicant->registration_code,
-            ]);
+            $this->notifyEachInvitation($rdtEvent, $invitation, $notifyMethod);
         }
 
         return response()->json(['message' => 'OK']);
+    }
+
+    protected function notifyEachInvitation(RdtEvent $rdtEvent, RdtInvitation $invitation, $notifyMethod)
+    {
+        $applicant = $invitation->applicant;
+
+        if ($notifyMethod === 'BOTH') {
+            $applicant->notify(new RdtEventInvitation($rdtEvent));
+
+            $invitation->notified_at = Carbon::now();
+            $invitation->save();
+        }
+
+        Log::info('EVENT_NOTIFY_PARTICIPANT', [
+            'event_id'                    => $rdtEvent->id, 'invitation_id' => $invitation->id,
+            'applicant_id'                => $applicant->id,
+            'applicant_registration_code' => $applicant->registration_code,
+        ]);
     }
 }
