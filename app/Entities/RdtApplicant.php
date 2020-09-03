@@ -62,7 +62,7 @@ class RdtApplicant extends Model
     protected $casts = [
         'symptoms'          => 'array',
         'symptoms_activity' => 'array',
-        'congenital_disease'=> 'array',
+        'congenital_disease' => 'array',
         'is_pns'            => 'boolean',
     ];
 
