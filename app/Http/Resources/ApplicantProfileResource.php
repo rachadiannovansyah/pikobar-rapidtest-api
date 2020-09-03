@@ -15,8 +15,8 @@ class ApplicantProfileResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'name'=>$this->name,
-            'registration_code'=>$this->registration_code
+            'name' => $this->name,
+            'registration_code' => $this->registration_code
         ];
     }
 }
