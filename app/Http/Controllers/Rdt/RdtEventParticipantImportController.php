@@ -61,7 +61,6 @@ class RdtEventParticipantImportController extends Controller
                         $invitation->save();
 
                         $this->logNotification($applicant, $invitation, $userId);
-
                     }
                 }
             }
