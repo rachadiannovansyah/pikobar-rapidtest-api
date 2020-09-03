@@ -36,13 +36,10 @@ class RdtEventParticipantImportController extends Controller
         $reader->open($request->file->path());
 
         foreach ($reader->getSheetIterator() as $sheet) {
-
             foreach ($sheet->getRowIterator() as $key => $row) {
-
                 $rowArray = $row->toArray();
 
                 if ($key > 1) {
-
                     $rowCount++;
 
                     $rowImport = [
@@ -58,7 +55,6 @@ class RdtEventParticipantImportController extends Controller
                     $invitation = $this->fillInvitation($applicant, $rowImport);
 
                     if (strtolower($rowImport['notify']) === 'yes') {
-
                         $this->pushNotification($rowImport, $rdtEvent, $applicant);
 
                         $invitation->notified_at = Carbon::now();
