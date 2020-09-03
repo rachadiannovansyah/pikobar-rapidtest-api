@@ -14,6 +14,7 @@ use App\Http\Requests\Rdt\RdtInvitationImportRequest;
 use App\Notifications\RdtEventInvitation;
 use Box\Spout\Reader\Common\Creator\ReaderEntityFactory;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Log;
 
 class RdtEventParticipantImportController extends Controller
 {
@@ -26,7 +27,8 @@ class RdtEventParticipantImportController extends Controller
     public function __invoke(RdtInvitationImportRequest $request, RdtEvent $rdtEvent)
     {
 
-        $count = 0;
+        $rowCount = 0;
+        $userId   = $request->user()->id;
         $rdtEvent->status = RdtEventStatus::PUBLISHED();
         $rdtEvent->save();
 
@@ -41,26 +43,29 @@ class RdtEventParticipantImportController extends Controller
 
                 if ($key > 1) {
 
-                    $count++;
-                    $fileImport = [
-                        'registration_code'     => $rowArray[0],
-                        'rdt_event_id'          => $rowArray[1],
-                        'rdt_event_schedule_id' => $rowArray[2],
-                        'nik'                   => $rowArray[3],
-                        'name'                  => $rowArray[4],
-                        'city_code'             => $rowArray[5],
-                        'phone_number'          => $rowArray[6],
-                        'notify'                => $rowArray[7],
-                        'notify_method'         => $rowArray[8] // SMS/WA/BOTH
+                    $rowCount++;
+
+                    $rowImport = [
+                        'registration_code'     => $rowArray[0], 'rdt_event_id' => $rowArray[1],
+                        'rdt_event_schedule_id' => $rowArray[2], 'nik'          => $rowArray[3],
+                        'name'                  => $rowArray[4], 'city_code'    => $rowArray[5],
+                        'phone_number'          => $rowArray[6], 'notify'       => $rowArray[7],
+                        'notify_method'         => $rowArray[8]
                     ];
 
-                    $applicant  = $this->fillApplicant($fileImport);
-                    $invitation = $this->fillInvitation($applicant, $fileImport);
+                    $this->logRow($key, $rdtEvent, $rowImport, $userId);
+                    $applicant  = $this->fillApplicant($rowImport);
+                    $invitation = $this->fillInvitation($applicant, $rowImport);
 
-                    if (strtolower($fileImport['notify']) === 'yes') {
-                        $this->pushNotification($fileImport, $rdtEvent, $applicant);
+                    if (strtolower($rowImport['notify']) === 'yes') {
+
+                        $this->pushNotification($rowImport, $rdtEvent, $applicant);
+
                         $invitation->notified_at = Carbon::now();
                         $invitation->save();
+
+                        $this->logNotification($applicant, $invitation, $userId);
+
                     }
                 }
             }
@@ -68,7 +73,9 @@ class RdtEventParticipantImportController extends Controller
 
         $reader->close();
 
-        return response()->json(['message' => 'import success, ' . $count . ' rows']);
+        $this->logSuccessImport($request->file('file')->getClientOriginalName(), $rowCount, $userId);
+
+        return response()->json(['message' => 'import success, ' . $rowCount . ' rows']);
     }
 
     private function fillApplicant(array $participant)
@@ -107,16 +114,50 @@ class RdtEventParticipantImportController extends Controller
     {
         if (strtolower($fileImport['notify_method']) === self::NOTIFY_WA) {
             $applicant->notifyNow(new RdtEventInvitation($event), [WhatsappChannel::class]);
-            dd('wa');
         }
 
         if (strtolower($fileImport['notify_method']) === self::NOTIFY_SMS) {
             $applicant->notifyNow(new RdtEventInvitation($event), [SmsChannel::class]);
-            dd('sms');
         }
 
         if (strtolower($fileImport['notify_method']) === self::NOTIFY_BOTH) {
             $applicant->notifyNow(new RdtEventInvitation($event), [WhatsappChannel::class, SmsChannel::class]);
         }
+    }
+
+    private function logRow($index, $event, $row, $userId)
+    {
+        Log::info('IMPORT_INVITATION_ROW', [
+            'row' => $index,
+            'event' => $event,
+            'registration_code'     => $row['registration_code'],
+            'rdt_event_id'          => $row['rdt_event_id'],
+            'rdt_event_schedule_id' => $row['rdt_event_schedule_id'],
+            'nik'                   => $row['nik'],
+            'name'                  => $row['name'],
+            'city_code'             => $row['city_code'],
+            'phone_number'          => $row['phone_number'],
+            'notify'                => $row['notify'],
+            'notify_method'         => $row['notify_method'],
+            'user_id' => $userId
+        ]);
+    }
+
+    private function logNotification($applicant, $invitation, $userId)
+    {
+        Log::info('NOTIFY_INVITATION', [
+            'applicant'  => $applicant,
+            'invitation' => $invitation,
+            'user_id'    => $userId,
+        ]);
+    }
+
+    private function logSuccessImport($fileName, $rowCount, $userId)
+    {
+        Log::info('IMPORT_INVITATION_SUCCESS', [
+            'file_name'  => $fileName,
+            'rows_total' => $rowCount,
+            'user_id'    => $userId,
+        ]);
     }
 }
