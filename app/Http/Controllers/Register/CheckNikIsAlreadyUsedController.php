@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Register;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use \Illuminate\Validation\ValidationException;
+use Illuminate\Validation\ValidationException;
 use Validator;
 
 class CheckNikIsAlreadyUsedController extends Controller
