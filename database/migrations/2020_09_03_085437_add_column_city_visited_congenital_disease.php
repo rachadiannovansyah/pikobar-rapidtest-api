@@ -16,7 +16,7 @@ class AddColumnCityVisitedCongenitalDisease extends Migration
         Schema::table('rdt_applicants', function (Blueprint $table) {
             $table->string('city_visited')->nullable();
             $table->string('congenital_disease')->nullable();
-            $table->integer('suspect_probable')->unsigned()->nullable();
+            $table->tinyInteger('have_interacted')->nullable();
         });
     }
 
@@ -30,7 +30,7 @@ class AddColumnCityVisitedCongenitalDisease extends Migration
         Schema::table('rdt_applicants', function (Blueprint $table) {
             $table->dropColumn('city_visited');
             $table->dropColumn('congenital_disease');
-            $table->dropColumn('suspect_probable');
+            $table->dropColumn('have_interacted');
         });
     }
 }
