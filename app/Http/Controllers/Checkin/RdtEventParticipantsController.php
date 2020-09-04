@@ -31,7 +31,8 @@ class RdtEventParticipantsController extends Controller
             'rdt_applicants.created_at',
             'rdt_applicants.attended_at'
         )
-        ->where('rdt_invitations.rdt_event_id', $event->id);
+        ->where('rdt_invitations.rdt_event_id', $event->id)
+        ->orderBy('rdt_applicants.name');
 
         if ($keyword) {
             $invitations->where('rdt_applicants.name', 'like', "%$keyword%");
