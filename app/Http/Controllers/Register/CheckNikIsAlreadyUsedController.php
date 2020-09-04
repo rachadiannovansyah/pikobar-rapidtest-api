@@ -13,9 +13,11 @@ class CheckNikIsAlreadyUsedController extends Controller
     {
         $validator = Validator::make($request->all(), ['nik' => 'required|unique:rdt_applicants']);
         if ($validator->fails()) {
-            throw  ValidationException::withMessages([
+            throw  ValidationException::withMessages(
+                [
                 'nik' => 'Nik sudah pernah digunakan'
-          ]);
+                ]
+            );
         }
     }
 }
