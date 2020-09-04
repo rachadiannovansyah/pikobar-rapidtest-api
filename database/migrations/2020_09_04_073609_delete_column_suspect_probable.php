@@ -15,7 +15,7 @@ class DeleteColumnSuspectProbable extends Migration
     {
         Schema::table('rdt_applicants', function (Blueprint $table) {
             $table->dropColumn('suspect_probable');
-            $table->tinyInteger('have_interacted');
+            $table->tinyInteger('have_interacted')->nullable();
         });
     }
 
