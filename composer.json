@@ -10,6 +10,7 @@
         "async-aws/sqs": "^1.2",
         "barryvdh/laravel-dompdf": "^0.8.6",
         "box/spout": "^3.1",
+        "doctrine/dbal": "^2.10",
         "fideloper/proxy": "^4.0",
         "firebase/php-jwt": "^5.0",
         "fruitcake/laravel-cors": "^1.0",
