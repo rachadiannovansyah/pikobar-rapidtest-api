@@ -3,12 +3,16 @@
 namespace App\Http\Controllers\Register;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Register\CheckNikIsAlreadyRequest;
+use Illuminate\Http\Request;
 
 class CheckNikIsAlreadyUsedController extends Controller
 {
-    public function __invoke(CheckNikIsAlreadyRequest $request)
+    public function __invoke(Request $request)
     {
+        $request->validate([
+            'nik' => 'required|unique:rdt_applicants'
+        ]);
+
         return response()->json(['message' => 'nik belum digunakan']);
     }
 }
