@@ -27,6 +27,7 @@ class DeleteColumnSuspectProbable extends Migration
     public function down()
     {
         Schema::table('rdt_applicants', function (Blueprint $table) {
+            $table->integer('suspect_probable')->unsigned()->nullable();
             $table->dropColumn('have_interacted');
         });
     }
