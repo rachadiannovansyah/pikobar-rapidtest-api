@@ -12,6 +12,6 @@ class ApplicantCheckProfileController extends Controller
     public function __invoke(ApplicantsCekProfileRequest $request)
     {
         $rdtApplicant = RdtApplicant::where('registration_code', $request->registration_code)->firstOrFail();
-        return response()->json(new ApplicantProfileResource($rdtApplicant));
+        return new ApplicantProfileResource($rdtApplicant);
     }
 }
