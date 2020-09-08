@@ -16,7 +16,7 @@ class AddColumnCityVisitedCongenitalDisease extends Migration
         Schema::table('rdt_applicants', function (Blueprint $table) {
             $table->string('city_visited')->nullable();
             $table->string('congenital_disease')->nullable();
-            $table->enum('have_interacted', ['YA','TIDAK','TIDAK TAHU'])->nullable();
+            $table->string('have_interacted', 10)->nullable();
         });
     }
 
