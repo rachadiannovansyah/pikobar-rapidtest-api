@@ -5,9 +5,9 @@ namespace App\Enums;
 use Spatie\Enum\Enum;
 
 /**
- * @method static self YA()
- * @method static self TIDAK()
- * @method static self TIDAK TAHU()
+ * @method static self YES()
+ * @method static self NO()
+ * @method static self UNKNOW()
  */
 
 final class HaveInteractedEnum extends Enum
