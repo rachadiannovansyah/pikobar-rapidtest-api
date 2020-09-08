@@ -5,6 +5,7 @@ namespace App\Entities;
 use App\Enums\PersonCaseStatusEnum;
 use App\Enums\RdtApplicantStatus;
 use App\Enums\SymptomsInteraction;
+use App\Enums\HaveInteractedEnum;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
@@ -70,6 +71,7 @@ class RdtApplicant extends Model
         'symptoms_interaction' => SymptomsInteraction::class . ':nullable',
         'person_status'        => PersonCaseStatusEnum::class . ':nullable',
         'status'               => RdtApplicantStatus::class,
+        'have_interacted'      => HaveInteractedEnum::class . ':nullable',
     ];
 
     public function city()
