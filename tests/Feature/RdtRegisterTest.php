@@ -28,7 +28,7 @@ class RdtRegisterTest extends TestCase
             'symptoms_notes'       => 'Notes',
             'city_visited'         => 'jakarta',
             'congenital_disease'   => [1,2,3],
-            'have_interacted'      => 'TIDAK',
+            'have_interacted'      => 'NO',
             'person_status'        => PersonCaseStatusEnum::CLOSE_CONTACT(),
         ])
             ->assertSuccessful()
