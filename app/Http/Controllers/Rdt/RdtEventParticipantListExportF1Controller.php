@@ -7,6 +7,8 @@ use App\Entities\RdtEvent;
 use Rap2hpoutre\FastExcel\FastExcel;
 use File;
 use DB;
+use Carbon\Carbon;
+use Illuminate\Support\Str;
 
 class RdtEventParticipantListExportF1Controller extends Controller
 {
@@ -15,7 +17,7 @@ class RdtEventParticipantListExportF1Controller extends Controller
     public function __invoke($id)
     {
         $rdtEvent = RdtEvent::findOrFail($id);
-        $fileName = str_replace(" ", "-", $rdtEvent->event_name) . '.xlsx';
+        $fileName = Str::slug($rdtEvent->event_name, '-') . '.xlsx';
         $this->fileName = $fileName;
 
         DB::statement(DB::raw('set @number=0'));
@@ -73,8 +75,8 @@ class RdtEventParticipantListExportF1Controller extends Controller
                     'RIWAYAT PERJALANAN' => '',
                     'APAKAH_PERNAH_KONTAK' => '',
                     'JIKA_IYA_TANGGAL_KONTAK' => '',
-                    'TANGGAL_ACARA' => $row->start_at,
-                    'JAM_ACARA' => $row->end_at,
+                    'TANGGAL_ACARA' => Carbon::parse($row->start_at)->format('Y-m-d'),
+                    'JAM_ACARA' => Carbon::parse($row->start_at)->format('H:i:s') . ' - ' . Carbon::parse($row->end_at)->format('H:i:s'),
                     'TEMPAT_ACARA' => $row->event_location,
                     'KETERANGAN' => '',
                     'HASIL_TEST' => $row->lab_result_type,
