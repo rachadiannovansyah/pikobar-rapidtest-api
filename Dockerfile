@@ -23,7 +23,7 @@ COPY --from=composer /usr/bin/composer /usr/bin/composer
 # Run composer install to install the dependencies
 RUN composer install --no-cache --prefer-dist --optimize-autoloader --no-interaction --no-progress
 
-RUN cd /var/www/html && \
-    php artisan route:cache
+# RUN cd /var/www/html && \
+    # php artisan route:cache
     # php artisan optimize
     # php artisan config:cache
