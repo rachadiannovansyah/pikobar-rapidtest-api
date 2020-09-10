@@ -15,7 +15,7 @@ class RdtInvitationExportExcelF1Controller extends Controller
     public function __invoke($id)
     {
         $rdtEvent = RdtEvent::findOrFail($id);
-        $fileName = str_replace(" ", "-", $rdtEvent->event_name).'.xlsx';
+        $fileName = str_replace(" ", "-", $rdtEvent->event_name) . '.xlsx';
         $this->fileName = $fileName;
 
         DB::statement(DB::raw('set @number=0'));
@@ -56,9 +56,9 @@ class RdtInvitationExportExcelF1Controller extends Controller
                     'STATUS_SASARAN'=> $row->person_status,
                     'PEKERJAAN/ KATEGORI' => '',
                     'NAMA_PASIEN' => $row->name,
-                    'NIK'=> $row->nik,
+                    'NIK' => $row->nik,
                     'NOMOR_TELEPON' => $row->phone_number,
-                    'JENIS_KELAMIN' => $row->gender==1?'Laki-Laki':'Perempuan',
+                    'JENIS_KELAMIN' => $row->gender == 1? 'Laki-Laki' : 'Perempuan',
                     'TEMPAT_LAHIR' => '',
                     'TANGGAL_LAHIR' => $row->birth_date,
                     'KOTA' => $row->city,
