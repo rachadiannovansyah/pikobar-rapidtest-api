@@ -8,7 +8,7 @@ use Rap2hpoutre\FastExcel\FastExcel;
 use File;
 use DB;
 
-class RdtInvitationExportExcelF1Controller extends Controller
+class RdtEventParticipantListExportF1Controller extends Controller
 {
     protected $fileName;
 
