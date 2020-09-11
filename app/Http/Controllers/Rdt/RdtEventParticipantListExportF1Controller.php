@@ -12,13 +12,11 @@ use Illuminate\Support\Str;
 
 class RdtEventParticipantListExportF1Controller extends Controller
 {
-    protected $fileName;
 
     public function __invoke($id)
     {
         $rdtEvent = RdtEvent::findOrFail($id);
         $fileName = Str::slug($rdtEvent->event_name, '-') . '.xlsx';
-        $this->fileName = $fileName;
 
         DB::statement(DB::raw('set @number=0'));
 
@@ -48,7 +46,7 @@ class RdtEventParticipantListExportF1Controller extends Controller
                 ->leftJoin('areas as district', 'district.code_kemendagri', 'rdt_applicants.district_code')
                 ->get();
 
-        (new FastExcel($data))->export($fileName, function ($row) {
+        return (new FastExcel($data))->download($fileName, function ($row) {
             return [
                     'NO' => $row->number,
                     'INSTANSI_PENGIRIM' => '',
@@ -83,13 +81,5 @@ class RdtEventParticipantListExportF1Controller extends Controller
                     'NILAI_CT' => ''
                 ];
         });
-
-        $file = public_path($fileName);
-        return \Response::download($file, $fileName);
-    }
-
-    public function __destruct()
-    {
-        File::delete(public_path($this->fileName));
     }
 }
