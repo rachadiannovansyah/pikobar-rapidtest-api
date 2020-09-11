@@ -8,11 +8,11 @@ use Rap2hpoutre\FastExcel\FastExcel;
 use File;
 use DB;
 use Carbon\Carbon;
+use App\Enums\Gender;
 use Illuminate\Support\Str;
 
 class RdtEventParticipantListExportF1Controller extends Controller
 {
-
     public function __invoke($id)
     {
         $rdtEvent = RdtEvent::findOrFail($id);
@@ -58,7 +58,7 @@ class RdtEventParticipantListExportF1Controller extends Controller
                     'NAMA_PASIEN' => $row->name,
                     'NIK' => $row->nik,
                     'NOMOR_TELEPON' => $row->phone_number,
-                    'JENIS_KELAMIN' => $row->gender == 1 ? 'Laki-Laki' : 'Perempuan',
+                    'JENIS_KELAMIN' => Gender::MALE()->getValue()===$row->gender?'Laki Laki':'Perempuan',
                     'TEMPAT_LAHIR' => '',
                     'TANGGAL_LAHIR' => $row->birth_date,
                     'KOTA' => $row->city,
