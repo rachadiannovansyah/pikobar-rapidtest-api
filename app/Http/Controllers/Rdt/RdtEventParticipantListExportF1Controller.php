@@ -58,7 +58,7 @@ class RdtEventParticipantListExportF1Controller extends Controller
                     'NAMA_PASIEN' => $row->name,
                     'NIK' => $row->nik,
                     'NOMOR_TELEPON' => $row->phone_number,
-                    'JENIS_KELAMIN' => Gender::MALE()->getValue()===$row->gender?'Laki Laki':'Perempuan',
+                    'JENIS_KELAMIN' => Gender::MALE()->getValue() === $row->gender ? 'Laki Laki' : 'Perempuan',
                     'TEMPAT_LAHIR' => '',
                     'TANGGAL_LAHIR' => $row->birth_date,
                     'KOTA' => $row->city,
