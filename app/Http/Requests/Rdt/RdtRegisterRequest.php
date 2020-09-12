@@ -46,8 +46,8 @@ class RdtRegisterRequest extends FormRequest
             'workplace_name'       => 'required',
             'symptoms'             => 'required',
             'symptoms_notes'       => 'required',
-            'have_interacted'      => 'required',
-            'congenital_disease'   => 'required',
+            'have_interacted'      => 'sometimes|required',
+            'congenital_disease'   => 'sometimes|required',
             'city_visited'         => 'string'
         ];
     }
