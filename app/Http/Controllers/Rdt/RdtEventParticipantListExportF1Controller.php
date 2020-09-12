@@ -47,12 +47,11 @@ class RdtEventParticipantListExportF1Controller extends Controller
                 ->get();
 
         return (new FastExcel($data))->download($fileName, function ($row) {
-
-            if( Gender::MALE()->getValue() === $row->gender){
+            if (Gender::MALE()->getValue() === $row->gender) {
                 $gender = "Laki Laki";
-            }elseif( Gender::FEMALE()->getValue() === $row->gender){
+            } elseif (Gender::FEMALE()->getValue() === $row->gender) {
                 $gender = "perempuan";
-            }else {
+            } else {
                 $gender = "";
             }
 
