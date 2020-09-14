@@ -26,6 +26,7 @@ class RdtEventParticipantImportResultController extends Controller
         $reader->open($request->file('file')->path());
 
         $rowsCount = 0;
+        $now = now();
 
         foreach ($reader->getSheetIterator() as $sheet) {
             foreach ($sheet->getRowIterator() as $index => $row) {
@@ -70,13 +71,15 @@ class RdtEventParticipantImportResultController extends Controller
                 ]);
 
                 $invitation->lab_result_type = $result;
+                $invitation->result_at       = $now;
                 $invitation->save();
 
                 if ($notify === 'YES') {
                     $applicant = $invitation->applicant;
                     $applicant->notify(new TestResult());
 
-                    $invitation->notified_result_at = Carbon::now();
+                    $invitation->notified_result_at = $now;
+                    $invitation->save();
 
                     Log::info('NOTIFY_TEST_RESULT', [
                         'applicant' => $applicant,
