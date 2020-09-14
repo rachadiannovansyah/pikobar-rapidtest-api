@@ -4,20 +4,60 @@ namespace App\Http\Controllers\Rdt;
 
 use App\Http\Controllers\Controller;
 use App\Entities\RdtEvent;
-use Rap2hpoutre\FastExcel\FastExcel;
 use File;
 use DB;
 use Carbon\Carbon;
 use App\Enums\Gender;
 use Illuminate\Support\Str;
+use Box\Spout\Writer\Common\Creator\WriterEntityFactory;
+use Box\Spout\Common\Entity\Row;
 
 class RdtEventParticipantListExportF1Controller extends Controller
 {
     public function __invoke($id)
     {
+        $writer = WriterEntityFactory::createXLSXWriter();
+
         $rdtEvent = RdtEvent::findOrFail($id);
         $fileName = Str::slug($rdtEvent->event_name, '-') . '.xlsx';
+        $writer->openToBrowser($fileName);
 
+        $header =  [
+            'NO',
+            'INSTANSI_PENGIRIM',
+            'FASYANKES/DINKES',
+            'KODE_SAMPLE',
+            'KODE_REGISTRASI',
+            'STATUS_SASARAN',
+            'PEKERJAAN/ KATEGORI',
+            'NAMA_PASIEN',
+            'NIK',
+            'NOMOR_TELEPON' ,
+            'JENIS_KELAMIN',
+            'TEMPAT_LAHIR',
+            'TANGGAL_LAHIR',
+            'KOTA',
+            'KECAMATAN',
+            'KELURAHAN',
+            'ALAMAT',
+            'KEWARGANEGARAAN',
+            'KUNJUNGAN',
+            'GEJALA',
+            'TANGGAL_MUNCUL_GEJALA',
+            'PENYAKIT PENYERTA',
+            'RIWAYAT PERJALANAN',
+            'APAKAH_PERNAH_KONTAK',
+            'JIKA_IYA_TANGGAL_KONTAK',
+            'TANGGAL_ACARA',
+            'JAM_ACARA',
+            'TEMPAT_ACARA',
+            'KETERANGAN',
+            'HASIL_TEST',
+            'NILAI_CT'
+        ];
+
+        $rowFromValues = WriterEntityFactory::createRowFromArray($header);
+        $writer->addRow($rowFromValues);
         DB::statement(DB::raw('set @number=0'));
 
         $data = \DB::table('rdt_invitations')
@@ -34,6 +74,9 @@ class RdtEventParticipantListExportF1Controller extends Controller
                     'rdt_applicants.birth_date',
                     'rdt_applicants.address',
                     'rdt_applicants.symptoms',
+                    'rdt_applicants.city_visited',
+                    'rdt_applicants.have_interacted',
+                    'rdt_applicants.congenital_disease',
                     'rdt_events.start_at',
                     'rdt_events.end_at',
                     'rdt_events.event_location',
@@ -46,7 +89,7 @@ class RdtEventParticipantListExportF1Controller extends Controller
                 ->leftJoin('areas as district', 'district.code_kemendagri', 'rdt_applicants.district_code')
                 ->get();
 
-        return (new FastExcel($data))->download($fileName, function ($row) {
+        foreach ($data as $row) {
             if (Gender::MALE()->getValue() === $row->gender) {
                 $gender = "Laki Laki";
             } elseif (Gender::FEMALE()->getValue() === $row->gender) {
@@ -55,39 +98,44 @@ class RdtEventParticipantListExportF1Controller extends Controller
                 $gender = "";
             }
 
-            return [
-                    'NO' => $row->number,
-                    'INSTANSI_PENGIRIM' => '',
-                    'FASYANKES/DINKES' => '',
-                    'KODE_SAMPLE' => $row->lab_code_sample ,
-                    'KODE_REGISTRASI' => $row->registration_code,
-                    'STATUS_SASARAN' => $row->person_status,
-                    'PEKERJAAN/ KATEGORI' => '',
-                    'NAMA_PASIEN' => $row->name,
-                    'NIK' => $row->nik,
-                    'NOMOR_TELEPON' => $row->phone_number,
-                    'JENIS_KELAMIN' => $gender,
-                    'TEMPAT_LAHIR' => '',
-                    'TANGGAL_LAHIR' => $row->birth_date,
-                    'KOTA' => $row->city,
-                    'KECAMATAN' => $row->district,
-                    'KELURAHAN' => '-',
-                    'ALAMAT' => $row->address,
-                    'KEWARGANEGARAAN' => 'WNI',
-                    'KUNJUNGAN' => '',
-                    'GEJALA' => $row->symptoms,
-                    'TANGGAL_MUNCUL_GEJALA' => '',
-                    'PENYAKIT PENYERTA' => '',
-                    'RIWAYAT PERJALANAN' => '',
-                    'APAKAH_PERNAH_KONTAK' => '',
-                    'JIKA_IYA_TANGGAL_KONTAK' => '',
-                    'TANGGAL_ACARA' => Carbon::parse($row->start_at)->format('Y-m-d'),
-                    'JAM_ACARA' => Carbon::parse($row->start_at)->format('H:i:s') . ' - ' . Carbon::parse($row->end_at)->format('H:i:s'),
-                    'TEMPAT_ACARA' => $row->event_location,
-                    'KETERANGAN' => '',
-                    'HASIL_TEST' => $row->lab_result_type,
-                    'NILAI_CT' => ''
-                ];
-        });
+            $row =  [
+                $row->number,
+                '',
+                '',
+                $row->lab_code_sample ,
+                $row->registration_code,
+                $row->person_status,
+                '',
+                $row->name,
+                $row->nik,
+                $row->phone_number ,
+                $gender,
+                '',
+                $row->birth_date,
+                $row->city,
+                $row->district,
+                '',
+                $row->address,
+                'WNI',
+                '',
+                $row->symptoms,
+                '',
+                $row->congenital_disease,
+                $row->city_visited,
+                $row->have_interacted,
+                '',
+                Carbon::parse($row->start_at)->format('Y-m-d'),
+                Carbon::parse($row->start_at)->format('H:i:s') . ' - ' . Carbon::parse($row->end_at)->format('H:i:s'),
+                $row->event_location,
+                '',
+                $row->lab_result_type,
+                ''
+            ];
+
+            $rowFromValues = WriterEntityFactory::createRowFromArray($row);
+            $writer->addRow($rowFromValues);
+        }
+
+        $writer->close();
     }
 }
