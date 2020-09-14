@@ -47,8 +47,7 @@ class RdtRegisterRequest extends FormRequest
             'symptoms'             => 'required',
             'symptoms_notes'       => 'required',
             'have_interacted'      => 'sometimes|required',
-            'congenital_disease'   => 'sometimes|required',
-            'city_visited'         => 'string'
+            'congenital_disease'   => 'sometimes|required'
         ];
     }
 }
