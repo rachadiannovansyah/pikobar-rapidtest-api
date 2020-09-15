@@ -51,7 +51,7 @@ class RdtEventController extends Controller
             });
         }
 
-        if ($status=='draft' || $status=='published') {
+        if ($status == 'draft' || $status == 'published') {
             if ($status === 'draft') {
                 $statusEnum = RdtEventStatus::DRAFT();
             }
