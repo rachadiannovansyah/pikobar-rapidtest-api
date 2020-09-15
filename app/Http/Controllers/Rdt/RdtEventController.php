@@ -26,7 +26,7 @@ class RdtEventController extends Controller
         $perPage   = $request->input('per_page', 15);
         $sortBy    = $request->input('sort_by', 'created_at');
         $sortOrder = $request->input('sort_order', 'desc');
-        $status    = $request->input('status', 'semua');
+        $status    = $request->input('status', 'all');
         $search    = $request->input('search');
 
         $perPage = $this->getPaginationSize($perPage);
