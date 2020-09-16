@@ -26,23 +26,13 @@ class RdtEventController extends Controller
         $perPage   = $request->input('per_page', 15);
         $sortBy    = $request->input('sort_by', 'created_at');
         $sortOrder = $request->input('sort_order', 'desc');
-        $status    = $request->input('status', 'draft');
+        $status    = $request->input('status', 'all');
         $search    = $request->input('search');
 
         $perPage = $this->getPaginationSize($perPage);
 
         if (in_array($sortBy, ['id', 'event_name', 'start_at', 'end_at', 'status', 'created_at']) === false) {
             $sortBy = 'event_name';
-        }
-
-        $statusEnum = 'draft';
-
-        if ($status === 'draft') {
-            $statusEnum = RdtEventStatus::DRAFT();
-        }
-
-        if ($status === 'published') {
-            $statusEnum = RdtEventStatus::PUBLISHED();
         }
 
         $records = RdtEvent::query();
@@ -61,7 +51,14 @@ class RdtEventController extends Controller
             });
         }
 
-        $records->whereEnum('status', $statusEnum);
+        if ($status === 'draft') {
+            $records->whereEnum('status', RdtEventStatus::DRAFT());
+        }
+    
+        if ($status === 'published') {
+            $records->whereEnum('status', RdtEventStatus::PUBLISHED());
+        }
+
         $records->orderBy($sortBy, $sortOrder);
         $records->with(['city']);
         $records->withCount(['invitations', 'schedules']);
