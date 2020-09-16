@@ -142,10 +142,12 @@ class RdtApplicantController extends Controller
 
     protected function getPaginationSize($perPage)
     {
-        if ($perPage <= 0 || $perPage > 20) {
-            return 15;
-        }
+        $perPageAllowed = [50, 100, 500];
 
-        return $perPage;
+        if (in_array($perPage, $perPageAllowed)) {
+            return $perPage;
+        }
+        
+        return 15;
     }
 }
