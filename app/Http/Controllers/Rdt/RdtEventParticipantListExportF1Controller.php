@@ -19,7 +19,7 @@ class RdtEventParticipantListExportF1Controller extends Controller
         header('Access-Control-Allow-Methods: *');
         header('Access-Control-Allow-Headers: *');
         header('Access-Control-Expose-Headers: *');
-        
+
         $writer = WriterEntityFactory::createXLSXWriter();
 
         $rdtEvent = RdtEvent::findOrFail($id);
@@ -71,6 +71,7 @@ class RdtEventParticipantListExportF1Controller extends Controller
                     'rdt_invitations.lab_result_type',
                     'rdt_invitations.registration_code',
                     'rdt_applicants.person_status',
+                    'rdt_applicants.occupation_type',
                     'rdt_applicants.name',
                     'rdt_applicants.nik',
                     'rdt_applicants.phone_number',
@@ -93,6 +94,8 @@ class RdtEventParticipantListExportF1Controller extends Controller
                 ->leftJoin('areas as district', 'district.code_kemendagri', 'rdt_applicants.district_code')
                 ->get();
 
+        return $data;
+
         foreach ($data as $row) {
             if (Gender::MALE()->getValue() === $row->gender) {
                 $gender = "Laki Laki";
@@ -109,7 +112,7 @@ class RdtEventParticipantListExportF1Controller extends Controller
                 $row->lab_code_sample ,
                 $row->registration_code,
                 $row->person_status,
-                '',
+                $row->occupation_type,
                 $row->name,
                 $row->nik,
                 $row->phone_number ,
