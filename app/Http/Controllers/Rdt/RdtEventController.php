@@ -152,7 +152,7 @@ class RdtEventController extends Controller
 
     protected function getPaginationSize($perPage)
     {
-        $perPageAllowed = [ 50 , 100 , 500 ];
+        $perPageAllowed = [50, 100, 500];
 
         if (in_array($perPage, $perPageAllowed)) {
             return $perPage;
