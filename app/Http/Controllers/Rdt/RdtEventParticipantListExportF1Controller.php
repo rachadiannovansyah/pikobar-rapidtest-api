@@ -16,6 +16,10 @@ class RdtEventParticipantListExportF1Controller extends Controller
 {
     public function __invoke($id)
     {
+        header('Access-Control-Allow-Methods: *');
+        header('Access-Control-Allow-Headers: *');
+        header('Access-Control-Expose-Headers: *');
+        
         $writer = WriterEntityFactory::createXLSXWriter();
 
         $rdtEvent = RdtEvent::findOrFail($id);
