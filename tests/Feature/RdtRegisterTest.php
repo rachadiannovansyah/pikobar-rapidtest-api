@@ -30,6 +30,7 @@ class RdtRegisterTest extends TestCase
             'congenital_disease'   => [1,2,3],
             'have_interacted'      => 'NO',
             'person_status'        => PersonCaseStatusEnum::CLOSE_CONTACT(),
+            'birth_place'          => 'Kota Bandung'
         ])
             ->assertSuccessful()
             ->assertJsonStructure(['registration_code', 'download_url']);
