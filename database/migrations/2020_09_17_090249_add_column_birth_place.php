@@ -14,7 +14,7 @@ class AddColumnBirthPlace extends Migration
     public function up()
     {
         Schema::table('rdt_applicants', function (Blueprint $table) {
-            $table->string('birth_place', 60)->nullable();
+            $table->string('birth_place', 60)->after('birth_date')->nullable();
         });
     }
 
