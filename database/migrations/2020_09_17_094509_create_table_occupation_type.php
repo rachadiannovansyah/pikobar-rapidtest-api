@@ -14,7 +14,7 @@ class CreateTableOccupationType extends Migration
     public function up()
     {
         Schema::create('occupation_types', function (Blueprint $table) {
-            $table->id();
+            $table->integer('id')->primary();
             $table->string('name');
         });
     }
