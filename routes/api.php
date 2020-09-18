@@ -94,6 +94,6 @@ Route::group(['middleware' => 'guest:api'], function () {
         Route::get('areas', 'AreaController@index');
         Route::get('areas', 'AreaController@index');
         Route::get('areas/{area}', 'AreaController@show');
+        Route::get('occupations', 'OccupationTypeListController');
     });
-    Route::get('master/occupations', 'Master\OccupationTypeListController');
 });
