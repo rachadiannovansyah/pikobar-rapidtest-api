@@ -92,6 +92,8 @@ Route::group(['middleware' => 'guest:api'], function () {
     // API for Master data
     Route::prefix('master')->namespace('Master')->group(function () {
         Route::get('areas', 'AreaController@index');
+        Route::get('areas', 'AreaController@index');
         Route::get('areas/{area}', 'AreaController@show');
     });
+    Route::get('master/occupations', 'Master\OccupationTypeListController');
 });
