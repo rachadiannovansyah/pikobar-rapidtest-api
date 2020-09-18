@@ -16,6 +16,7 @@ class CreateTableOccupationType extends Migration
         Schema::create('occupation_types', function (Blueprint $table) {
             $table->integer('id')->primary();
             $table->string('name');
+            $table->timestamps();
         });
     }
 
