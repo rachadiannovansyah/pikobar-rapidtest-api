@@ -1,4 +1,4 @@
-FROM jabardigitalservice/phpfpm-nginx
+FROM jabardigitalservice/phpfpm-nginx:7.4
 
 # Switch to root user
 USER root
