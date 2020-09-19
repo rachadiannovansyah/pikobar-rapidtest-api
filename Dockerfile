@@ -4,11 +4,13 @@ FROM jabardigitalservice/phpfpm-nginx:7.4
 USER root
 
 # Install additional packages
-RUN apk --no-cache add php-pdo_mysql php-mysqli php-gd php-iconv php-bcmath php-gmp php-zip
+RUN apk --no-cache add php-phar php-json php-pdo php-pdo_mysql php-mysqli \
+    php-mbstring php-dom php-gd php-iconv php-bcmath php-gmp php-zip \
+    php-zlib php-xml php-intl php-dom php-xml php-xmlreader php-ctype
 
 # Copy configurations
-COPY ./docker/nginx.conf /etc/nginx/nginx.conf
-COPY ./docker/fpm-pool.conf /etc/php7/php-fpm.d/www.conf
+COPY docker/nginx.conf /etc/nginx/nginx.conf
+COPY docker/fpm-pool.conf /etc/php7/php-fpm.d/www.conf
 
 # Switch to use a non-root user from here on
 USER nobody
