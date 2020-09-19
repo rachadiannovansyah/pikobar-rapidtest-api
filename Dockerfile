@@ -4,7 +4,7 @@ FROM jabardigitalservice/phpfpm-nginx:7.4
 USER root
 
 # Install additional packages
-RUN apk --no-cache add php-phar php-json php-pdo php-pdo_mysql php-mysqli \
+RUN apk --no-cache add php-phar php-session php-json php-pdo php-pdo_mysql php-mysqli \
     php-mbstring php-dom php-gd php-iconv php-bcmath php-gmp php-zip \
     php-zlib php-xml php-intl php-dom php-xml php-xmlreader php-ctype
 
