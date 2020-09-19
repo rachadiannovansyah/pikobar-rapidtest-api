@@ -23,7 +23,7 @@ COPY --chown=nobody .env-example /var/www/html/.env
 COPY --from=composer /usr/bin/composer /usr/bin/composer
 
 # Run composer install to install the dependencies
-RUN composer install --no-cache --prefer-dist --optimize-autoloader --no-interaction --no-progress
+RUN composer install --no-cache --no-dev --prefer-dist --optimize-autoloader --no-interaction --no-progress
 
 # RUN cd /var/www/html && \
     # php artisan route:cache
