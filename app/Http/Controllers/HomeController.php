@@ -19,8 +19,8 @@ class HomeController extends Controller
         $checkDbConnection = DB::connection()->getPdo();
 
         return [
-            'app'      => config('app.name'),
-            'hostname' => gethostname(),
+            'app'     => config('app.name'),
+            'server'  => gethostname(),
         ];
     }
 }
