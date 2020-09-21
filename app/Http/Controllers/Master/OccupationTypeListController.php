@@ -10,6 +10,6 @@ class OccupationTypeListController extends Controller
 {
     public function __invoke()
     {
-        return OccupationTypeResource::collection(OccupationType::all());
+        return OccupationTypeResource::collection(OccupationType::orderBy('sequence')->get());
     }
 }
