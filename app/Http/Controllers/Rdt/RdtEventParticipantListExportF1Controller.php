@@ -84,44 +84,55 @@ class RdtEventParticipantListExportF1Controller extends Controller
                     'rdt_events.end_at',
                     'rdt_events.event_location',
                     'city.name as city',
-                    'district.name as district'
+                    'district.name as district',
+                    'village.name as village'
                 )
                 ->leftJoin('rdt_applicants', 'rdt_applicants.id', 'rdt_invitations.rdt_applicant_id')
                 ->leftJoin('rdt_events', 'rdt_events.id', 'rdt_invitations.rdt_event_id')
                 ->leftJoin('areas as city', 'city.code_kemendagri', 'rdt_applicants.city_code')
                 ->leftJoin('areas as district', 'district.code_kemendagri', 'rdt_applicants.district_code')
+                ->leftJoin('areas as village', 'village.code_kemendagri', 'rdt_applicants.village_code')
                 ->where('rdt_invitations.rdt_event_id', $id)
                 ->get();
 
         foreach ($data as $row) {
-            $age = Carbon::parse($row->birth_date)->age;
+            if ($row->birth_date) {
+                $age = Carbon::parse($row->birth_date)->diff(Carbon::now());
+                $ageYear = $age->format('%y');
+                $ageMonth = $age->format('%m');
+            } else {
+                $ageYear = '';
+                $ageMonth = '';
+            }
+            
+            
             $row =  [
                         $row->number,
                         $row->lab_code_sample ,
                         $row->attended_at,
                         'WNI',
-                        'kategori',
+                        '',
                         $row->person_status,
                         $row->name,
                         $row->nik,
-                        $age,
-                        'usia bulan',
+                        $ageYear,
+                        $ageMonth,
                         $row->birth_place,
                         $row->birth_date,
                         $row->gender,
                         $row->address,
-                        'RT',
-                        'RW',
-                        'kelurahan',
+                        '',
+                        '',
+                        $row->village,
                         $row->district,
                         $row->city,
                         1,
                         $row->lab_result_type,
-                        'suhu',
-                        'instansi pengirim',
-                        'fasyankes dinkes',
-                        'dokter',
-                        'telpon'
+                        '',
+                        '',
+                        '',
+                        '',
+                        ''
                     ];
         
             $rowFromValues = WriterEntityFactory::createRowFromArray($row);
