@@ -61,6 +61,7 @@ Route::group(['middleware' => 'auth:api'], function () {
 Route::group(['middleware' => 'auth:api'], function () {
     Route::get('rdt/events/{rdtEvent}/participants', 'Rdt\RdtEventParticipantListController')
         ->middleware('can:view,rdtEvent');
+    Route::get('rdt/invitation/{id}', 'Rdt\RdtEventParticipantDetailController');
 
     Route::post('rdt/events/{rdtEvent}/participants', 'Rdt\RdtEventParticipantAddController');
     Route::post('rdt/events/{rdtEvent}/participants-remove', 'Rdt\RdtEventParticipantRemoveController');
