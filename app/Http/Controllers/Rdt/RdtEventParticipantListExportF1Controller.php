@@ -80,6 +80,7 @@ class RdtEventParticipantListExportF1Controller extends Controller
                     'rdt_applicants.city_visited',
                     'rdt_applicants.have_interacted',
                     'rdt_applicants.congenital_disease',
+                    'rdt_events.host_name',
                     'rdt_events.start_at',
                     'rdt_events.end_at',
                     'rdt_events.event_location',
@@ -130,7 +131,7 @@ class RdtEventParticipantListExportF1Controller extends Controller
                         $row->lab_result_type,
                         '',
                         '',
-                        '',
+                        $row->host_name,
                         '',
                         ''
                     ];
