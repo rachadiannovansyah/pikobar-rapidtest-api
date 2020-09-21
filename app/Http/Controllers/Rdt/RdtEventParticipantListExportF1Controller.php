@@ -26,48 +26,45 @@ class RdtEventParticipantListExportF1Controller extends Controller
         $fileName = Str::slug($rdtEvent->event_name, '-') . '.xlsx';
         $writer->openToBrowser($fileName);
 
-        $header =  [
+        $header = [
             'NO',
-            'INSTANSI_PENGIRIM',
-            'FASYANKES/DINKES',
-            'KODE_SAMPLE',
-            'KODE_REGISTRASI',
-            'STATUS_SASARAN',
-            'PEKERJAAN/ KATEGORI',
-            'NAMA_PASIEN',
-            'NIK',
-            'NOMOR_TELEPON' ,
-            'JENIS_KELAMIN',
-            'TEMPAT_LAHIR',
-            'TANGGAL_LAHIR',
-            'KOTA',
-            'KECAMATAN',
-            'KELURAHAN',
-            'ALAMAT',
+            'NOMOR SAMPEL',
+            'TANGGAL KUNJUNGAN',
             'KEWARGANEGARAAN',
+            'KATEGORI',
+            'STATUS',
+            'NAMA PASIEN',
+            'NIK',
+            'USIA TAHUN',
+            'USIA BULAN',
+            'TEMPAT LAHIR',
+            'TANGGAL LAHIR',
+            'JENIS KELAMIN',
+            'ALAMAT',
+            'RT',
+            'RW',
+            'KELURAHAN',
+            'KECAMATAN',
+            'KOTA',
             'KUNJUNGAN',
-            'GEJALA',
-            'TANGGAL_MUNCUL_GEJALA',
-            'PENYAKIT PENYERTA',
-            'RIWAYAT PERJALANAN',
-            'APAKAH_PERNAH_KONTAK',
-            'JIKA_IYA_TANGGAL_KONTAK',
-            'TANGGAL_ACARA',
-            'JAM_ACARA',
-            'TEMPAT_ACARA',
-            'KETERANGAN',
-            'HASIL_TEST',
-            'NILAI_CT'
+            'HASI RDT',
+            'SUHU',
+            'INSTANSI PENGIRIM',
+            'FASYANKES/ DINKES',
+            'DOKTER',
+            'TELP DOKTER'
         ];
 
         $rowFromValues = WriterEntityFactory::createRowFromArray($header);
         $writer->addRow($rowFromValues);
+
         DB::statement(DB::raw('set @number=0'));
 
         $data = \DB::table('rdt_invitations')
                 ->select(
                     DB::raw('@number:=@number+1 as number'),
                     'rdt_invitations.lab_code_sample',
+                    'rdt_invitations.attended_at',
                     'rdt_invitations.lab_result_type',
                     'rdt_invitations.registration_code',
                     'rdt_applicants.person_status',
@@ -77,6 +74,7 @@ class RdtEventParticipantListExportF1Controller extends Controller
                     'rdt_applicants.phone_number',
                     'rdt_applicants.gender',
                     'rdt_applicants.birth_date',
+                    'rdt_applicants.birth_place',
                     'rdt_applicants.address',
                     'rdt_applicants.symptoms',
                     'rdt_applicants.city_visited',
@@ -92,57 +90,44 @@ class RdtEventParticipantListExportF1Controller extends Controller
                 ->leftJoin('rdt_events', 'rdt_events.id', 'rdt_invitations.rdt_event_id')
                 ->leftJoin('areas as city', 'city.code_kemendagri', 'rdt_applicants.city_code')
                 ->leftJoin('areas as district', 'district.code_kemendagri', 'rdt_applicants.district_code')
+                ->where('rdt_invitations.rdt_event_id', $id)
                 ->get();
 
-        return $data;
-
         foreach ($data as $row) {
-            if (Gender::MALE()->getValue() === $row->gender) {
-                $gender = "Laki Laki";
-            } elseif (Gender::FEMALE()->getValue() === $row->gender) {
-                $gender = "perempuan";
-            } else {
-                $gender = "";
-            }
-
+            $age = Carbon::parse($row->birth_date)->age;
             $row =  [
-                $row->number,
-                '',
-                '',
-                $row->lab_code_sample ,
-                $row->registration_code,
-                $row->person_status,
-                $row->occupation_type,
-                $row->name,
-                $row->nik,
-                $row->phone_number ,
-                $gender,
-                '',
-                $row->birth_date,
-                $row->city,
-                $row->district,
-                '',
-                $row->address,
-                'WNI',
-                '',
-                $row->symptoms,
-                '',
-                $row->congenital_disease,
-                $row->city_visited,
-                $row->have_interacted,
-                '',
-                Carbon::parse($row->start_at)->format('Y-m-d'),
-                Carbon::parse($row->start_at)->format('H:i:s') . ' - ' . Carbon::parse($row->end_at)->format('H:i:s'),
-                $row->event_location,
-                '',
-                $row->lab_result_type,
-                ''
-            ];
-
+                        $row->number,
+                        $row->lab_code_sample ,
+                        $row->attended_at,
+                        'WNI',
+                        'kategori',
+                        $row->person_status,
+                        $row->name,
+                        $row->nik,
+                        $age,
+                        'usia bulan',
+                        $row->birth_place,
+                        $row->birth_date,
+                        $row->gender,
+                        $row->address,
+                        'RT',
+                        'RW',
+                        'kelurahan',
+                        $row->district,
+                        $row->city,
+                        1,
+                        $row->lab_result_type,
+                        'suhu',
+                        'instansi pengirim',
+                        'fasyankes dinkes',
+                        'dokter',
+                        'telpon'
+                    ];
+        
             $rowFromValues = WriterEntityFactory::createRowFromArray($row);
             $writer->addRow($rowFromValues);
         }
-
+        
         $writer->close();
     }
 }
