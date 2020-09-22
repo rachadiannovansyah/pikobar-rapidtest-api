@@ -7,7 +7,7 @@ use App\Entities\RdtEvent;
 use File;
 use DB;
 use Carbon\Carbon;
-use App\Enums\Gender;
+use App\Enums\PersonCaseStatusEnum;
 use Illuminate\Support\Str;
 use Box\Spout\Writer\Common\Creator\WriterEntityFactory;
 use Box\Spout\Common\Entity\Row;
@@ -96,6 +96,18 @@ class RdtEventParticipantListExportF1Controller extends Controller
                 ->where('rdt_invitations.rdt_event_id', $id)
                 ->get();
 
+        $personStatusValue=[
+            'CONFIRMED' => 'Terkonfirmasi',
+            'SUSPECT' => 'Kasus Suspek',
+            'PROBABLE' => 'Kasus Probable',
+            'CLOSE_CONTACT' => 'Kontak Erat',
+            'NOT_ALL' => 'Bukan Semuanya',
+            'UNKNOWN' => 'Tidak Tahu',
+            'ODP' => 'Orang Dalam pengawasan',
+            'OTG' => 'Orang Tanpa Gejala',
+            'PDP' => 'Pasien Dalam Pengawasan'
+        ];
+
         foreach ($data as $row) {
             if ($row->birth_date) {
                 $age = Carbon::parse($row->birth_date)->diff(Carbon::now());
@@ -106,14 +118,13 @@ class RdtEventParticipantListExportF1Controller extends Controller
                 $ageMonth = '';
             }
             
-            
             $row =  [
                         $row->number,
                         $row->lab_code_sample ,
                         $row->attended_at,
                         'WNI',
                         '',
-                        $row->person_status,
+                        $personStatusValue[$row->person_status],
                         $row->name,
                         $row->nik,
                         $ageYear,
