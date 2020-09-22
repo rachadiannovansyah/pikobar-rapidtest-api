@@ -96,7 +96,7 @@ class RdtEventParticipantListExportF1Controller extends Controller
                 ->where('rdt_invitations.rdt_event_id', $id)
                 ->get();
 
-        $personStatusValue=[
+        $personStatusValue = [
             'CONFIRMED' => 'Terkonfirmasi',
             'SUSPECT' => 'Kasus Suspek',
             'PROBABLE' => 'Kasus Probable',
