@@ -34,7 +34,7 @@ class RdtApplicantResource extends JsonResource
             'id'                   => $this->id,
             'nik'                  => $this->nik,
             'gender'               => $this->gender,
-            'birth_place'         => $this->birth_place,
+            'birth_place'          => $this->birth_place,
             'birth_date'           => optional($this->birth_date)->toDateString(),
             'age'                  => optional($this->birth_date)->age,
             'city'                 => new AreaResource($this->whenLoaded('city')),
