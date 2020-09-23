@@ -10,6 +10,6 @@ class FasyankesListController extends Controller
 {
     public function __invoke(Fasyankes $fasyankes)
     {
-        return response()->json($fasyankes->items(), 200);
+        return response()->json($fasyankes->items());
     }
 }
