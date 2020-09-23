@@ -30,7 +30,7 @@ class OccupationTypeSeeder extends Seeder
             ['occupation_type_value' => 21,'sequence'=>21, 'name' => 'Pegawai Negeri'],
             ['occupation_type_value' => 22,'sequence'=>22, 'name' => 'Pegawai Swasta'],
             ['occupation_type_value' => 23,'sequence'=>23, 'name' => 'Pelajar/mahasiswa'],
-            ['occupation_type_value' => 24,'sequence'=>24, 'name' => 'Pendoccupation_type_valueikan'],
+            ['occupation_type_value' => 24,'sequence'=>24, 'name' => 'Pendidikan'],
             ['occupation_type_value' => 25 ,'sequence'=>25, 'name' => 'Pemerintahan'],
             ['occupation_type_value' => 26 ,'sequence'=>26, 'name' => 'Pengobatan'],
             ['occupation_type_value' => 27 ,'sequence'=>27, 'name' => 'Petani'],
