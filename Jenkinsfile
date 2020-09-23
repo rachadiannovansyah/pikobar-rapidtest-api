@@ -7,7 +7,7 @@ pipeline {
         registryImage = ""
         registryCredential = "registry_jenkins"
         CAPROVER_URL = "http://captain.rover.digitalservice.id"
-        CAPROVER_PASSWORD = "caprover_admin"
+        CAPROVER_CREDENTIALS = "caprover_admin"
         CAPROVER_APP = "tesmasif-api"
         SHORT_COMMIT = "${GIT_COMMIT[0..7]}"
     }
@@ -29,7 +29,11 @@ pipeline {
                     }
                 }
 
-                sh "docker run caprover/cli-caprover:v2.1.1 caprover deploy --caproverUrl $CAPROVER_URL --caproverPassword $CAPROVER_PASSWORD --caproverApp $CAPROVER_APP --imageName $registryBaseImageTag:$SHORT_COMMIT"
+                script {
+                    withCredentials([usernamePassword(credentialsId: "CAPROVER_CREDENTIALS", usernameVariable: "CAP_USERNAME", passwordVariable: "CAP_PASSWORD")]) {
+                       sh "docker run caprover/cli-caprover:v2.1.1 caprover deploy --caproverUrl $CAPROVER_URL --caproverPassword $CAP_PASSWORD --caproverApp $CAPROVER_APP --imageName $registryBaseImageTag:$SHORT_COMMIT"
+                    }
+                }
             }
         }
 
