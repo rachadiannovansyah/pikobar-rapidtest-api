@@ -4,6 +4,7 @@ pipeline {
     environment {
         registryUrl = 'https://registry.digitalservice.id'
         registryBaseImageTag = 'registry.digitalservice.id/pikobar-tesmasif/tesmasif-api'
+        registryImage = ''
         registryCredential = 'registry_jenkins'
         SHORT_COMMIT = "${GIT_COMMIT[0..7]}"
     }
@@ -12,7 +13,7 @@ pipeline {
         stage('build') {
             steps {
                 script {
-                    docker.build registryBaseImageTag + ':$SHORT_COMMIT'
+                    registryImage = docker.build registryBaseImageTag + ':$SHORT_COMMIT'
                 }
             }
         }
@@ -21,7 +22,7 @@ pipeline {
             steps {
                 script {
                     docker.withRegistry(registryUrl, registryCredential) {
-                        dockerImage.push()
+                        registryImage.push()
                     }
                 }
             }
@@ -29,7 +30,7 @@ pipeline {
 
         stage('cleanup') {
             steps {
-                sh "docker rmi $registryBaseImageTag:$SHORT_COMMIT"
+                sh "docker rmi $registryImage"
             }
         }
     }
