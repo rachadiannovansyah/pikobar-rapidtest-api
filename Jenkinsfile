@@ -11,7 +11,7 @@ pipeline {
         stage('build') {
             steps {
                 script {
-                    docker.build registry + ':$GIT_COMMIT'
+                    docker.build registryUrl + ':$GIT_COMMIT'
                 }
             }
         }
