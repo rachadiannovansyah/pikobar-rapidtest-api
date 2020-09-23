@@ -30,7 +30,7 @@ pipeline {
 
                 script {
                     withCredentials([usernamePassword(credentialsId: "caprover_admin", usernameVariable: "CAP_USERNAME", passwordVariable: "CAP_PASSWORD")]) {
-                       sh "docker run caprover/cli-caprover:v2.1.1 caprover deploy --caproverUrl $CAPROVER_URL --caproverPassword $CAP_PASSWORD --caproverApp $CAPROVER_APP --imageName $registryBaseImageTag:$SHORT_COMMIT"
+                       sh "docker run caprover/cli-caprover:v2.1.1 caprover deploy --caproverUrl $CAPROVER_URL --caproverPassword \"$CAP_PASSWORD\" --caproverApp $CAPROVER_APP --imageName $registryBaseImageTag:$SHORT_COMMIT"
                     }
                 }
             }
