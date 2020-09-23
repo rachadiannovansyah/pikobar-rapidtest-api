@@ -30,7 +30,7 @@ pipeline {
 
         stage('cleanup') {
             steps {
-                sh "docker rmi $registryImage"
+                sh "docker rmi $registryBaseImageTag:$SHORT_COMMIT"
             }
         }
     }
