@@ -8,7 +8,7 @@ use App\Entities\Fasyankes;
 
 class FasyankesListController extends Controller
 {
-    public function __invoke(Fasyankes $fasyankes)
+    public function __invoke()
     {
         return FasyankesResource::collection(Fasyankes::all());
     }
