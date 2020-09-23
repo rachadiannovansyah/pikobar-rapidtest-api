@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\Master;
 
+use Illuminate\Http\Request;
 use App\Http\Resources\FasyankesResource;
 use App\Http\Controllers\Controller;
 use App\Entities\Fasyankes;
-use Illuminate\Http\Request;
 
 class FasyankesListController extends Controller
 {
