@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         registry = "registry.digitalservice.id/pikobar-tesmasif/tesmasif-api"
-        registryCredential = ‘registry_jenkins’
+        registryCredential = "registry_jenkins"
     }
 
     stages {
