@@ -6,7 +6,7 @@ pipeline {
         registryBaseImageTag = "registry.digitalservice.id/pikobar-tesmasif/tesmasif-api"
         registryImage = ""
         registryCredential = "registry_jenkins"
-        CAPROVER_URL = "http://captain.rover.digitalservice.id"
+        CAPROVER_URL = "https://captain.rover.digitalservice.id"
         CAPROVER_APP = "tesmasif-api"
         SHORT_COMMIT = "${GIT_COMMIT[0..7]}"
     }
