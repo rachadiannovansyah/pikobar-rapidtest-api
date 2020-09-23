@@ -6,7 +6,10 @@ pipeline {
         registryBaseImageTag = 'registry.digitalservice.id/pikobar-tesmasif/tesmasif-api'
         registryImage = ''
         registryCredential = 'registry_jenkins'
-        SHORT_COMMIT = "${GIT_COMMIT[0..7]}"
+        CAPROVER_URL = 'http://captain.rover.digitalservice.id'
+        CAPROVER_PASSWORD = 'caprover_admin'
+        CAPROVER_APP = 'tesmasif-api'
+        SHORT_COMMIT = '${GIT_COMMIT[0..7]}'
     }
 
     stages {
@@ -25,6 +28,8 @@ pipeline {
                         registryImage.push()
                     }
                 }
+
+                sh "docker run caprover/cli-caprover:v2.1.1 caprover deploy --caproverUrl $CAPROVER_URL --caproverPassword $CAPROVER_PASSWORD --caproverApp $CAPROVER_APP --imageName $registryBaseImageTag:$SHORT_COMMIT"
             }
         }
 
