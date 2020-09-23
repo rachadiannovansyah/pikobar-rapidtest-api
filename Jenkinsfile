@@ -2,26 +2,26 @@ pipeline {
     agent any
 
     environment {
-        registryUrl = 'https://registry.digitalservice.id'
-        registryBaseImageTag = 'registry.digitalservice.id/pikobar-tesmasif/tesmasif-api'
-        registryImage = ''
-        registryCredential = 'registry_jenkins'
-        CAPROVER_URL = 'http://captain.rover.digitalservice.id'
-        CAPROVER_PASSWORD = 'caprover_admin'
-        CAPROVER_APP = 'tesmasif-api'
-        SHORT_COMMIT = '${GIT_COMMIT[0..7]}'
+        registryUrl = "https://registry.digitalservice.id"
+        registryBaseImageTag = "registry.digitalservice.id/pikobar-tesmasif/tesmasif-api"
+        registryImage = ""
+        registryCredential = "registry_jenkins"
+        CAPROVER_URL = "http://captain.rover.digitalservice.id"
+        CAPROVER_PASSWORD = "caprover_admin"
+        CAPROVER_APP = "tesmasif-api"
+        SHORT_COMMIT = "${GIT_COMMIT[0..7]}"
     }
 
     stages {
-        stage('build') {
+        stage("build") {
             steps {
                 script {
-                    registryImage = docker.build registryBaseImageTag + ':$SHORT_COMMIT'
+                    registryImage = docker.build registryBaseImageTag + ":$SHORT_COMMIT"
                 }
             }
         }
 
-        stage('deploy') {
+        stage("deploy") {
             steps {
                 script {
                     docker.withRegistry(registryUrl, registryCredential) {
@@ -33,7 +33,7 @@ pipeline {
             }
         }
 
-        stage('cleanup') {
+        stage("cleanup") {
             steps {
                 sh "docker rmi $registryBaseImageTag:$SHORT_COMMIT"
             }
