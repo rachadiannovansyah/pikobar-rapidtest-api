@@ -2,27 +2,34 @@ pipeline {
     agent any
 
     environment {
-        registry = "registry.digitalservice.id/pikobar-tesmasif/tesmasif-api"
-        registryCredential = "registry_jenkins"
+        registryUrl = 'registry.digitalservice.id'
+        registryImageTag = 'registry.digitalservice.id/pikobar-tesmasif/tesmasif-api'
+        registryCredential = 'registry_jenkins'
     }
 
     stages {
         stage('build') {
             steps {
                 script {
-                    docker.build registry + ":$BUILD_NUMBER"
+                    docker.build registry + ':$GIT_COMMIT'
                 }
             }
         }
 
-        stage('Deploy Image') {
-          steps {
-            script {
-              docker.withRegistry('', registryCredential ) {
-                dockerImage.push()
-              }
+        stage('deploy') {
+            steps {
+                script {
+                    docker.withRegistry(registryUrl, registryCredential) {
+                        dockerImage.push()
+                    }
+                }
             }
-          }
+        }
+
+        stage('cleanup') {
+            steps {
+                sh "docker rmi $registry:$GIT_COMMIT"
+            }
         }
     }
 }
