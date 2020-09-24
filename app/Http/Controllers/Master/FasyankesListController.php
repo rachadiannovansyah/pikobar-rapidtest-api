@@ -12,7 +12,7 @@ class FasyankesListController extends Controller
     public function __invoke(Request $request)
     {
         if ($request->name) {
-            $fasyankes = Fasyankes::where('name', 'like', "%" . $request->name . "%")->get();
+            $fasyankes = Fasyankes::where('name', 'like', '%' . $request->name . '%')->get();
         } else {
             $fasyankes = Fasyankes::all();
         }
