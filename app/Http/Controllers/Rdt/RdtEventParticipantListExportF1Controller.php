@@ -127,9 +127,9 @@ class RdtEventParticipantListExportF1Controller extends Controller
                 $ageMonth = '';
             }
 
-            if ($row->gender=='F') {
+            if ($row->gender == 'F') {
                 $gender = 'P';
-            } elseif ($row->gender=='M') {
+            } elseif ($row->gender == 'M') {
                 $gender = "L";
             } else {
                 $gender = "";
