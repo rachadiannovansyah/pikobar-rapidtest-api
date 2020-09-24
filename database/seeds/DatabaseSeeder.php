@@ -15,5 +15,6 @@ class DatabaseSeeder extends Seeder
         $this->call(OccupationTypeSeeder::class);
         $this->call(RdtEventSeeder::class);
         $this->call(RdtApplicantSeeder::class);
+        $this->call(FasyankesSeeder::class);
     }
 }

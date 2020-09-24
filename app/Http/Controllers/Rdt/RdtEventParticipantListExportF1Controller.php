@@ -42,12 +42,12 @@ class RdtEventParticipantListExportF1Controller extends Controller
             'USIA TAHUN',
             'USIA BULAN',
             'JENIS KELAMIN',
-            'KOTA ID',
+            'ID KOTA',
             'KOTA',
             'NO HP',
-            'KECAMATAN ID',
+            'ID KECAMATAN',
             'KECAMATAN',
-            'KELURAHAN/ DESA ID',
+            'ID KELURAHAN/ DESA',
             'KELURAHAN/ DESA',
             'ALAMAT',
             'RT',
@@ -58,7 +58,7 @@ class RdtEventParticipantListExportF1Controller extends Controller
             'INSTANSI PENGIRIM',
             'ID FASYANKES',
             'TANGGAL KUNJUNGAN',
-            'RS KUNUNGAN'
+            'RS KUNJUNGAN'
         ];
 
         $rowFromValues = WriterEntityFactory::createRowFromArray($header);
@@ -126,6 +126,14 @@ class RdtEventParticipantListExportF1Controller extends Controller
                 $ageYear = '';
                 $ageMonth = '';
             }
+
+            if ($row->gender == 'F') {
+                $gender = 'P';
+            } elseif ($row->gender == 'M') {
+                $gender = "L";
+            } else {
+                $gender = "";
+            }
             
             $row =  [
                         $row->number,
@@ -142,7 +150,7 @@ class RdtEventParticipantListExportF1Controller extends Controller
                         $row->birth_date,
                         $ageYear,
                         $ageMonth,
-                        $row->gender,
+                        $gender,
                         $row->city_code,
                         $row->city,
                         $row->phone_number,
