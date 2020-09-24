@@ -12,17 +12,7 @@ class FasyankesSeeder extends Seeder
      */
     public function run()
     {
-        foreach ($this->items() as $item) {
-            Fasyankes::query()->updateOrCreate(
-                \Illuminate\Support\Arr::only($item, ['name', 'type']),
-                $item
-            );
-        }
-    }
-
-    public function items(): array
-    {
-        return [
+        $fasyankes = [
             [
                 "name"=> "RSUP Dr. Hasan Sadikin",
                 "type"=> "rumah_sakit",
@@ -296,5 +286,7 @@ class FasyankesSeeder extends Seeder
                
             ],
         ];
+
+        Fasyankes::insert($fasyankes);
     }
 }
