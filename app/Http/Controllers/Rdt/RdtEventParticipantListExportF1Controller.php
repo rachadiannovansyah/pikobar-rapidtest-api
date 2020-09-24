@@ -126,6 +126,14 @@ class RdtEventParticipantListExportF1Controller extends Controller
                 $ageYear = '';
                 $ageMonth = '';
             }
+
+            if ($row->gender=='F') {
+                $gender = 'P';
+            } elseif ($row->gender=='M') {
+                $gender = "L";
+            } else {
+                $gender = "";
+            }
             
             $row =  [
                         $row->number,
@@ -142,7 +150,7 @@ class RdtEventParticipantListExportF1Controller extends Controller
                         $row->birth_date,
                         $ageYear,
                         $ageMonth,
-                        $row->gender,
+                        $gender,
                         $row->city_code,
                         $row->city,
                         $row->phone_number,
