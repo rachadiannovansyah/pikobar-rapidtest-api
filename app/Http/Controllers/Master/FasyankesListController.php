@@ -11,12 +11,10 @@ class FasyankesListController extends Controller
 {
     public function __invoke(Request $request)
     {
-        $search            = $request->input('name');
-        if ($search) {
-            $fasyankes = Fasyankes::where('name', 'like', '%' . $search . '%')->get();
-        } else {
-            $fasyankes = Fasyankes::all();
+        $fasyankes = Fasyankes::query();
+        if ($request->has('name')) {
+            $fasyankes->where('name', 'like', '%' . $request->input('name') . '%');
         }
-        return FasyankesResource::collection($fasyankes);
+        return FasyankesResource::collection($fasyankes->orderBy('name')->get());
     }
 }
