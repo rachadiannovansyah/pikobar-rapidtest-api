@@ -42,12 +42,12 @@ class RdtEventParticipantListExportF1Controller extends Controller
             'USIA TAHUN',
             'USIA BULAN',
             'JENIS KELAMIN',
-            'KOTA ID',
+            'ID KOTA',
             'KOTA',
             'NO HP',
-            'KECAMATAN ID',
+            'ID KECAMATAN',
             'KECAMATAN',
-            'KELURAHAN/ DESA ID',
+            'ID KELURAHAN/ DESA',
             'KELURAHAN/ DESA',
             'ALAMAT',
             'RT',
@@ -58,7 +58,7 @@ class RdtEventParticipantListExportF1Controller extends Controller
             'INSTANSI PENGIRIM',
             'ID FASYANKES',
             'TANGGAL KUNJUNGAN',
-            'RS KUNUNGAN'
+            'RS KUNJUNGAN'
         ];
 
         $rowFromValues = WriterEntityFactory::createRowFromArray($header);
