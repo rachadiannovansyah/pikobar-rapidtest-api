@@ -31,6 +31,7 @@ class RdtEvent extends Model
     protected $fillable = [
         'event_name',
         'event_location',
+        'host_type',
         'host_name',
         'city_code',
         'start_at',
