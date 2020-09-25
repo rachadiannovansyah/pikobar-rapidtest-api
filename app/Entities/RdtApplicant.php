@@ -91,7 +91,7 @@ class RdtApplicant extends Model
 
     public function occupation()
     {
-        return $this->belongsTo(occupationType::class, 'occupation_type', 'occupation_type_value')->withDefault(['name'=>null]);
+        return $this->belongsTo(occupationType::class, 'occupation_type', 'occupation_type_value');
     }
 
     public function invitations()
