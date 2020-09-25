@@ -47,6 +47,7 @@ class RdtApplicantResource extends JsonResource
             'phone_number'         => $this->phone_number,
             'workplace_name'       => $this->workplace_name,
             'occupation_type'      => $this->occupation_type,
+            'occupation'           => $this->occupation,
             'occupation_name'      => $this->occupation_name,
             'is_pns'               => $this->is_pns,
             'symptoms'             => $this->symptoms,
