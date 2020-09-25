@@ -89,6 +89,11 @@ class RdtApplicant extends Model
         return $this->belongsTo(Area::class, 'village_code', 'code_kemendagri');
     }
 
+    public function occupation()
+    {
+        return $this->belongsTo(occupationType::class, 'occupation_type', 'occupation_type_value');
+    }
+
     public function invitations()
     {
         return $this->hasMany(RdtInvitation::class, 'rdt_applicant_id');
