@@ -147,7 +147,7 @@ class RdtEventParticipantListExportF1Controller extends Controller
                         $row->name,
                         $row->nik,
                         $row->birth_place,
-                        $row->birth_date,
+                        Carbon::parse($row->birth_date)->format('d-m-Y'),
                         $ageYear,
                         $ageMonth,
                         $gender,
@@ -166,7 +166,7 @@ class RdtEventParticipantListExportF1Controller extends Controller
                         '',
                         '',
                         '',
-                         $row->attended_at,
+                        Carbon::parse($row->attended_at)->format('d-m-Y H:i:s'),
                          ''
                     ];
         

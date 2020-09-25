@@ -107,8 +107,10 @@ class RdtApplicantController extends Controller
      */
     public function show(RdtApplicant $rdtApplicant)
     {
-        $rdtApplicant->load(['invitations', 'invitations.event', 'city', 'district', 'village']);
-
+        $rdtApplicant->load(['invitations' => function ($query) {
+            $query->has('event');
+        }, 'invitations.event', 'city', 'district', 'village']);
+        
         return new RdtApplicantResource($rdtApplicant);
     }
 
