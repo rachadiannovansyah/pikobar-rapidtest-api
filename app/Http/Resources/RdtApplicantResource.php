@@ -24,8 +24,18 @@ class RdtApplicantResource extends JsonResource
             'approved_at'       => $this->approved_at,
             'invitations'       => RdtInvitationResource::collection($this->whenLoaded('invitations')),
             'status'            => $this->status,
+            'is_profile_complate' =>  $this->checkIsProfileComplate(),
             $this->mergeWhen($request->user(), $this->getProtectedAttributes()),
         ];
+    }
+
+    protected function checkIsProfileComplate()
+    {
+        if ($this->nik!=null && $this->phone_number!=null && $this->address!=null && $this->birth_date!=null && $this->birth_place!=null) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     protected function getProtectedAttributes()
