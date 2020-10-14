@@ -31,7 +31,7 @@ class RdtApplicantResource extends JsonResource
 
     protected function checkIsProfileComplate()
     {
-        if ($this->nik!=null && $this->phone_number!=null && $this->address!=null && $this->birth_date!=null && $this->birth_place!=null) {
+        if ($this->nik != null && $this->phone_number != null && $this->address != null && $this->birth_date != null && $this->birth_place != null) {
             return true;
         } else {
             return false;
