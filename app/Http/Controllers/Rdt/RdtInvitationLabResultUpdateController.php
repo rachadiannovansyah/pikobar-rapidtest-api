@@ -12,6 +12,6 @@ class RdtInvitationLabResultUpdateController extends Controller
     {
         $rdtInvitation  = RdtInvitation::findOrFail($id);
         $rdtInvitation->update($request->only('lab_result_type'));
-        return response()->json(['message' => 'Hasil Pemeriksaan Kode Sampel ' . $rdtInvitation->lab_code_sample . ' Berhasil Di Ubah Menjadi ' . $request->lab_result_type]);
+        return response()->json(['message' => 'OK']);
     }
 }
