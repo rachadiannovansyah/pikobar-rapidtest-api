@@ -33,7 +33,7 @@ class RdtApplicantResource extends JsonResource
     {
         $mandatoryFields = ['nik','phone_number','address','birth_date','birth_place'];
         foreach ($mandatoryFields as $field) {
-            if ($this->$field==null) {
+            if ($this->$field == null) {
                 return false;
             }
         }
