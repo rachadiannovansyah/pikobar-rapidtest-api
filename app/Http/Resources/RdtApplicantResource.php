@@ -31,11 +31,14 @@ class RdtApplicantResource extends JsonResource
 
     protected function checkIsProfileComplate()
     {
-        if ($this->nik != null && $this->phone_number != null && $this->address != null && $this->birth_date != null && $this->birth_place != null) {
-            return true;
-        } else {
-            return false;
+        $mandatoryFields = ['nik','phone_number','address','birth_date','birth_place'];
+        foreach ($mandatoryFields as $field) {
+            if ($this->$field==null) {
+                return false;
+            }
         }
+
+        return true;
     }
 
     protected function getProtectedAttributes()
