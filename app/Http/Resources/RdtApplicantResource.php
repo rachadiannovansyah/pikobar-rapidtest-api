@@ -24,12 +24,12 @@ class RdtApplicantResource extends JsonResource
             'approved_at'       => $this->approved_at,
             'invitations'       => RdtInvitationResource::collection($this->whenLoaded('invitations')),
             'status'            => $this->status,
-            'is_profile_complate' =>  $this->checkIsProfileComplate(),
+            'is_profile_complete' =>  $this->checkIsProfileComplete(),
             $this->mergeWhen($request->user(), $this->getProtectedAttributes()),
         ];
     }
 
-    protected function checkIsProfileComplate()
+    protected function checkIsProfileComplete()
     {
         $mandatoryFields = ['nik' , 'phone_number' , 'address' , 'birth_date' , 'birth_place'];
         foreach ($mandatoryFields as $field) {
