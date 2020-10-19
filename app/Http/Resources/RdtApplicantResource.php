@@ -31,9 +31,9 @@ class RdtApplicantResource extends JsonResource
 
     protected function checkIsProfileComplate()
     {
-        $mandatoryFields = ['nik','phone_number','address','birth_date','birth_place'];
+        $mandatoryFields = ['nik' , 'phone_number' , 'address' , 'birth_date' , 'birth_place'];
         foreach ($mandatoryFields as $field) {
-            if ($this->$field == null) {
+            if ($this->$field === null) {
                 return false;
             }
         }
