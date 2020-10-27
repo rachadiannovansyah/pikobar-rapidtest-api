@@ -100,6 +100,7 @@ class RdtEventParticipantListExportF1Controller extends Controller
                 ->leftJoin('areas as village', 'village.code_kemendagri', 'rdt_applicants.village_code')
                 ->where('rdt_invitations.rdt_event_id', $rdtEvent->id)
                 ->whereNotNull('rdt_invitations.lab_code_sample')
+                ->whereNotNull('rdt_invitations.attended_at')
                 ->get();
 
         $personStatusValue = [
@@ -139,7 +140,7 @@ class RdtEventParticipantListExportF1Controller extends Controller
                         $row->host_name,
                         '',
                         '',
-                        '',
+                        $rdtEvent->event_name . ' ' . Carbon::parse($row->attended_at)->format('dmY'),
                         $personStatusValue[$row->person_status] ?? null,
                         $row->name,
                         $row->nik,
