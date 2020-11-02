@@ -86,6 +86,7 @@ class RdtEventParticipantListExportF1Controller extends Controller
                     'rdt_applicants.have_interacted',
                     'rdt_applicants.congenital_disease',
                     'rdt_events.host_name',
+                    'rdt_events.host_type',
                     'rdt_events.start_at',
                     'rdt_events.end_at',
                     'rdt_events.event_location',
@@ -162,7 +163,7 @@ class RdtEventParticipantListExportF1Controller extends Controller
                         1,
                         '',
                         '',
-                        '',
+                        $row->host_type,
                         '',
                         Carbon::parse($row->attended_at)->format('d-m-Y H:i:s'),
                          ''
