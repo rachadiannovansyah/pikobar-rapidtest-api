@@ -109,8 +109,8 @@ class RdtEventParticipantListExportF1Controller extends Controller
             'SUSPECT' => 'Kasus Suspek',
             'PROBABLE' => 'Kasus Probable',
             'CLOSE_CONTACT' => 'Kontak Erat',
-            'NOT_ALL' => 'Bukan Semuanya',
-            'UNKNOWN' => 'Tidak Tahu',
+            'NOT_ALL' => 'Tanpa Kriteria',
+            'UNKNOWN' => 'Tanpa Kriteria',
             'ODP' => 'Orang Dalam pengawasan',
             'OTG' => 'Orang Tanpa Gejala',
             'PDP' => 'Pasien Dalam Pengawasan'
