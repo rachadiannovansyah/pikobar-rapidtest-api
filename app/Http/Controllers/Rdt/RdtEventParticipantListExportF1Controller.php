@@ -136,7 +136,7 @@ class RdtEventParticipantListExportF1Controller extends Controller
                 $gender = "";
             }
 
-            $attendedAt= new DateTime($row->attended_at, new DateTimeZone('Asia/Jakarta'));
+            $attendedAt = new DateTime($row->attended_at, new DateTimeZone('Asia/Jakarta'));
             $row =  [
                         $row->number,
                         $row->lab_code_sample ,
