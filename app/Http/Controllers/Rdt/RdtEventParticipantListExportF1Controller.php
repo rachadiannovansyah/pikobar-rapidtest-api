@@ -105,13 +105,13 @@ class RdtEventParticipantListExportF1Controller extends Controller
                 ->get();
 
         $personStatusValue = [
-            'CONFIRMED' => 'Terkonfirmasi',
-            'SUSPECT' => 'Kasus Suspek',
-            'PROBABLE' => 'Kasus Probable',
+            'CONFIRMED' => 'Konfirmasi',
+            'SUSPECT' => 'Suspek',
+            'PROBABLE' => 'Probable',
             'CLOSE_CONTACT' => 'Kontak Erat',
             'NOT_ALL' => 'Tanpa Kriteria',
             'UNKNOWN' => 'Tanpa Kriteria',
-            'ODP' => 'Orang Dalam pengawasan',
+            'ODP' => 'Orang Dalam Pengawasan',
             'OTG' => 'Orang Tanpa Gejala',
             'PDP' => 'Pasien Dalam Pengawasan'
         ];
@@ -165,7 +165,7 @@ class RdtEventParticipantListExportF1Controller extends Controller
                         '',
                         $row->host_type,
                         '',
-                        Carbon::parse($row->attended_at)->format('d-m-Y H:i:s'),
+                        Carbon::parse($row->attended_at)->format('d-m-Y'),
                          ''
                     ];
         
