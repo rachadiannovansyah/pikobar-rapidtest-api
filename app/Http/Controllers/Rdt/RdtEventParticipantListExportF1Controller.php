@@ -89,6 +89,7 @@ class RdtEventParticipantListExportF1Controller extends Controller
                     'rdt_applicants.congenital_disease',
                     'rdt_events.host_name',
                     'rdt_events.host_type',
+                    'fasyankes.id as fasyankes_id',
                     'rdt_events.start_at',
                     'rdt_events.end_at',
                     'rdt_events.event_location',
@@ -101,6 +102,7 @@ class RdtEventParticipantListExportF1Controller extends Controller
                 ->leftJoin('areas as city', 'city.code_kemendagri', 'rdt_applicants.city_code')
                 ->leftJoin('areas as district', 'district.code_kemendagri', 'rdt_applicants.district_code')
                 ->leftJoin('areas as village', 'village.code_kemendagri', 'rdt_applicants.village_code')
+                ->leftJoin('fasyankes', 'fasyankes.name', '=', 'rdt_events.host_name')
                 ->where('rdt_invitations.rdt_event_id', $rdtEvent->id)
                 ->whereNotNull('rdt_invitations.lab_code_sample')
                 ->whereNotNull('rdt_invitations.attended_at')
@@ -167,7 +169,7 @@ class RdtEventParticipantListExportF1Controller extends Controller
                         '',
                         '',
                         $row->host_type,
-                        '',
+                        $row->fasyankes_id,
                         $attendedAt->format('Y-m-d H:i:s'),
                          ''
                     ];
