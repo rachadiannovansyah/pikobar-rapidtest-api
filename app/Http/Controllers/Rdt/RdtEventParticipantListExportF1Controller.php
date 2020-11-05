@@ -108,17 +108,18 @@ class RdtEventParticipantListExportF1Controller extends Controller
                 ->whereNotNull('rdt_invitations.attended_at')
                 ->get();
 
+
         $personStatusValue = [
-            'CONFIRMED' => 'Konfirmasi',
-            'SUSPECT' => 'Suspek',
-            'PROBABLE' => 'Probable',
-            'CLOSE_CONTACT' => 'Kontak Erat',
-            'NOT_ALL' => 'Tanpa Kriteria',
-            'UNKNOWN' => 'Tanpa Kriteria',
-            'ODP' => 'Orang Dalam Pengawasan',
-            'OTG' => 'Orang Tanpa Gejala',
-            'PDP' => 'Pasien Dalam Pengawasan'
-        ];
+                    'CONFIRMED' => 'konfirmasi',
+                    'SUSPECT' => 'suspek',
+                    'PROBABLE' => 'probable',
+                    'CLOSE_CONTACT' => 'kontak erat',
+                    'NOT_ALL' => 'tanpa kriteria',
+                    'UNKNOWN' => 'tanpa kriteria',
+                    'ODP' => 'tanpa kriteria',
+                    'OTG' => 'tanpa kriteria',
+                    'PDP' => 'tanpa kriteria'
+                ];
 
         foreach ($data as $row) {
             if ($row->birth_date) {
