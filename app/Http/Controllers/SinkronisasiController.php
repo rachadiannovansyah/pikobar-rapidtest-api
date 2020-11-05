@@ -108,7 +108,7 @@ class SinkronisasiController extends Controller
                 'registration_code'     =>  $row->registration_code,
                 'tempat_lahir'          =>  $row->birth_place,
                 'tanggal_lahir'         =>  Carbon::parse($row->birth_date)->format('d-m-Y'),
-                'jenis_kelamin'         =>  $row->gender=='M'?'L':'P',
+                'jenis_kelamin'         =>  $row->gender == 'M' ? 'L' : 'P',
                 'provinsi_id'           =>  str_replace('.', '', $row->province_code),
                 'kota_id'               =>  str_replace('.', '', $row->city_code),
                 'kecamatan_id'          =>  str_replace('.', '', $row->district_code),
@@ -137,7 +137,7 @@ class SinkronisasiController extends Controller
             }
         }
 
-        DB::table('rdt_invitations')->whereIn('lab_code_sample', array_values($codeSamplesuccessSyn))->update(['synchronization_at'=>now()]);
+        DB::table('rdt_invitations')->whereIn('lab_code_sample', array_values($codeSamplesuccessSyn))->update(['synchronization_at' => now()]);
 
         return response()->json(
             ['message' => count($codeSamplesuccessSyn) . ' Data Berhasil Dikirim' ]
