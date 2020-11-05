@@ -73,7 +73,7 @@ class RdtApplicantResource extends JsonResource
             'created_at'           => $this->created_at,
             'updated_at'           => $this->updated_at,
             'city_visited'         => $this->city_visited,
-            'congenital_disease '  => $this->congenital_disease
+            'congenital_disease'   => $this->congenital_disease
 
         ];
     }
