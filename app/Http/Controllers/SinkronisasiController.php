@@ -16,7 +16,7 @@ class SinkronisasiController extends Controller
     {
         $this->middleware('api');
     }
-    
+
     public function __invoke(RdtEvent $rdtEvent)
     {
         $labkesUrl = env('LABKES_URL');
@@ -64,6 +64,7 @@ class SinkronisasiController extends Controller
         ->where('rdt_invitations.rdt_event_id', $rdtEvent->id)
         ->whereNotNull('rdt_invitations.lab_code_sample')
         ->whereNotNull('rdt_invitations.attended_at')
+        ->whereNull('rdt_invitations.synchronization_at')
         ->get();
 
         $personStatusValue = [
