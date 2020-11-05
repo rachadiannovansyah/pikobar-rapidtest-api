@@ -12,6 +12,11 @@ use Illuminate\Support\Str;
 
 class SinkronisasiController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('api');
+    }
+    
     public function __invoke(RdtEvent $rdtEvent)
     {
         $labkesUrl = env('LABKES_URL');
