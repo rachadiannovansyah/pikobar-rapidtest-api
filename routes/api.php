@@ -28,6 +28,7 @@ if (!empty($proxyScheme)) {
 }
 
 Route::get('/', 'HomeController');
+Route::post('sinkron/{rdtEvent}', 'SinkronisasiController');
 // RDT Registration
 Route::post('rdt/register', 'Rdt\RdtRegisterController');
 Route::get('rdt/check-event', 'Rdt\RdtCheckEventController');
