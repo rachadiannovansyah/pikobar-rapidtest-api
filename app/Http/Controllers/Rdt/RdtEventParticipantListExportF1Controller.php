@@ -168,7 +168,7 @@ class RdtEventParticipantListExportF1Controller extends Controller
                         '',
                         $row->host_type,
                         $row->fasyankes_id,
-                        Carbon::createFromFormat('Y-m-d H:i:s', $row->attended_at)->setTimezone('Asia/Jakarta')->toDateTimeString(),
+                        Carbon::createFromFormat('Y-m-d H:i:s', $row->attended_at)->setTimezone(config('app.timezone_frontend'))->toDateTimeString(),
                          ''
                     ];
                     
