@@ -19,7 +19,7 @@ class SinkronisasiController extends Controller
 
     public function __invoke(RdtEvent $rdtEvent)
     {
-        $labkesUrl = env('LABKES_URL');
+        $labkesUrl = env('LABKES_URL').'/bulk';
         
         $data = DB::table('rdt_invitations')
         ->select(
@@ -67,6 +67,12 @@ class SinkronisasiController extends Controller
         ->whereNull('rdt_invitations.synchronization_at')
         ->get();
 
+        if (count($data)<1) {
+            return response()->json(
+                ['message' => 'Belum Ada Data Terbaru' ]
+            );
+        }
+
         $personStatusValue = [
             'CONFIRMED' => 'konfirmasi',
             'SUSPECT' => 'suspek',
@@ -79,7 +85,7 @@ class SinkronisasiController extends Controller
             'PDP' => 'tanpa kriteria'
         ];
 
-        $codeSamplesuccessSyn = [];
+        $payload = [];
 
         foreach ($data as $row) {
             if ($row->birth_date) {
@@ -99,7 +105,7 @@ class SinkronisasiController extends Controller
                 $gender = "";
             }
 
-            $payload = [
+            $payload[] = [
                 'kewarganegaraan'       =>  'WNI',
                 'kategori'              =>  $rdtEvent->event_name . ' ' . Carbon::parse($row->attended_at)->format('dmY'),
                 'kriteria'              =>  $personStatusValue[$row->person_status],
@@ -128,19 +134,15 @@ class SinkronisasiController extends Controller
                 'tanggal_kunjungan'     =>  Carbon::parse($row->attended_at)->format('Y-m-d'),
                 'rs_kunjungan'          =>  $row->attend_location
             ];
-
-            $response = Http::post($labkesUrl, $payload);
-
-            $result = json_decode($response->getBody()->getContents());
-            if (isset($result->status)) {
-                $codeSamplesuccessSyn[] = $row->lab_code_sample;
-            }
         }
 
-        DB::table('rdt_invitations')->whereIn('lab_code_sample', array_values($codeSamplesuccessSyn))->update(['synchronization_at' => now()]);
+        $response = Http::post($labkesUrl, ['data'=>$payload]);
+        $result = json_decode($response->getBody()->getContents());
+
+        DB::table('rdt_invitations')->whereIn('lab_code_sample', array_values($result->result->berhasil))->update(['synchronization_at' => now()]);
 
         return response()->json(
-            ['message' => count($codeSamplesuccessSyn) . ' Data Berhasil Dikirim' ]
+            ['message' => count($result->result->berhasil) . ' Data Berhasil Dikirim' ]
         );
     }
 }
