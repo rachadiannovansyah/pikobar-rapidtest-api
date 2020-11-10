@@ -19,7 +19,7 @@ class SinkronisasiController extends Controller
 
     public function __invoke(RdtEvent $rdtEvent)
     {
-        $labkesUrl = env('LABKES_URL').'/bulk';
+        $labkesUrl = env('LABKES_URL') . '/bulk';
         
         $data = DB::table('rdt_invitations')
         ->select(
@@ -67,7 +67,7 @@ class SinkronisasiController extends Controller
         ->whereNull('rdt_invitations.synchronization_at')
         ->get();
 
-        if (count($data)<1) {
+        if (count($data) < 1) {
             return response()->json(
                 ['message' => 'Belum Ada Data Terbaru' ]
             );
@@ -136,7 +136,7 @@ class SinkronisasiController extends Controller
             ];
         }
 
-        $response = Http::post($labkesUrl, ['data'=>$payload]);
+        $response = Http::post($labkesUrl, ['data' => $payload]);
         $result = json_decode($response->getBody()->getContents());
 
         DB::table('rdt_invitations')->whereIn('lab_code_sample', array_values($result->result->berhasil))->update(['synchronization_at' => now()]);
