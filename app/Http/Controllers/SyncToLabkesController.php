@@ -70,7 +70,7 @@ class SyncToLabkesController extends Controller
                 'suhu'                  =>  null,
                 'nomor_sampel'          =>  $row->lab_code_sample,
                 'keterangan'            =>  null,
-                'hasil_rdt'             =>  $row->lab_result_type,
+                'hasil_rdt'             =>  null,
                 'usia_tahun'            =>  $this->countAge($row->birth_date,'y'),
                 'usia_bulan'            =>  $this->countAge($row->birth_date,'m'),
                 'kunjungan'             =>  1,
