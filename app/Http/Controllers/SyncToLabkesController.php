@@ -34,7 +34,7 @@ class SyncToLabkesController extends Controller
             'PDP' => 'tanpa kriteria'
         ];
 
-        $payload = [];
+        $payloads = [];
 
         foreach ($data as $row) {
 
