@@ -28,7 +28,8 @@ if (!empty($proxyScheme)) {
 }
 
 Route::get('/', 'HomeController');
-Route::post('sinkron/{rdtEvent}', 'SinkronisasiController');
+
+Route::post('synctolabkes/{rdtEvent}', 'SyncToLabkesController')->middleware('api');;
 // RDT Registration
 Route::post('rdt/register', 'Rdt\RdtRegisterController');
 Route::get('rdt/check-event', 'Rdt\RdtCheckEventController');
