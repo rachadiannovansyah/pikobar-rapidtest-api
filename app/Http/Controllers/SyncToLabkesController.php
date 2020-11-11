@@ -14,7 +14,7 @@ class SyncToLabkesController extends Controller
 {
     public function __invoke(RdtEvent $rdtEvent)
     {
-        $labkesUrl = config('app.labkes_url'). 'api/v1/tes-masif/bulk';
+        $labkesUrl = config('app.labkes_url') . 'api/v1/tes-masif/bulk';
         $this->checkServerIsActive($labkesUrl);
         $data = $this->getDataEventInvitation($rdtEvent);
 
@@ -32,12 +32,11 @@ class SyncToLabkesController extends Controller
             'ODP' => 'tanpa kriteria',
             'OTG' => 'tanpa kriteria',
             'PDP' => 'tanpa kriteria'
-        ];
+                                ];
 
         $payloads = [];
 
         foreach ($data as $row) {
-
             if ($row->gender == 'F') {
                 $gender = 'P';
             } elseif ($row->gender == 'M') {
@@ -71,8 +70,8 @@ class SyncToLabkesController extends Controller
                 'nomor_sampel'          =>  $row->lab_code_sample,
                 'keterangan'            =>  null,
                 'hasil_rdt'             =>  null,
-                'usia_tahun'            =>  $this->countAge($row->birth_date,'y'),
-                'usia_bulan'            =>  $this->countAge($row->birth_date,'m'),
+                'usia_tahun'            =>  $this->countAge($row->birth_date, 'y'),
+                'usia_bulan'            =>  $this->countAge($row->birth_date, 'm'),
                 'kunjungan'             =>  1,
                 'fasyankes_id'          =>  $row->fasyankes_id,
                 'tanggal_kunjungan'     =>  $attendedAt->toDateTimeString(),
@@ -83,7 +82,7 @@ class SyncToLabkesController extends Controller
         $response   = Http::post($labkesUrl, ['data' => $payloads]);
         $result     = json_decode($response->getBody()->getContents());
 
-        if (count($result->result->berhasil)>0) {
+        if (count($result->result->berhasil) > 0) {
             DB::table('rdt_invitations')->whereIn('lab_code_sample', array_values($result->result->berhasil))->update(['synchronization_at' => now()]);
         }
 
@@ -93,22 +92,25 @@ class SyncToLabkesController extends Controller
     }
 
 
-    public function checkServerIsActive($url){
+    public function checkServerIsActive($url)
+    {
         $ch = curl_init($url);
         curl_setopt($ch, CURLOPT_POST, 1);
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
-        if (curl_exec($ch)==null) {
+        if (curl_exec($ch) == null) {
             return response()->json(['message' => __('response.sync_failed') ], 404);
         }
     }
 
-    function countAge($birthDate,$format){
+    public function countAge($birthDate, $format)
+    {
         $age = Carbon::parse($birthDate)->diff(Carbon::now());
-        return $age->format('%'.$format);
+        return $age->format('%' . $format);
     }
 
-    public function getDataEventInvitation($rdtEvent){
-        return DB::table('rdt_invitations')
+    public function getDataEventInvitation($rdtEvent)
+    {
+        $result =  DB::table('rdt_invitations')
         ->select(
             'rdt_invitations.lab_code_sample',
             'rdt_invitations.attended_at',
@@ -148,5 +150,6 @@ class SyncToLabkesController extends Controller
         ->whereNotNull('rdt_invitations.attended_at')
         ->whereNull('rdt_invitations.synchronization_at')
         ->get();
+        return $result;
     }
 }
