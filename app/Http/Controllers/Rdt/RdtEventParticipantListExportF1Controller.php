@@ -131,7 +131,6 @@ class RdtEventParticipantListExportF1Controller extends Controller
             } else {
                 $gender = "";
             }
-            
             $row =  [
                         $row->number,
                         $row->lab_code_sample ,
@@ -166,7 +165,6 @@ class RdtEventParticipantListExportF1Controller extends Controller
                         Carbon::parse($row->attended_at)->format('d-m-Y H:i:s'),
                          ''
                     ];
-        
             $rowFromValues = WriterEntityFactory::createRowFromArray($row);
             $writer->addRow($rowFromValues);
         }

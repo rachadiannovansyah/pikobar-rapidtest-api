@@ -58,7 +58,6 @@ class RdtEventParticipantListController extends Controller
         if (in_array($perPage, $perPageAllowed)) {
             return $perPage;
         }
-        
         return 15;
     }
 }
