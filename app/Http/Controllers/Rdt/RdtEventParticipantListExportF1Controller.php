@@ -38,12 +38,13 @@ class RdtEventParticipantListExportF1Controller extends Controller
             'USIA TAHUN',
             'USIA BULAN',
             'JENIS KELAMIN',
-            'ID KOTA',
+            'PROVINSI_ID',
+            'KOTA_ID',
             'KOTA',
             'NO HP',
-            'ID KECAMATAN',
+            'KECAMATAN_ID',
             'KECAMATAN',
-            'ID KELURAHAN/ DESA',
+            'KELURAHAN_ID',
             'KELURAHAN/ DESA',
             'ALAMAT',
             'RT',
@@ -86,6 +87,8 @@ class RdtEventParticipantListExportF1Controller extends Controller
                     'rdt_applicants.have_interacted',
                     'rdt_applicants.congenital_disease',
                     'rdt_events.host_name',
+                    'rdt_events.host_type',
+                    'fasyankes.id as fasyankes_id',
                     'rdt_events.start_at',
                     'rdt_events.end_at',
                     'rdt_events.event_location',
@@ -98,21 +101,24 @@ class RdtEventParticipantListExportF1Controller extends Controller
                 ->leftJoin('areas as city', 'city.code_kemendagri', 'rdt_applicants.city_code')
                 ->leftJoin('areas as district', 'district.code_kemendagri', 'rdt_applicants.district_code')
                 ->leftJoin('areas as village', 'village.code_kemendagri', 'rdt_applicants.village_code')
+                ->leftJoin('fasyankes', 'fasyankes.name', '=', 'rdt_events.host_name')
                 ->where('rdt_invitations.rdt_event_id', $rdtEvent->id)
                 ->whereNotNull('rdt_invitations.lab_code_sample')
+                ->whereNotNull('rdt_invitations.attended_at')
                 ->get();
 
+
         $personStatusValue = [
-            'CONFIRMED' => 'Terkonfirmasi',
-            'SUSPECT' => 'Kasus Suspek',
-            'PROBABLE' => 'Kasus Probable',
-            'CLOSE_CONTACT' => 'Kontak Erat',
-            'NOT_ALL' => 'Bukan Semuanya',
-            'UNKNOWN' => 'Tidak Tahu',
-            'ODP' => 'Orang Dalam pengawasan',
-            'OTG' => 'Orang Tanpa Gejala',
-            'PDP' => 'Pasien Dalam Pengawasan'
-        ];
+                    'CONFIRMED' => 'konfirmasi',
+                    'SUSPECT' => 'suspek',
+                    'PROBABLE' => 'probable',
+                    'CLOSE_CONTACT' => 'kontak erat',
+                    'NOT_ALL' => 'tanpa kriteria',
+                    'UNKNOWN' => 'tanpa kriteria',
+                    'ODP' => 'tanpa kriteria',
+                    'OTG' => 'tanpa kriteria',
+                    'PDP' => 'tanpa kriteria'
+                ];
 
         foreach ($data as $row) {
             if ($row->birth_date) {
@@ -131,6 +137,11 @@ class RdtEventParticipantListExportF1Controller extends Controller
             } else {
                 $gender = "";
             }
+
+
+            $attendedAt = Carbon::createFromFormat('Y-m-d H:i:s', $row->attended_at);
+            $attendedAt->setTimezone(config('app.timezone_frontend'));
+            
             $row =  [
                         $row->number,
                         $row->lab_code_sample ,
@@ -138,15 +149,16 @@ class RdtEventParticipantListExportF1Controller extends Controller
                         $row->host_name,
                         '',
                         '',
-                        '',
+                        $rdtEvent->event_name . ' ' . Carbon::parse($row->attended_at)->format('dmY'),
                         $personStatusValue[$row->person_status] ?? null,
                         $row->name,
                         $row->nik,
                         $row->birth_place,
-                        Carbon::parse($row->birth_date)->format('d-m-Y'),
+                        Carbon::parse($row->birth_date)->format('Y-m-d'),
                         $ageYear,
                         $ageMonth,
                         $gender,
+                        '32',
                         $row->city_code,
                         $row->city,
                         $row->phone_number,
@@ -160,9 +172,9 @@ class RdtEventParticipantListExportF1Controller extends Controller
                         1,
                         '',
                         '',
-                        '',
-                        '',
-                        Carbon::parse($row->attended_at)->format('d-m-Y H:i:s'),
+                        $row->host_type,
+                        $row->fasyankes_id,
+                        $attendedAt->toDateTimeString(),
                          ''
                     ];
             $rowFromValues = WriterEntityFactory::createRowFromArray($row);
