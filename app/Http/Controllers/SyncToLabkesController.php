@@ -80,7 +80,7 @@ class SyncToLabkesController extends Controller
             ];
         }
 
-        $request            = Http::post($labkesUrl, ['data' => $payloads,'api_key'=>$labkesApiKey]);
+        $request            = Http::post($labkesUrl, ['data' => $payloads,'api_key' => $labkesApiKey]);
         $responseStatusCode = $request->getStatusCode();
 
         if ($responseStatusCode == '403') {
