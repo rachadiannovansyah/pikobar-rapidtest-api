@@ -15,22 +15,15 @@ class RdtCheckinBulkController extends Controller
         $failedSync = [];
         foreach ($data as $row) {
             $rdtInvitation = RdtInvitation::where('registration_code', $row['registration_code'])->first();
-            if ($rdtInvitation != null) {
-                if ($rdtInvitation->attended_at == null) {
-                    $rdtInvitation->attended_at = $row['attended_at'];
-                    $rdtInvitation->save();
+            if ($rdtInvitation!=null && $rdtInvitation->attended_at!=null) {
+                $rdtInvitation->attended_at = $row['attended_at'];
+                $rdtInvitation->save();
 
-                    $successSync[] = $row['registration_code'];
-                } else {
-                    $failedSync[] = [
-                        'registration_code' =>  $row['registration_code'],
-                        'message'           =>  'Sudah Melakukan Checkin'
-                    ];
-                }
+                $successSync[] = $row['registration_code'];
             } else {
                 $failedSync[] = [
                     'registration_code' =>  $row['registration_code'],
-                    'message'           =>  'Registration Code Tidak Ditemukan'
+                    'message'           =>  'Sudah Melakukan Checkin'
                 ];
             }
         }
