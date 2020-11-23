@@ -14,8 +14,9 @@ class SyncToLabkesController extends Controller
 {
     public function __invoke(RdtEvent $rdtEvent)
     {
-        $labkesUrl = config('app.labkes_url') . 'api/v1/tes-masif/bulk';
-        $this->checkServerIsActive($labkesUrl);
+        $labkesUrl      = config('app.labkes_url') . 'api/v1/tes-masif/bulk';
+        $labkesApiKey   = config('app.labkes_api_key');
+
         $data = $this->getDataEventInvitation($rdtEvent);
 
         if (count($data) < 1) {
@@ -79,27 +80,22 @@ class SyncToLabkesController extends Controller
             ];
         }
 
-        $response   = Http::post($labkesUrl, ['data' => $payloads]);
-        $result     = json_decode($response->getBody()->getContents());
+        $request            = Http::post($labkesUrl, ['data' => $payloads,'api_key'=>$labkesApiKey]);
+        $responseStatusCode = $request->getStatusCode();
 
-        if (count($result->result->berhasil) > 0) {
-            DB::table('rdt_invitations')->whereIn('lab_code_sample', array_values($result->result->berhasil))->update(['synchronization_at' => now()]);
+        if ($responseStatusCode == '403') {
+            $response['message'] = "unauthorized";
+        } elseif ($responseStatusCode == '200') {
+            $result     = json_decode($request->getBody()->getContents());
+            if (count($result->result->berhasil) > 0) {
+                DB::table('rdt_invitations')->whereIn('lab_code_sample', array_values($result->result->berhasil))->update(['synchronization_at' => now()]);
+            }
+            $response['message'] = count($result->result->berhasil) . __('response.sync_success');
+        } else {
+            $response['message'] = __('response.sync_failed');
         }
 
-        return response()->json(
-            ['message' => count($result->result->berhasil) . __('response.sync_success') ]
-        );
-    }
-
-
-    public function checkServerIsActive($url)
-    {
-        $ch = curl_init($url);
-        curl_setopt($ch, CURLOPT_POST, 1);
-        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
-        if (curl_exec($ch) == null) {
-            return response()->json(['message' => __('response.sync_failed') ], 404);
-        }
+        return response()->json($response);
     }
 
     public function countAge($birthDate, $format)
