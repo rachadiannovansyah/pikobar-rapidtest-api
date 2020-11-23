@@ -15,7 +15,7 @@ class RdtCheckinBulkController extends Controller
         $failedSync = [];
         foreach ($data as $row) {
             $rdtInvitation = RdtInvitation::where('registration_code', $row['registration_code'])->first();
-            if ($rdtInvitation! == null && $rdtInvitation->attended_at! == null) {
+            if ($rdtInvitation != null || $rdtInvitation->attended_at != null) {
                 $rdtInvitation->attended_at = $row['attended_at'];
                 $rdtInvitation->save();
 
