@@ -9,6 +9,7 @@ use Carbon\Carbon;
 use App\Enums\PersonCaseStatusEnum;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
+use Exception;
 
 class SyncToLabkesController extends Controller
 {
@@ -80,18 +81,19 @@ class SyncToLabkesController extends Controller
             ];
         }
 
-        $request            = Http::post($labkesUrl, ['data' => $payloads,'api_key' => $labkesApiKey]);
-        $responseStatusCode = $request->getStatusCode();
+        try {
+            $request            = Http::post($labkesUrl, ['data' => $payloads,'api_key' => $labkesApiKey]);
 
-        if ($responseStatusCode == '403') {
-            $response['message'] = "unauthorized";
-        } elseif ($responseStatusCode == '200') {
-            $result     = json_decode($request->getBody()->getContents());
-            if (count($result->result->berhasil) > 0) {
-                DB::table('rdt_invitations')->whereIn('lab_code_sample', array_values($result->result->berhasil))->update(['synchronization_at' => now()]);
+            if ($request->getStatusCode()==403) {
+                $response['message'] = "unauthorized";
+            } else {
+                $result     = json_decode($request->getBody()->getContents());
+                if (count($result->result->berhasil) > 0) {
+                    DB::table('rdt_invitations')->whereIn('lab_code_sample', array_values($result->result->berhasil))->update(['synchronization_at' => now()]);
+                }
+                $response['message'] = count($result->result->berhasil) . __('response.sync_success');
             }
-            $response['message'] = count($result->result->berhasil) . __('response.sync_success');
-        } else {
+        } catch (Exception $e) {
             $response['message'] = __('response.sync_failed');
         }
 
