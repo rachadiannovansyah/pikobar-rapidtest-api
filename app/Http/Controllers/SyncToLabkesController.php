@@ -84,7 +84,7 @@ class SyncToLabkesController extends Controller
         try {
             $request            = Http::post($labkesUrl, ['data' => $payloads,'api_key' => $labkesApiKey]);
 
-            if ($request->getStatusCode()==403) {
+            if ($request->getStatusCode() == 403) {
                 $response['message'] = "unauthorized";
             } else {
                 $result     = json_decode($request->getBody()->getContents());
