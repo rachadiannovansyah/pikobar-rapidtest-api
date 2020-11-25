@@ -63,6 +63,7 @@ Route::group(['middleware' => 'auth:api'], function () {
         ->middleware('can:view,rdtEvent');
     Route::get('rdt/invitation/{id}', 'Rdt\RdtEventParticipantDetailController');
     Route::put('rdt/invitation/{id}', 'Rdt\RdtInvitationLabResultUpdateController');
+    Route::put('rdt/invitation/{id}/reset', 'Rdt\RdtInvitationResetController');
 
     Route::post('rdt/events/{rdtEvent}/participants', 'Rdt\RdtEventParticipantAddController');
     Route::post('rdt/events/{rdtEvent}/participants-remove', 'Rdt\RdtEventParticipantRemoveController');
