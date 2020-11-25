@@ -20,12 +20,15 @@ class RdtApplicantController extends Controller
      */
     public function index(Request $request)
     {
-        $perPage           = $request->input('per_page', 15);
-        $sortBy            = $request->input('sort_by', 'created_at');
-        $sortOrder         = $request->input('sort_order', 'desc');
-        $status            = $request->input('status', 'new');
-        $search            = $request->input('search');
-        $sessionId         = $request->input('session_id');
+        $perPage                = $request->input('per_page', 15);
+        $sortBy                 = $request->input('sort_by', 'created_at');
+        $sortOrder              = $request->input('sort_order', 'desc');
+        $status                 = $request->input('status', 'new');
+        $search                 = $request->input('search');
+        $sessionId              = $request->input('session_id');
+        $registrationDateStart  = $request->input('registration_date_start');
+        $registrationDateEnd    = $request->input('registration_date_end');
+        $personStatus           = $request->input('person_status');
 
         $perPage = $this->getPaginationSize($perPage);
 
@@ -56,6 +59,14 @@ class RdtApplicantController extends Controller
                     ->orWhere('nik', $search)
                     ->orWhere('phone_number', 'like', '%' . $search . '%');
             });
+        }
+
+        if ($registrationDateStart) {
+            $records->whereBetween('created_at', [$registrationDateStart , $registrationDateEnd]);
+        }
+
+        if ($personStatus) {
+            $records->whereIn('person_status', $personStatus);
         }
 
         if ($request->has('city_code')) {
