@@ -39,6 +39,7 @@ Route::post('rdt/survey', 'Rdt\RdtSurveyStoreController');
 
 // Checkin App
 Route::post('rdt/checkin', 'Rdt\RdtCheckinController');
+Route::post('rdt/bulk-checkin', 'Rdt\RdtCheckinBulkController');
 Route::post('rdt/event-check', 'Rdt\RdtEventCheckController');
 Route::post('checkin/applicant-profile', 'Checkin\ApplicantCheckProfileController');
 Route::post('checkin/event/participants', 'Checkin\RdtEventParticipantsController');
