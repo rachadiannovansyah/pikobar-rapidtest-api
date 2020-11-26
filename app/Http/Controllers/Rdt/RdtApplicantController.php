@@ -66,7 +66,7 @@ class RdtApplicantController extends Controller
         }
 
         if ($personStatus) {
-            $records->whereIn('person_status', $personStatus);
+            $records->where('person_status', $personStatus);
         }
 
         if ($request->has('city_code')) {
