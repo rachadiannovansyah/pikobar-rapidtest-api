@@ -50,8 +50,7 @@ class RdtCheckinController extends Controller
 
         if ($invitation === null) {
             $applicant = RdtApplicant::where('registration_code', $registrationCode)->firstOrFail();
-
-            $this->responseApplicantEventCheckinNotInvited($eventCode, $applicant, $invitation);
+            return $this->responseApplicantEventCheckinNotInvited($eventCode, $applicant, $invitation);
         }
 
         if ($invitation->attended_at !== null) {
