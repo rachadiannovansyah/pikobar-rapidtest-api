@@ -37,7 +37,7 @@ class RdtEventNotifyTestResultController extends Controller
     {
         $invitation->applicant->notify(new TestResult());
         $invitation->notified_result_at = Carbon::now();
-        $invitation->notified_result_by = Auth::user()->name;
+        $invitation->notified_result_by = Auth::user()->id;
         $invitation->save();
 
         Log::info('NOTIFY_TEST_RESULT', [

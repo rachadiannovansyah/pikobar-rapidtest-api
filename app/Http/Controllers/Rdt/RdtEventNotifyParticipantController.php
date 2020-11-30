@@ -45,7 +45,7 @@ class RdtEventNotifyParticipantController extends Controller
             $applicant->notify(new RdtEventInvitation($rdtEvent));
 
             $invitation->notified_at = Carbon::now();
-            $invitation->notified_by = Auth::user()->name;
+            $invitation->notified_by = Auth::user()->id;
             $invitation->save();
         }
 
