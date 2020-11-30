@@ -14,8 +14,9 @@ class AddSenderNotifToTableInvitation extends Migration
     public function up()
     {
         Schema::table('rdt_invitations', function (Blueprint $table) {
-            $table->string('notified_result_by', 50)->after('notified_result_at')->nullable();
-            $table->string('notified_by', 50)->after('notified_at')->nullable();
+            $table->string('notified_result_by', 36)->after('notified_result_at')->nullable();
+            $table->string('notified_by', 36)->after('notified_at')->nullable();
+            $table->index(['notified_result_by' , 'notified_by']);
         });
     }
 
@@ -29,6 +30,7 @@ class AddSenderNotifToTableInvitation extends Migration
         Schema::table('rdt_invitations', function (Blueprint $table) {
             $table->dropColumn('notified_result_by');
             $table->dropColumn('notified_by');
+            $table->dropIndex(['notified_result_by','notified_by']);
         });
     }
 }
