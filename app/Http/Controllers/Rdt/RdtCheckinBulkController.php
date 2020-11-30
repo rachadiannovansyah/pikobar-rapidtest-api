@@ -15,7 +15,8 @@ class RdtCheckinBulkController extends Controller
         $failedSync     = [];
 
         foreach ($data as $row) {
-            $rdtInvitation = RdtInvitation::select('rdt_invitations.id', 'rdt_invitations.attended_at')->join('rdt_events', 'rdt_events.id', 'rdt_invitations.rdt_event_id')
+            $rdtInvitation = RdtInvitation::select('rdt_invitations.id', 'rdt_invitations.attended_at')
+            ->join('rdt_events', 'rdt_events.id', 'rdt_invitations.rdt_event_id')
             ->where('rdt_invitations.registration_code', $row['registration_code'])
             ->where('rdt_events.event_code', $row['event_code'])
             ->first();
