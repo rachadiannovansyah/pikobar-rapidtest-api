@@ -9,6 +9,7 @@ use App\Http\Requests\Rdt\RdtApplicantStoreRequest;
 use App\Http\Requests\Rdt\RdtApplicantUpdateRequest;
 use App\Http\Resources\RdtApplicantResource;
 use Illuminate\Http\Request;
+use DB;
 
 class RdtApplicantController extends Controller
 {
@@ -62,7 +63,7 @@ class RdtApplicantController extends Controller
         }
 
         if ($registrationDateStart) {
-            $records->whereBetween('created_at', [$registrationDateStart , $registrationDateEnd]);
+            $records->whereBetween(DB::raw('CAST(created_at AS DATE)'), [$registrationDateStart , $registrationDateEnd]);
         }
 
         if ($personStatus) {
