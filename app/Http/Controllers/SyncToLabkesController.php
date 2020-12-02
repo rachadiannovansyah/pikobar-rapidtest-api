@@ -90,7 +90,9 @@ class SyncToLabkesController extends Controller
             } else {
                 $result     = json_decode($request->getBody()->getContents());
                 if (count($result->result->berhasil) > 0) {
-                    DB::table('rdt_invitations')->whereIn('lab_code_sample', array_values($result->result->berhasil))->update(['synchronization_at' => now()]);
+                    DB::table('rdt_invitations')
+                    ->whereIn('lab_code_sample', array_values($result->result->berhasil))
+                    ->update(['synchronization_at' => now()]);
                 }
                 $response['message'] = count($result->result->berhasil) . __('response.sync_success');
             }
