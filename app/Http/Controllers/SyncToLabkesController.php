@@ -15,7 +15,7 @@ class SyncToLabkesController extends Controller
 {
     public function __invoke(RdtEvent $rdtEvent)
     {
-        $labkesUrl      = config('app.labkes_url') . 'api/v1/tes-masif/bulk';
+        $labkesUrl      = config('app.labkes_url') . 'backend/api/v1/tes-masif/bulk';
         $labkesApiKey   = config('app.labkes_api_key');
 
         $data = $this->getDataEventInvitation($rdtEvent);
