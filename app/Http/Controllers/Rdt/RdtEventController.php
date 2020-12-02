@@ -11,7 +11,6 @@ use App\Http\Requests\Rdt\RdtEventUpdateRequest;
 use App\Http\Resources\RdtEventResource;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Auth;
 
 class RdtEventController extends Controller
 {
@@ -75,9 +74,9 @@ class RdtEventController extends Controller
      */
     public function store(RdtEventStoreRequest $request)
     {
-        $payloads               = $request->all();
-        $payloads['created_by'] = Auth::user()->id;
-        $rdtEvent               = RdtEvent::create($payloads);
+        $rdtEvent = new RdtEvent();
+        $rdtEvent->fill($request->all());
+        $rdtEvent->save();
 
         $inputSchedules = $request->input('schedules');
 
@@ -119,9 +118,8 @@ class RdtEventController extends Controller
      */
     public function update(RdtEventUpdateRequest $request, RdtEvent $rdtEvent)
     {
-        $payloads               = $request->all();
-        $payloads['updated_by'] = Auth::user()->id;
-        $rdtEvent->update($payloads);
+        $rdtEvent->fill($request->all());
+        $rdtEvent->save();
 
         if ($request->has('schedules')) {
             foreach ($request->input('schedules') as $schedule) {
