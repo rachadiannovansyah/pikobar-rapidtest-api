@@ -10,6 +10,8 @@ use App\Http\Requests\Rdt\RdtRegisterRequest;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\URL;
 use UrlSigner;
+use App\Entities\RdtEvent;
+use Carbon\Carbon;
 
 class RdtRegisterController extends Controller
 {
@@ -29,6 +31,8 @@ class RdtRegisterController extends Controller
         $applicant->fill($request->all());
         $applicant->save();
 
+        $event = RdtEvent::where('event_code', $request->pikobar_session_id)->firstOrFail();
+
         event(new ApplicantRegistered($applicant));
 
         $url = URL::route(
@@ -36,8 +40,15 @@ class RdtRegisterController extends Controller
             ['registration_code' => $applicant->registration_code]
         );
 
+        Carbon::setLocale(LC_TIME, app()->getLocale());
+        
         return response()->json([
+            'name'              => $applicant->name,
             'registration_code' => $applicant->registration_code,
+            'event_start_at'    => Carbon::parse($event->start_at)->formatLocalized('%A, %d %B %Y'),
+            'event_end_at'      => Carbon::parse($event->end_at)->formatLocalized('%A, %d %B %Y'),
+            'event_location'    => $event->event_location,
+            'qr_code'           => $applicant->QrCodeUrl,
             'download_url'      => UrlSigner::sign($url),
         ]);
     }
