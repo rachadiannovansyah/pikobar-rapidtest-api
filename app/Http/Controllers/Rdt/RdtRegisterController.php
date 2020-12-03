@@ -44,6 +44,7 @@ class RdtRegisterController extends Controller
         
         return response()->json([
             'name'              => $applicant->name,
+            'status'            => $applicant->status,
             'registration_code' => $applicant->registration_code,
             'event_start_at'    => Carbon::parse($event->start_at)->formatLocalized('%A, %d %B %Y'),
             'event_end_at'      => Carbon::parse($event->end_at)->formatLocalized('%A, %d %B %Y'),
