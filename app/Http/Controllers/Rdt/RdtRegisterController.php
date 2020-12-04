@@ -39,14 +39,12 @@ class RdtRegisterController extends Controller
             'registration.download',
             ['registration_code' => $applicant->registration_code]
         );
-
-        Carbon::setLocale(LC_TIME, app()->getLocale());
         return response()->json([
             'name'              => $applicant->name,
             'status'            => $applicant->status,
             'registration_code' => $applicant->registration_code,
-            'event_start_at'    => Carbon::parse($event->start_at)->formatLocalized('%A, %d %B %Y'),
-            'event_end_at'      => Carbon::parse($event->end_at)->formatLocalized('%A, %d %B %Y'),
+            'event_start_at'    => Carbon::parse($event->start_at)->format('d-m-Y'),
+            'event_end_at'      => Carbon::parse($event->end_at)->format('d-m-Y'),
             'event_location'    => $event->event_location,
             'qr_code'           => $applicant->QrCodeUrl,
             'download_url'      => UrlSigner::sign($url),
