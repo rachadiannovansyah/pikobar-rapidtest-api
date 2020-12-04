@@ -85,14 +85,17 @@ class SyncToLabkesController extends Controller
         try {
             $request            = Http::post($labkesUrl, ['data' => $payloads,'api_key' => $labkesApiKey]);
 
-            if ($request->getStatusCode() == 403) {
-                $response['message'] = "unauthorized";
-            } else {
+            if ($request->getStatusCode() == 200) {
                 $result     = json_decode($request->getBody()->getContents());
-                DB::table('rdt_invitations')
+                
+                if (count($result->result->berhasil) > 0) {
+                    DB::table('rdt_invitations')
                     ->whereIn('lab_code_sample', array_values($result->result->berhasil))
                     ->update(['synchronization_at' => now()]);
+                }
                 $response['message'] = count($result->result->berhasil) . __('response.sync_success');
+            } else {
+                $response['message'] = 'Error With Status Code '.$request->getStatusCode();
             }
         } catch (Exception $e) {
             $response['message'] = __('response.sync_failed');
