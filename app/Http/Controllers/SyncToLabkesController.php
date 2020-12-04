@@ -87,13 +87,7 @@ class SyncToLabkesController extends Controller
 
             if ($request->getStatusCode() == 200) {
                 $result     = json_decode($request->getBody()->getContents());
-                
-                if (count($result->result->berhasil) > 0) {
-                    DB::table('rdt_invitations')
-                    ->whereIn('lab_code_sample', array_values($result->result->berhasil))
-                    ->update(['synchronization_at' => now()]);
-                }
-                $response['message'] = count($result->result->berhasil) . __('response.sync_success');
+                $this->addFlagHasSendToLabkes($result);
             } else {
                 $response['message'] = 'Error With Status Code '.$request->getStatusCode();
             }
@@ -102,6 +96,15 @@ class SyncToLabkesController extends Controller
         }
 
         return response()->json($response);
+    }
+
+    public function addFlagHasSendToLabkes($result){
+        if (count($result->result->berhasil) > 0) {
+            DB::table('rdt_invitations')
+            ->whereIn('lab_code_sample', array_values($result->result->berhasil))
+            ->update(['synchronization_at' => now()]);
+        }
+        return $response['message'] = count($result->result->berhasil) . __('response.sync_success');
     }
 
     public function countAge($birthDate, $format)
