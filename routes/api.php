@@ -41,6 +41,7 @@ Route::post('rdt/survey', 'Rdt\RdtSurveyStoreController');
 
 // Checkin App
 Route::post('rdt/checkin', 'Rdt\RdtCheckinController');
+Route::post('rdt/bulk-checkin', 'Rdt\RdtCheckinBulkController');
 Route::post('rdt/event-check', 'Rdt\RdtEventCheckController');
 Route::post('checkin/applicant-profile', 'Checkin\ApplicantCheckProfileController');
 Route::post('checkin/event/participants', 'Checkin\RdtEventParticipantsController');
@@ -65,6 +66,7 @@ Route::group(['middleware' => 'auth:api'], function () {
         ->middleware('can:view,rdtEvent');
     Route::get('rdt/invitation/{id}', 'Rdt\RdtEventParticipantDetailController');
     Route::put('rdt/invitation/{id}', 'Rdt\RdtInvitationLabResultUpdateController');
+    Route::put('rdt/invitation/{id}/reset', 'Rdt\RdtInvitationResetController');
 
     Route::post('rdt/events/{rdtEvent}/participants', 'Rdt\RdtEventParticipantAddController');
     Route::post('rdt/events/{rdtEvent}/participants-remove', 'Rdt\RdtEventParticipantRemoveController');
