@@ -123,7 +123,6 @@ class RdtApplicantController extends Controller
         $rdtApplicant->load(['invitations' => function ($query) {
             $query->has('event');
         }, 'invitations.event', 'city', 'district', 'village']);
-        
         return new RdtApplicantResource($rdtApplicant);
     }
 
@@ -162,7 +161,6 @@ class RdtApplicantController extends Controller
         if (in_array($perPage, $perPageAllowed)) {
             return $perPage;
         }
-        
         return 15;
     }
 }

@@ -41,7 +41,6 @@ class RdtRegisterController extends Controller
         );
 
         Carbon::setLocale(LC_TIME, app()->getLocale());
-        
         return response()->json([
             'name'              => $applicant->name,
             'status'            => $applicant->status,

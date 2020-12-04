@@ -140,7 +140,6 @@ class RdtEventParticipantListExportF1Controller extends Controller
 
             $attendedAt = Carbon::createFromFormat('Y-m-d H:i:s', $row->attended_at);
             $attendedAt->setTimezone(config('app.timezone_frontend'));
-            
             $row =  [
                         $row->number,
                         $row->lab_code_sample ,
@@ -176,8 +175,6 @@ class RdtEventParticipantListExportF1Controller extends Controller
                         $attendedAt->toDateTimeString(),
                          ''
                     ];
-                    
-        
             $rowFromValues = WriterEntityFactory::createRowFromArray($row);
             $writer->addRow($rowFromValues);
         }
