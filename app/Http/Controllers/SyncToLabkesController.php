@@ -89,7 +89,7 @@ class SyncToLabkesController extends Controller
                 $result     = json_decode($request->getBody()->getContents());
                 $this->addFlagHasSendToLabkes($result);
             } else {
-                $response['message'] = 'Error With Status Code '.$request->getStatusCode();
+                $response['message'] = 'Error With Status Code ' . $request->getStatusCode();
             }
         } catch (Exception $e) {
             $response['message'] = __('response.sync_failed');
@@ -98,7 +98,8 @@ class SyncToLabkesController extends Controller
         return response()->json($response);
     }
 
-    public function addFlagHasSendToLabkes($result){
+    public function addFlagHasSendToLabkes($result)
+    {
         if (count($result->result->berhasil) > 0) {
             DB::table('rdt_invitations')
             ->whereIn('lab_code_sample', array_values($result->result->berhasil))
