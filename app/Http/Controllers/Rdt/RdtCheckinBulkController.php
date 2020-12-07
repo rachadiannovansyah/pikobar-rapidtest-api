@@ -5,10 +5,11 @@ namespace App\Http\Controllers\Rdt;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Entities\RdtInvitation;
+use App\Http\Requests\Checkin\RdtCheckinBulkRequest;
 
 class RdtCheckinBulkController extends Controller
 {
-    public function __invoke(Request $request)
+    public function __invoke(RdtCheckinBulkRequest $request)
     {
         $data           = $request->data;
         $successSync    = [];
