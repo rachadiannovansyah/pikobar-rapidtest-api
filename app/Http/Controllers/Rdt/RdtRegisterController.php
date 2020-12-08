@@ -44,7 +44,7 @@ class RdtRegisterController extends Controller
             'status'            => $applicant->status,
             'registration_code' => $applicant->registration_code,
             'event_start_at'    => $event->start_at,
-            'event_end_at'      => $event->start_at,
+            'event_end_at'      => $event->end_at,
             'event_location'    => $event->event_location,
             'qr_code'           => $applicant->QrCodeUrl,
             'download_url'      => UrlSigner::sign($url),
