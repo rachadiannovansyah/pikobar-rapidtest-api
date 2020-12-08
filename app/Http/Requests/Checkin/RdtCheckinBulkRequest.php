@@ -24,12 +24,12 @@ class RdtCheckinBulkRequest extends FormRequest
     public function rules()
     {
         return [
-            'data'                      =>  'required',
-            'data.*.event_code'         =>  'required',
-            'data.*.registration_code'  =>  'required',
-            'data.*.lab_code_sample'    =>  'required',
-            'data.*.location'           =>  'required',
-            'data.*.attended_at'        =>  'required',
+            'data'                      => 'required',
+            'data.*.event_code'         => 'required',
+            'data.*.registration_code'  => 'required',
+            'data.*.lab_code_sample'    => 'required',
+            'data.*.location'           => 'required',
+            'data.*.attended_at'        => 'required',
              
         ];
     }
