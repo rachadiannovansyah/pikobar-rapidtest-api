@@ -32,6 +32,7 @@ class RdtRegisterController extends Controller
         $applicant->save();
 
         $event = RdtEvent::where('event_code', $request->pikobar_session_id)->first();
+        $schedule = $event != null ? $event->schedules->first() : null;
 
         event(new ApplicantRegistered($applicant));
 
@@ -43,8 +44,8 @@ class RdtRegisterController extends Controller
             'name'              => $applicant->name,
             'status'            => $applicant->status,
             'registration_code' => $applicant->registration_code,
-            'event_start_at'    => optional($event)->start_at,
-            'event_end_at'      => optional($event)->end_at,
+            'event_start_at'    => optional($schedule)->start_at,
+            'event_end_at'      => optional($schedule)->end_at,
             'event_location'    => optional($event)->event_location,
             'qr_code'           => $applicant->QrCodeUrl,
             'download_url'      => UrlSigner::sign($url),
