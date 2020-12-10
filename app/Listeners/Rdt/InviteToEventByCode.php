@@ -87,6 +87,7 @@ class InviteToEventByCode
 
         $invitation->event()->associate($rdtEvent);
         $invitation->applicant()->associate($applicant);
+        $invitation->rdt_event_schedule_id = 1;
         $invitation->save();
 
         $applicant->status = RdtApplicantStatus::APPROVED();
