@@ -88,14 +88,17 @@ class SyncToLabkesController extends Controller
             if ($request->getStatusCode() == 200) {
                 $result                 = json_decode($request->getBody()->getContents());
                 $response['message']    = $this->addFlagHasSendToLabkes($result);
+                $statusCode             = 200;
             } else {
-                $response['message'] = 'Error With Status Code ' . $request->getStatusCode();
+                $response['message']    = 'Error With Status Code ' . $request->getStatusCode();
+                $statusCode             = $request->getStatusCode();
             }
         } catch (Exception $e) {
-            $response['message'] = __('response.sync_failed');
+            $response['message']    = __('response.sync_failed');
+            $statusCode             = 502;
         }
 
-        return response()->json($response);
+        return response()->json($response, $statusCode);
     }
 
     public function addFlagHasSendToLabkes($result)
