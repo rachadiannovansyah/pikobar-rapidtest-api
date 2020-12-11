@@ -36,15 +36,11 @@ class RdtRegisterController extends Controller
    
         event(new ApplicantRegistered($applicant));
 
-        if ($event) {
-            $applicantEventSchedule = RdtInvitation::select('rdt_event_schedules.*')
+        $applicantEventSchedule = RdtInvitation::select('rdt_event_schedules.*')
                                         ->leftJoin('rdt_event_schedules', 'rdt_invitations.rdt_event_schedule_id', 'rdt_event_schedules.id')
                                         ->where('rdt_invitations.rdt_applicant_id', $applicant->id)
-                                        ->where('rdt_invitations.rdt_event_id', $event->id)
+                                        ->where('rdt_invitations.rdt_event_id', optional($event)->id)
                                         ->first();
-        } else {
-            $applicantEventSchedule = null;
-        }
 
         $url = URL::route(
             'registration.download',
