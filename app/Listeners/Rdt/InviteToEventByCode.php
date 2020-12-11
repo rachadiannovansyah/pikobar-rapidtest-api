@@ -87,7 +87,11 @@ class InviteToEventByCode
 
         $invitation->event()->associate($rdtEvent);
         $invitation->applicant()->associate($applicant);
-        $invitation->rdt_event_schedule_id = 1;
+        if ($applicant->pikobar_session_id != null) {
+            $firstEventSchedule = $rdtEvent->schedules()->first();
+            $invitation->rdt_event_schedule_id = $firstEventSchedule->id;
+        }
+        
         $invitation->save();
 
         $applicant->status = RdtApplicantStatus::APPROVED();
