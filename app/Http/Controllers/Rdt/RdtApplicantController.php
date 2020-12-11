@@ -58,6 +58,7 @@ class RdtApplicantController extends Controller
                 $query->where('name', 'like', '%' . $search . '%')
                     ->orWhere('registration_code', 'like', '%' . $search . '%')
                     ->orWhere('nik', $search)
+                    ->orWhere('pikobar_session_id', $search)
                     ->orWhere('phone_number', 'like', '%' . $search . '%');
             });
         }
