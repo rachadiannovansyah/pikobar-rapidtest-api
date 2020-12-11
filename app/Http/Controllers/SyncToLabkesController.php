@@ -15,7 +15,7 @@ class SyncToLabkesController extends Controller
 {
     public function __invoke(RdtEvent $rdtEvent)
     {
-        $labkesUrl      = config('app.labkes_url') . 'backend/api/v1/tes-masif/bulk';
+        $labkesUrl      = config('app.labkes_url') . 'api/v1/tes-masif/bulk';
         $labkesApiKey   = config('app.labkes_api_key');
 
         $data = $this->getDataEventInvitation($rdtEvent);
@@ -86,8 +86,8 @@ class SyncToLabkesController extends Controller
             $request            = Http::post($labkesUrl, ['data' => $payloads,'api_key' => $labkesApiKey]);
 
             if ($request->getStatusCode() == 200) {
-                $result     = json_decode($request->getBody()->getContents());
-                $this->addFlagHasSendToLabkes($result);
+                $result                 = json_decode($request->getBody()->getContents());
+                $response['message']    = $this->addFlagHasSendToLabkes($result);
             } else {
                 $response['message'] = 'Error With Status Code ' . $request->getStatusCode();
             }
@@ -105,7 +105,7 @@ class SyncToLabkesController extends Controller
             ->whereIn('lab_code_sample', array_values($result->result->berhasil))
             ->update(['synchronization_at' => now()]);
         }
-        return $response['message'] = count($result->result->berhasil) . __('response.sync_success');
+        return count($result->result->berhasil) . __('response.sync_success');
     }
 
     public function countAge($birthDate, $format)
