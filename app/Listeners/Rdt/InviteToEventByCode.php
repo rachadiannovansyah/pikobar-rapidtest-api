@@ -56,9 +56,6 @@ class InviteToEventByCode
         $rdtEvent = RdtEvent::where('event_code', $applicant->pikobar_session_id)->first();
 
         if ($rdtEvent === null) {
-            $applicant->pikobar_session_id = null;
-            $applicant->save();
-
             Log::info('APPLICANT_REGISTER_INVITE_TO_EVENT_NOTFOUND', [
                 'applicant' => $applicant->toArray(),
             ]);
