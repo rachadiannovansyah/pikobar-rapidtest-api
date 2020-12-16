@@ -47,14 +47,16 @@ class RdtRegisterController extends Controller
             ['registration_code' => $applicant->registration_code]
         );
         return response()->json([
-            'name'              => $applicant->name,
-            'status'            => $applicant->status,
-            'registration_code' => $applicant->registration_code,
-            'event_start_at'    => optional($applicantEventSchedule)->start_at,
-            'event_end_at'      => optional($applicantEventSchedule)->end_at,
-            'event_location'    => optional($event)->event_location,
-            'qr_code'           => $applicant->QrCodeUrl,
-            'download_url'      => UrlSigner::sign($url),
+            'name'                      => $applicant->name,
+            'status'                    => $applicant->status,
+            'registration_code'         => $applicant->registration_code,
+            'event_schedule_start_at'   => optional($applicantEventSchedule)->start_at,
+            'event_schedule_end_at'     => optional($applicantEventSchedule)->end_at,
+            'event_start_at'            => optional($event)->start_at,
+            'event_end_at'              => optional($event)->end_at,
+            'event_location'            => optional($event)->event_location,
+            'qr_code'                   => $applicant->QrCodeUrl,
+            'download_url'              => UrlSigner::sign($url),
         ]);
     }
 }
