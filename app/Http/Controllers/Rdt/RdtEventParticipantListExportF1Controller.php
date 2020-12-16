@@ -149,7 +149,7 @@ class RdtEventParticipantListExportF1Controller extends Controller
                         $row->host_name,
                         '',
                         '',
-                        $rdtEvent->workplace_name,
+                        $row->workplace_name,
                         $personStatusValue[$row->person_status] ?? null,
                         $row->name,
                         $row->nik,
