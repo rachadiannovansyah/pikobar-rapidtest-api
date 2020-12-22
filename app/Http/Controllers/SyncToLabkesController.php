@@ -88,7 +88,7 @@ class SyncToLabkesController extends Controller
             if ($request->getStatusCode() === 200) {
                 $result                 = json_decode($request->getBody()->getContents());
                 $response['message']    = $this->addFlagHasSendToLabkes($result);
-                $response['result']     = ['succes' => $result->berhasil , 'failed' => $result->gagal];
+                $response['result']     = ['succes' => $result->result->berhasil , 'failed' => $result->result->gagal];
                 $statusCode             = 200;
             } else {
                 $response['message']    = 'Error With Status Code ' . $request->getStatusCode();
@@ -111,8 +111,6 @@ class SyncToLabkesController extends Controller
             ->whereIn('lab_code_sample', array_values($result->result->berhasil))
             ->update(['synchronization_at' => now()]);
         }
-        $successData        = count($result->result->berhasil);
-        $labkodeSampleList  = $result->result->berhasil;
         return count($result->result->berhasil) . __('response.sync_success');
     }
 
