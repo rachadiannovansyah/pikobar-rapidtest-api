@@ -85,16 +85,19 @@ class SyncToLabkesController extends Controller
         try {
             $request            = Http::post($labkesUrl, ['data' => $payloads,'api_key' => $labkesApiKey]);
 
-            if ($request->getStatusCode() == 200) {
+            if ($request->getStatusCode() === 200) {
                 $result                 = json_decode($request->getBody()->getContents());
                 $response['message']    = $this->addFlagHasSendToLabkes($result);
+                $response['result']     = ['succes' => $result->berhasil , 'failed' => $result->gagal];
                 $statusCode             = 200;
             } else {
                 $response['message']    = 'Error With Status Code ' . $request->getStatusCode();
+                $response['result']     = null;
                 $statusCode             = $request->getStatusCode();
             }
         } catch (Exception $e) {
             $response['message']    = __('response.sync_failed');
+            $response['result']     = null;
             $statusCode             = 502;
         }
 
@@ -108,6 +111,8 @@ class SyncToLabkesController extends Controller
             ->whereIn('lab_code_sample', array_values($result->result->berhasil))
             ->update(['synchronization_at' => now()]);
         }
+        $successData        = count($result->result->berhasil);
+        $labkodeSampleList  = $result->result->berhasil;
         return count($result->result->berhasil) . __('response.sync_success');
     }
 
