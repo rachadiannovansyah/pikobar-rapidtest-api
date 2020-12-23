@@ -52,7 +52,7 @@ class SyncToLabkesController extends Controller
 
             $payloads[] = [
                 'kewarganegaraan'       =>  'WNI',
-                'kategori'              =>  $row->workplace_name,
+                'kategori'              =>  $rdtEvent->event_name.' '.Carbon::parse($row->attended_at)->format('dmY'),
                 'kriteria'              =>  $personStatusValue[$row->person_status],
                 'nama_pasien'           =>  $row->name,
                 'nik'                   =>  $row->nik,
