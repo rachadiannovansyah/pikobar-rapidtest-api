@@ -149,7 +149,7 @@ class RdtEventParticipantListExportF1Controller extends Controller
                         $row->host_name,
                         '',
                         '',
-                        $row->workplace_name,
+                        $rdtEvent->event_name . ' ' . Carbon::parse($row->attended_at)->format('dmY'),
                         $personStatusValue[$row->person_status] ?? null,
                         $row->name,
                         $row->nik,
