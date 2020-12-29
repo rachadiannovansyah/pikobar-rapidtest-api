@@ -28,7 +28,7 @@ class RdtRegisterController extends Controller
         Log::info('APPLICANT_REGISTER_REQUEST', $request->all());
         $payloads           = $request->all();
         $payloads['status'] = RdtApplicantStatus::NEW();
-        $applicant = RdtApplicant::updateOrCreate(['nik'=>$request->nik], $payloads);
+        $applicant = RdtApplicant::updateOrCreate(['nik' => $request->nik], $payloads);
 
         $event = RdtEvent::where('event_code', $request->pikobar_session_id)->first();
    
