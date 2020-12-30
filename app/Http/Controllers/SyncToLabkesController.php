@@ -147,6 +147,7 @@ class SyncToLabkesController extends Controller
             'fasyankes.id as fasyankes_id',
             'rdt_events.start_at',
             'rdt_events.end_at',
+            'fasyankes.id as fasyankes_id',
             'rdt_events.event_location',
             'city.name as city',
             'district.name as district',
