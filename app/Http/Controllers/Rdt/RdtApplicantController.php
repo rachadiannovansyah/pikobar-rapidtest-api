@@ -16,20 +16,20 @@ class RdtApplicantController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @param  Request  $request
+     * @param Request $request
      * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
     public function index(Request $request)
     {
-        $perPage                = $request->input('per_page', 15);
-        $sortBy                 = $request->input('sort_by', 'created_at');
-        $sortOrder              = $request->input('sort_order', 'desc');
-        $status                 = $request->input('status', 'new');
-        $search                 = $request->input('search');
-        $sessionId              = $request->input('session_id');
-        $registrationDateStart  = $request->input('registration_date_start');
-        $registrationDateEnd    = $request->input('registration_date_end');
-        $personStatus           = $request->input('person_status');
+        $perPage               = $request->input('per_page', 15);
+        $sortBy                = $request->input('sort_by', 'created_at');
+        $sortOrder             = $request->input('sort_order', 'desc');
+        $status                = $request->input('status', 'new');
+        $search                = $request->input('search');
+        $sessionId             = $request->input('session_id');
+        $registrationDateStart = $request->input('registration_date_start');
+        $registrationDateEnd   = $request->input('registration_date_end');
+        $personStatus          = $request->input('person_status');
 
         $perPage = $this->getPaginationSize($perPage);
 
@@ -65,7 +65,7 @@ class RdtApplicantController extends Controller
         }
 
         if ($registrationDateStart) {
-            $records->whereBetween(DB::raw('CAST(created_at AS DATE)'), [$registrationDateStart , $registrationDateEnd]);
+            $records->whereBetween(DB::raw('CAST(created_at AS DATE)'), [$registrationDateStart, $registrationDateEnd]);
         }
 
         if ($personStatus) {
@@ -101,7 +101,7 @@ class RdtApplicantController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  RdtApplicantStoreRequest  $request
+     * @param RdtApplicantStoreRequest $request
      * @return \App\Http\Resources\RdtApplicantResource
      */
     public function store(RdtApplicantStoreRequest $request)
@@ -117,7 +117,7 @@ class RdtApplicantController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  RdtApplicant  $rdtApplicant
+     * @param RdtApplicant $rdtApplicant
      * @return \App\Http\Resources\RdtApplicantResource
      */
     public function show(RdtApplicant $rdtApplicant)
@@ -131,8 +131,8 @@ class RdtApplicantController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\Rdt\RdtApplicantUpdateRequest  $request
-     * @param  RdtApplicant  $rdtApplicant
+     * @param \App\Http\Requests\Rdt\RdtApplicantUpdateRequest $request
+     * @param RdtApplicant $rdtApplicant
      * @return \App\Http\Resources\RdtApplicantResource
      */
     public function update(RdtApplicantUpdateRequest $request, RdtApplicant $rdtApplicant)
@@ -146,7 +146,7 @@ class RdtApplicantController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  RdtApplicant  $rdtApplicant
+     * @param RdtApplicant $rdtApplicant
      * @return \Illuminate\Http\Response
      */
     public function destroy(RdtApplicant $rdtApplicant)
