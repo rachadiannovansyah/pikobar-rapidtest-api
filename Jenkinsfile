@@ -35,7 +35,9 @@ pipeline {
         }
 
         stage("deploy") {
-            when { branch 'origin/develop' }
+            when {
+                expression { env.BRANCH_NAME == 'develop' }
+            }
             steps {
                 script {
                     docker.withRegistry(registryUrl, registryCredential) {
