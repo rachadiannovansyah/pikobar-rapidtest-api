@@ -34,7 +34,7 @@ class RdtApplicantController extends Controller
 
         $perPage = $this->getPaginationSize($perPage);
 
-        if (in_array($sortBy, ['id', 'name', 'gender', 'age', 'person_status', 'created_at']) === false) {
+        if (in_array($sortBy, ['id', 'name', 'gender', 'age', 'person_status', 'created_at', 'updated_at']) === false) {
             $sortBy = 'name';
         }
 
