@@ -87,7 +87,8 @@ class SyncToLabkesController extends Controller
                 $response['result'] = ['success' => $result->result->berhasil, 'failed' => $result->result->gagal];
                 $statusCode = 200;
             } else {
-                $response['message'] = json_decode($request->getBody()->getContents());
+                $result = json_decode($request->getBody()->getContents());
+                $response['message'] = $this->addFlagFailedSendToLabkes($result);
                 $response['result'] = null;
                 $statusCode = $request->getStatusCode();
             }
@@ -105,9 +106,21 @@ class SyncToLabkesController extends Controller
         if (count($result->result->berhasil) > 0) {
             DB::table('rdt_invitations')
                 ->whereIn('lab_code_sample', array_values($result->result->berhasil))
-                ->update(['synchronization_at' => now()]);
+                ->update(['synchronization_at' => now(), 'status_on_simlab' => 'SENT']);
         }
         return count($result->result->berhasil) . ' ' . __('response.sync_success');
+    }
+
+    public function addFlagFailedSendToLabkes($result)
+    {
+        if (count($result->result->gagal) > 0) {
+            $resultFailed = collect($result->result->gagal)->pluck('nomor_sampel')->toArray();
+
+            DB::table('rdt_invitations')
+                ->whereIn('lab_code_sample', array_values($resultFailed))
+                ->update(['status_on_simlab' => 'FAILED']);
+        }
+        return count($result->result->gagal) . ' ' . __('response.sync_failed');
     }
 
     public function countAge($birthDate, $format)
