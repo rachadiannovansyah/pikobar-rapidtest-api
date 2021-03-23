@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Entities\RdtEvent;
+use App\Enums\RegistrationType;
 use Carbon\Carbon;
 use DB;
 use Exception;
@@ -48,9 +49,19 @@ class SyncToLabkesController extends Controller
             $attendedAt = Carbon::createFromFormat('Y-m-d H:i:s', $row->attended_at);
             $attendedAt->setTimezone(config('app.timezone_frontend'));
 
+            // kategori untuk dikirim ke simlab menggunakan data instansi pekerjaan (jika tes mandiri)
+            $category = $row->workplace_name;
+            if ($rdtEvent->registration_type != null) {
+                // jika tes rujukan kategori diisi dengan judul kegiatan
+                $eventName = $rdtEvent->event_name . ' ' . Carbon::parse($row->attended_at)->format('dmY');
+                // check kondisi true or false
+                $checkEventType = $rdtEvent->registration_type === RegistrationType::mandiri()->getValue();
+                $category =  $checkEventType ? $category : $eventName;
+            }
+
             $payloads[] = [
                 'kewarganegaraan' => 'WNI',
-                'kategori' => $rdtEvent->event_name . ' ' . Carbon::parse($row->attended_at)->format('dmY'),
+                'kategori' => $category,
                 'kriteria' => $personStatusValue[$row->person_status],
                 'nama_pasien' => $row->name,
                 'nik' => $row->nik,
