@@ -70,7 +70,6 @@ class ParticipantListExport implements
                 $cellRange = 'A1:W1'; // All headers
                 $event->sheet->getDelegate()->getStyle($cellRange)->getFont()->setSize(12);
                 $event->sheet->getDelegate()->getStyle($cellRange)->getFont()->setBold(true);
-                $event->sheet->setHeight(1, 50);
             },
         ];
     }
