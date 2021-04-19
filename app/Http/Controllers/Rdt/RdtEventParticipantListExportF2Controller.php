@@ -6,6 +6,7 @@ use App\Entities\RdtEvent;
 use App\Exports\ParticipantListExport;
 use App\Http\Controllers\Controller;
 use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Str;
 
 class RdtEventParticipantListExportF2Controller extends Controller
 {
@@ -17,6 +18,8 @@ class RdtEventParticipantListExportF2Controller extends Controller
      */
     public function __invoke(RdtEvent $rdtEvent)
     {
-        return Excel::download(new ParticipantListExport($rdtEvent), 'test-excel.xlsx');
+        $filename = Str::slug('F2-' . $rdtEvent->event_name, '-') . '.xlsx';
+
+        return Excel::download(new ParticipantListExport($rdtEvent), $filename);
     }
 }

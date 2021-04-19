@@ -2,17 +2,26 @@
 
 namespace App\Exports;
 
-use App\Entities\RdtInvitation;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Concerns\FromCollection;
+use Maatwebsite\Excel\Concerns\ShouldAutoSize;
+use Maatwebsite\Excel\Concerns\WithColumnWidths;
+use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithMapping;
+use Maatwebsite\Excel\Events\AfterSheet;
 
-class ParticipantListExport implements FromCollection, WithHeadings, WithMapping
+class ParticipantListExport implements
+    FromCollection,
+    WithHeadings,
+    WithMapping,
+    ShouldAutoSize,
+    WithEvents
 {
     public function __construct($event)
     {
         $this->event = $event;
+        $this->number = 1;
     }
     /**
     * @return \Illuminate\Support\Collection
@@ -21,7 +30,6 @@ class ParticipantListExport implements FromCollection, WithHeadings, WithMapping
     {
         $data = DB::table('rdt_invitations')
         ->select(
-            DB::raw('@number:=@number+1 as number'),
             'rdt_applicants.name',
             'rdt_applicants.birth_date',
             'rdt_applicants.workplace_name',
@@ -39,7 +47,6 @@ class ParticipantListExport implements FromCollection, WithHeadings, WithMapping
             'No',
             'Nama Pasien',
             'Tanggal Lahir / Usia',
-            'Jenis Spesimen',
             'Institusi Pengirim Spesimen',
             'Nomor Spesimen (Label Barcode)',
         ];
@@ -48,9 +55,23 @@ class ParticipantListExport implements FromCollection, WithHeadings, WithMapping
     public function map($event):array
     {
         return [
+            $this->number++,
             $event->name,
             $event->birth_date,
             $event->workplace_name,
+            ' ',
+        ];
+    }
+
+    public function registerEvents(): array
+    {
+        return [
+            AfterSheet::class    => function(AfterSheet $event) {
+                $cellRange = 'A1:W1'; // All headers
+                $event->sheet->getDelegate()->getStyle($cellRange)->getFont()->setSize(12);
+                $event->sheet->getDelegate()->getStyle($cellRange)->getFont()->setBold(true);
+                $event->sheet->setHeight(1, 50);
+            },
         ];
     }
 }
