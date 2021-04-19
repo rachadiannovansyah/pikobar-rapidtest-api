@@ -5,6 +5,7 @@ namespace App\Exports;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
+use Maatwebsite\Excel\Concerns\WithColumnWidths;
 use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithMapping;
@@ -15,7 +16,8 @@ class ParticipantListExport implements
     WithHeadings,
     WithMapping,
     ShouldAutoSize,
-    WithEvents
+    WithEvents,
+    WithColumnWidths
 {
     public function __construct($event)
     {
@@ -52,7 +54,7 @@ class ParticipantListExport implements
     public function map($event): array
     {
         return [
-            $this->number++,
+            $this->number++ ,
             $event->name,
             $event->birth_date,
             $event->workplace_name,
@@ -65,9 +67,15 @@ class ParticipantListExport implements
         return [
             AfterSheet::class => function (AfterSheet $event) {
                 $cellRange = 'A1:W1'; // All headers
-                $event->sheet->getDelegate()->getStyle($cellRange)->getFont()->setSize(12);
-                $event->sheet->getDelegate()->getStyle($cellRange)->getFont()->setBold(true);
+                $event->sheet->getDelegate()->getStyle($cellRange)->getFont()->setSize(12)->setBold(true);
             },
+        ];
+    }
+
+    public function columnWidths(): array
+    {
+        return [
+            'E' => 45,
         ];
     }
 }
