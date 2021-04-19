@@ -46,7 +46,7 @@ class ParticipantListExport implements
         return [
             'No',
             'Nama Pasien',
-            'Tanggal Lahir / Usia',
+            'Tanggal Lahir',
             'Institusi Pengirim Spesimen',
             'Nomor Spesimen (Label Barcode)',
         ];
