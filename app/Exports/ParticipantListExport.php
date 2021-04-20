@@ -21,13 +21,13 @@ class ParticipantListExport implements
     WithColumnWidths
 {
 
-    public $total;
+    public $index;
 
     public function __construct($event)
     {
         $this->event = $event;
         $this->number = 1;
-        $this->total;
+        $this->index;
     }
 
     public function collection()
@@ -42,7 +42,7 @@ class ParticipantListExport implements
             ->where('rdt_invitations.rdt_event_id', $this->event->id)
             ->get();
 
-        $this->total = count($data);
+        $this->index = count($data);
 
         return $data;
     }
@@ -76,7 +76,7 @@ class ParticipantListExport implements
                 $cellRange = 'A1:W1'; // All headers
                 $event->sheet->getDelegate()->getStyle($cellRange)->getFont()->setSize(12)->setBold(true);
 
-                for ($key = 1; $key <= $this->total + 1; $key++) {
+                for ($key = 1; $key <= $this->index + 1; $key++) {
                     $event->sheet->getRowDimension($key)->setRowHeight(35);
                     $event->sheet->getDelegate()
                         ->getStyle("A{$key}:W{$key}")
