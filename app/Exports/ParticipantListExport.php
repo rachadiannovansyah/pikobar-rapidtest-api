@@ -79,7 +79,7 @@ class ParticipantListExport implements
                 for ($key = 1; $key <= $this->total + 1; $key++) {
                     $event->sheet->getRowDimension($key)->setRowHeight(35);
                     $event->sheet->getDelegate()
-                        ->getStyle($cellRange)
+                        ->getStyle("A{$key}:W{$key}")
                         ->getAlignment()
                         ->setHorizontal(Alignment::HORIZONTAL_CENTER);
                 }
