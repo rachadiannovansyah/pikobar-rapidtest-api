@@ -10,6 +10,7 @@ use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithMapping;
 use Maatwebsite\Excel\Events\AfterSheet;
+use PhpOffice\PhpSpreadsheet\Style\Alignment;
 
 class ParticipantListExport implements
     FromCollection,
@@ -19,10 +20,14 @@ class ParticipantListExport implements
     WithEvents,
     WithColumnWidths
 {
+
+    public $index;
+
     public function __construct($event)
     {
         $this->event = $event;
         $this->number = 1;
+        $this->index;
     }
 
     public function collection()
@@ -36,6 +41,8 @@ class ParticipantListExport implements
             ->leftJoin('rdt_applicants', 'rdt_applicants.id', 'rdt_invitations.rdt_applicant_id')
             ->where('rdt_invitations.rdt_event_id', $this->event->id)
             ->get();
+
+        $this->index = count($data);
 
         return $data;
     }
@@ -68,6 +75,14 @@ class ParticipantListExport implements
             AfterSheet::class => function (AfterSheet $event) {
                 $cellRange = 'A1:W1'; // All headers
                 $event->sheet->getDelegate()->getStyle($cellRange)->getFont()->setSize(12)->setBold(true);
+
+                for ($key = 1; $key <= $this->index + 1; $key++) {
+                    $event->sheet->getRowDimension($key)->setRowHeight(35);
+                    $event->sheet->getDelegate()
+                        ->getStyle("A{$key}:W{$key}")
+                        ->getAlignment()
+                        ->setHorizontal(Alignment::HORIZONTAL_CENTER);
+                }
             },
         ];
     }
