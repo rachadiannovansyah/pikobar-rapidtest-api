@@ -18,7 +18,7 @@ class RdtEventParticipantListController extends Controller
      */
     public function __invoke(Request $request, RdtEvent $rdtEvent)
     {
-        $perPage = $request->input('per_page');
+        $perPage = $request->input('per_page', 'ALL');
         $sortBy = $request->input('sort_by', 'created_at');
         $sortOrder = $request->input('sort_order', 'desc');
         $search = $request->input('search');
@@ -51,9 +51,7 @@ class RdtEventParticipantListController extends Controller
             return RdtInvitationResource::collection($records->get());
         }
 
-        $records = $perPage === null ? $records->get() : $records->paginate($perPage);
-
-        return RdtInvitationResource::collection($records);
+        return RdtInvitationResource::collection($records->paginate($perPage));
     }
 
     protected function getPaginationSize($perPage)
