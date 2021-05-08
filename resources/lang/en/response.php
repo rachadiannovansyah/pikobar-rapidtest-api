@@ -12,6 +12,7 @@ return [
     |
     */
 
-    'sync_failed' => 'cannot sync to the server',
-    'sync_success'=> 'send success'
+    'sync_failed' => 'Cannot sync to the server,',
+    'sync_success'=> 'Send success,',
+    'export_failed' => 'Export failed, please complete the Sample Code to be able to Export.'
 ];
