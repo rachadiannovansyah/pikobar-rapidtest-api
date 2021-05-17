@@ -11,6 +11,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Log;
 use Auth;
+use Illuminate\Validation\ValidationException;
 
 class RdtEventNotifyTestResultController extends Controller
 {
@@ -25,6 +26,15 @@ class RdtEventNotifyTestResultController extends Controller
                 ->whereIn('id', $invitationIds)
                 ->whereNotNull('lab_result_type')
                 ->get();
+
+        $isEmptyBlast = count($invitations) === 0;
+
+        // throw error if invitation is empty
+        if ($isEmptyBlast) {
+            throw ValidationException::withMessages([
+                'blast_failed' => __('response.blast_failed')
+            ]);
+        }
 
         foreach ($invitations as $invitation) {
             $this->notifyEachInvitation($invitation);

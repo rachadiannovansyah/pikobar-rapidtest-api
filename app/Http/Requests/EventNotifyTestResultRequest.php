@@ -24,7 +24,6 @@ class EventNotifyTestResultRequest extends FormRequest
     public function rules()
     {
         return [
-            'invitations_ids' => 'required|array|min:1',
             'invitations_ids.*' => 'exists:rdt_invitations,id'
         ];
     }
