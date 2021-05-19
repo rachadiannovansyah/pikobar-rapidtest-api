@@ -32,8 +32,7 @@ RUN apk --no-cache add \
     php7-fileinfo \
     php7-tokenizer \
     nginx \
-    supervisor \
-    curl
+    supervisor
 
 # Remove default.conf nginx
 RUN rm /etc/nginx/conf.d/default.conf
@@ -80,6 +79,3 @@ EXPOSE 8080
 
 # Let supervisord start nginx & php-fpm
 ENTRYPOINT ["/bin/sh", "/docker-entrypoint.sh"]
-
-# Configure a healthcheck to validate that everything is up&running
-HEALTHCHECK --timeout=10s CMD curl --silent --fail http://127.0.0.1:8080
