@@ -53,7 +53,13 @@ class RdtEventController extends Controller
 
         $records = $this->searchList($records, $search);
 
-        $status === 'draft' ? $records->whereEnum('status', RdtEventStatus::DRAFT()) : $records->whereEnum('status', RdtEventStatus::PUBLISHED());
+        $records->when($status === 'draft', function ($query) {
+            return $query->whereEnum('status', RdtEventStatus::DRAFT());
+        });
+
+        $records->when($status === 'published', function ($query) {
+            return $query->whereEnum('status', RdtEventStatus::PUBLISHED());
+        });
 
         $records->orderBy($sortBy, $sortOrder);
         $records->with(['city']);
