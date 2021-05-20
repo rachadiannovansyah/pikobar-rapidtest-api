@@ -28,6 +28,8 @@ class RdtApplicantController extends Controller
         $status = $request->input('status', 'new');
         $search = $request->input('search');
         $sessionId = $request->input('session_id');
+        $cityCode = $request->input('city_code');
+        $userCityCode = $request->user()->city_code;
         $registrationDateStart = $request->input('registration_date_start');
         $registrationDateEnd = $request->input('registration_date_end');
         $personStatus = $request->input('person_status');
@@ -45,57 +47,40 @@ class RdtApplicantController extends Controller
             $sortBy = 'birth_date';
         }
 
-        $statusEnum = 'new';
-
-        if ($status === 'new') {
-            $statusEnum = RdtApplicantStatus::NEW();
-        }
-
-        if ($status === 'approved') {
-            $statusEnum = RdtApplicantStatus::APPROVED();
-        }
+        $status === 'new' ? $statusEnum = RdtApplicantStatus::NEW() : $statusEnum = RdtApplicantStatus::APPROVED();
 
         $records = RdtApplicant::query();
 
-        if ($search) {
-            $records->where(function ($query) use ($search) {
-                $query->where('name', 'like', '%' . $search . '%')
-                    ->orWhere('registration_code', 'like', '%' . $search . '%')
-                    ->orWhere('workplace_name', 'like', '%' . $search . '%')
-                    ->orWhere('nik', $search)
-                    ->orWhere('pikobar_session_id', $search)
-                    ->orWhere('phone_number', 'like', '%' . $search . '%');
-            });
-        }
+        $records = $this->filterList($search, $records);
 
-        if ($registrationDateStart) {
-            $records->whereBetween(DB::raw('CAST(registration_at AS DATE)'), [
+        $records->when($registrationDateStart, function ($query, $registrationDateStart, $registrationDateEnd) {
+            return $query->whereBetween(DB::raw('CAST(registration_at AS DATE)'), [
                 $registrationDateStart, $registrationDateEnd,
             ]);
-        }
+        });
 
-        if ($personStatus) {
-            $records->where('person_status', $personStatus);
-        }
+        $records->when($personStatus, function ($query, $personStatus) {
+            return $query->where('person_status', $personStatus);
+        });
 
-        if ($request->has('city_code')) {
-            $records->where('city_code', $request->input('city_code'));
-        }
+        $records->when($cityCode, function ($query, $cityCode) {
+            return $query->where('city_code', $cityCode);
+        });
 
-        if ($request->user()->city_code) {
-            $records->where('city_code', $request->user()->city_code);
-        }
+        $records->when($userCityCode, function ($query, $userCityCode) {
+            return $query->where('city_code', $userCityCode);
+        });
 
-        if ($request->has('status')) {
-            $records->whereEnum('status', $statusEnum);
-        }
+        $records->when($status, function ($query, $statusEnum) {
+            return $query->whereEnum('status', $statusEnum);
+        });
 
         $records->orderBy($sortBy, $sortOrder);
         $records->with(['invitations', 'invitations.event', 'city', 'district', 'village']);
 
-        if ($request->has('session_id')) {
-            $records->where('pikobar_session_id', '=', $sessionId);
-        }
+        $records->when($sessionId, function ($query, $sessionId) {
+            return $query->where('pikobar_session_id', $sessionId);
+        });
 
         if (strtoupper($perPage) === 'ALL') {
             return RdtApplicantResource::collection($records->get());
@@ -170,5 +155,21 @@ class RdtApplicantController extends Controller
             return $perPage;
         }
         return 15;
+    }
+
+    protected function filterList($search, $records)
+    {
+        if ($search) {
+            $records->where(function ($query) use ($search) {
+                $query->where('name', 'like', '%' . $search . '%')
+                    ->orWhere('registration_code', 'like', '%' . $search . '%')
+                    ->orWhere('workplace_name', 'like', '%' . $search . '%')
+                    ->orWhere('nik', $search)
+                    ->orWhere('pikobar_session_id', $search)
+                    ->orWhere('phone_number', 'like', '%' . $search . '%');
+            });
+        }
+
+        return $records;
     }
 }
