@@ -28,6 +28,8 @@ class RdtEventController extends Controller
         $sortOrder = $request->input('sort_order', 'desc');
         $status = $request->input('status', 'all');
         $search = $request->input('search');
+        $cityCode = $request->input('city_code');
+        $userCityCode = $request->user()->city_code;
 
         $perPage = $this->getPaginationSize($perPage);
 
@@ -41,26 +43,17 @@ class RdtEventController extends Controller
 
         $records = RdtEvent::query();
 
-        if ($request->has('city_code')) {
-            $records->where('city_code', $request->input('city_code'));
-        }
+        $records->when($cityCode, function ($query, $cityCode) {
+            return $query->where('city_code', $cityCode);
+        });
 
-        if ($request->user()->city_code) {
-            $records->where('city_code', $request->user()->city_code);
-        }
+        $records->when($userCityCode, function ($query, $userCityCode) {
+            return $query->where('city_code', $userCityCode);
+        });
 
-        if ($search) {
-            $records->where(function ($query) use ($search) {
-                $query->where('event_name', 'like', '%' . $search . '%');
-            });
-        }
+        $records = $this->searchList($records, $search);
 
-        if ($status === 'draft') {
-            $records->whereEnum('status', RdtEventStatus::DRAFT());
-        }
-        if ($status === 'published') {
-            $records->whereEnum('status', RdtEventStatus::PUBLISHED());
-        }
+        $status === 'draft' ? $records->whereEnum('status', RdtEventStatus::DRAFT()) : $records->whereEnum('status', RdtEventStatus::PUBLISHED());
 
         $records->orderBy($sortBy, $sortOrder);
         $records->with(['city']);
@@ -161,5 +154,16 @@ class RdtEventController extends Controller
             return $perPage;
         }
         return 15;
+    }
+
+    protected function searchList($records, $search)
+    {
+        if ($search) {
+            $records->where(function ($query) use ($search) {
+                $query->where('event_name', 'like', '%' . $search . '%');
+            });
+        }
+
+        return $records;
     }
 }
