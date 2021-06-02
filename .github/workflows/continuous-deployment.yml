@@ -32,10 +32,11 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       - name: Check out code
         uses: actions/checkout@v2
-      - name: Build and push
+      - name: Build and push images
         run: |
           docker build -t sedekahcode15/novan:${{ github.sha }} .
           docker push sedekahcode15/novan:${{ github.sha }}
+          echo "::set-output name=image::sedekahcode15/novan:${{ github.sha }}"
       - name: Deploy to caprover
         uses: floms/action-caprover@v1
         with:
