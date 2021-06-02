@@ -32,8 +32,8 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       - name: Build and push
         run: |
-          docker build -t https://hub.docker.com/repository/docker/sedekahcode15/novan:${{ github.sha }} .
-          docker push https://hub.docker.com/repository/docker/sedekahcode15/novan:${{ github.sha }}
+          docker build -t sedekahcode15/novan:${{ github.sha }} .
+          docker push sedekahcode15/novan:${{ github.sha }}
       - name: Deploy to caprover
         uses: floms/action-caprover@v1
         with:
