@@ -34,7 +34,6 @@ jobs:
         run: |
           docker build -t https://hub.docker.com/repository/docker/sedekahcode15/novan:${{ github.sha }} .
           docker push https://hub.docker.com/repository/docker/sedekahcode15/novan:${{ github.sha }}
-          echo "::set-output name=image::https://hub.docker.com/repository/docker/sedekahcode15/novan:${{ github.sha }}"
       - name: Deploy to caprover
         uses: floms/action-caprover@v1
         with:
