@@ -27,7 +27,7 @@ jobs:
       - name: Login to Registry
         uses: docker/login-action@v1 
         with:
-          registry: ${{ environments.registry.URL }}
+          registry: ${{ env.registry.URL }}
           username: ${{ secrets.HARBOR_USERNAME }}
           password: ${{ secrets.HARBOR_TOKEN }}
       - name: Build and push
@@ -36,11 +36,11 @@ jobs:
           context: .
           platforms: linux/amd64,linux/arm64
           push: true
-          tags: ${{ environments.registry.BASE_IMAGE_TAG }} + ":${GIT_COMMIT[0..7]}"
+          tags: ${{ env.registry.BASE_IMAGE_TAG }} + ":${GIT_COMMIT[0..7]}"
       - name: Deploy to caprover
         uses: floms/action-caprover@v1
         with:
           host: ${{ secrets.CAPROVER_SERVER }}
           password: ${{ secrets.CAPROVER_PASSWORD }}
           app: ${{ secrets.CAPROVER_APPNAMEDEV }}
-          image: ${{ environments.registry.BASE_IMAGE_TAG }} + ":${GIT_COMMIT[0..7]}"
+          image: ${{ env.registry.BASE_IMAGE_TAG }} + ":${GIT_COMMIT[0..7]}"
