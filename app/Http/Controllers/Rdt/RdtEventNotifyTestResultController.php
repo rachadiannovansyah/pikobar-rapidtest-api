@@ -7,11 +7,10 @@ use App\Entities\RdtInvitation;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\EventNotifyTestResultRequest;
 use App\Notifications\TestResult;
+use Auth;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Log;
-use Auth;
-use Illuminate\Validation\ValidationException;
 
 class RdtEventNotifyTestResultController extends Controller
 {
@@ -20,12 +19,12 @@ class RdtEventNotifyTestResultController extends Controller
         Gate::authorize('notify-participants');
 
         $invitationIds = $request->input('invitations_ids');
-        $invitations   = $rdtEvent->invitations;
-
         $invitations = $rdtEvent->invitations()
-                ->whereIn('id', $invitationIds)
-                ->whereNotNull('lab_result_type')
-                ->get();
+            ->when($invitationIds, function ($query) use ($invitationIds) {
+                $query->whereIn('id', $invitationIds);
+            })
+            ->whereNotNull('lab_result_type')
+            ->get();
 
         foreach ($invitations as $invitation) {
             $this->notifyEachInvitation($invitation);
@@ -42,9 +41,9 @@ class RdtEventNotifyTestResultController extends Controller
         $invitation->save();
 
         Log::info('NOTIFY_TEST_RESULT', [
-            'applicant'  => $invitation->applicant,
+            'applicant' => $invitation->applicant,
             'invitation' => $invitation,
-            'result'     => $invitation->lab_result_type
+            'result' => $invitation->lab_result_type,
         ]);
     }
 }
