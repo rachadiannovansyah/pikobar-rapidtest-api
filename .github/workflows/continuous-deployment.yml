@@ -24,23 +24,20 @@ jobs:
         uses: docker/setup-qemu-action@v1
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
-      - name: Login to DockerHub
-        uses: docker/login-action@v1 
-        with:
-          registry: ${{ env.registry.URL_HUB }}
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Login to Harbor Registry
+        run: |
+          docker login https://registry.digitalservice.id --username ${{ secrets.HARBOR_USERNAME }} --password-stdin ${{ secrets.HARBOR_TOKEN }}
       - name: Check out code
         uses: actions/checkout@v2
       - name: Build and push images
         run: |
-          docker build -t sedekahcode15/novan:${{ github.sha }} .
-          docker push sedekahcode15/novan:${{ github.sha }}
-          echo "::set-output name=image::sedekahcode15/novan:${{ github.sha }}"
+          docker build -t registry.digitalservice.id/pikobar-tesmasif/tesmasif-api:${{ github.sha }} .
+          docker push registry.digitalservice.id/pikobar-tesmasif/tesmasif-api:${{ github.sha }}
+          echo "::set-output name=image::registry.digitalservice.id/pikobar-tesmasif/tesmasif-api:${{ github.sha }}"
       - name: Deploy to caprover
         uses: floms/action-caprover@v1
         with:
           host: ${{ secrets.CAPROVER_SERVER }}
           password: ${{ secrets.CAPROVER_PASSWORD }}
           app: ${{ secrets.CAPROVER_APPNAMEDEV }}
-          image: sedekahcode15/novan:${{ github.sha }}
+          image: registry.digitalservice.id/pikobar-tesmasif/tesmasif-api:${{ github.sha }}
