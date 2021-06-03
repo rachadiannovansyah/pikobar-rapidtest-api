@@ -27,15 +27,6 @@ class RdtEventNotifyTestResultController extends Controller
                 ->whereNotNull('lab_result_type')
                 ->get();
 
-        $isEmptyBlast = count($invitations) === 0;
-
-        // throw error if invitation is empty
-        if ($isEmptyBlast) {
-            throw ValidationException::withMessages([
-                'blast_failed' => __('response.blast_failed')
-            ]);
-        }
-
         foreach ($invitations as $invitation) {
             $this->notifyEachInvitation($invitation);
         }
