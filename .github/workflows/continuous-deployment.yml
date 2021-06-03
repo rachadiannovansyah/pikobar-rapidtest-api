@@ -34,13 +34,13 @@ jobs:
         uses: actions/checkout@v2
       - name: Build and push images
         run: |
-          docker build -t sedekahcode15/novan:${{ github.sha }} .
-          docker push sedekahcode15/novan:${{ github.sha }}
-          echo "::set-output name=image::sedekahcode15/novan:${{ github.sha }}"
+          docker build -t ${{ env.registry.BASE_IMAGE_TAG_HUB }}:${{ github.sha }} .
+          docker push ${{ env.registry.BASE_IMAGE_TAG_HUB }}:${{ github.sha }}
+          echo "::set-output name=image::${{ env.registry.BASE_IMAGE_TAG_HUB }}:${{ github.sha }}"
       - name: Deploy to caprover
         uses: floms/action-caprover@v1
         with:
           host: ${{ secrets.CAPROVER_SERVER }}
           password: ${{ secrets.CAPROVER_PASSWORD }}
           app: ${{ secrets.CAPROVER_APPNAMEDEV }}
-          image: sedekahcode15/novan:${{ github.sha }}
+          image: ${{ env.registry.BASE_IMAGE_TAG_HUB }}:${{ github.sha }}
