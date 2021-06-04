@@ -13,8 +13,8 @@ on:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains multiple job called "build and push"
-  build-push:
+  # This workflow contains a job called "build push deploy"
+  docker:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
 
@@ -34,13 +34,6 @@ jobs:
           docker build -t registry.digitalservice.id/pikobar-tesmasif/tesmasif-api:${{ github.sha }} .
           docker push registry.digitalservice.id/pikobar-tesmasif/tesmasif-api:${{ github.sha }}
           echo "::set-output name=image::registry.digitalservice.id/pikobar-tesmasif/tesmasif-api:${{ github.sha }}"
-  # This workflow contains a single job called "deploy"
-  deploy:
-    # The type of runner that the job will run on
-    runs-on: ubuntu-latest
-
-    # Steps represent a sequence of tasks that will be executed as part of the job
-    steps:
       - name: Deploy to caprover
         uses: floms/action-caprover@v1
         with:
