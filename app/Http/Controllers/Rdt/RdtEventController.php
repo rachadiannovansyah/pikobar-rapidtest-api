@@ -169,7 +169,7 @@ class RdtEventController extends Controller
     {
         foreach ($params as $key => $value) {
             if ($key == 'status') {
-                if (strtoupper($value) === RdtEventStatus::DRAFT()) {
+                if (strtoupper($value) == RdtEventStatus::DRAFT()) {
                     $records->whereEnum('status', RdtEventStatus::DRAFT());
                 } else {
                     $records->whereEnum('status', RdtEventStatus::PUBLISHED());
