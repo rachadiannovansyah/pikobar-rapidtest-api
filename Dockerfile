@@ -1,4 +1,4 @@
-FROM registry.digitalservice.id/proxyjds/library/alpine:3.13
+FROM registry.digitalservice.id/proxyjds/library/alpine:latest
 
 LABEL Maintainer="Yoga Hanggara <yohang88@gmail.com>" \
     Description="Lightweight Laravel app container with Nginx 1.16 & PHP-FPM 7.4 based on Alpine Linux (forked from trafex/alpine-nginx-php7)."
